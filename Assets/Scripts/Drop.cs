@@ -5,6 +5,7 @@ using Leap;
 public class Drop : MonoBehaviour
 {
 	public float speed;
+	public GameObject score;
 	Controller leap;
 	Vector FingerPos;
 	float lim_x_low, lim_x_high, lim_y_low, lim_y_high, lim_z_low, lim_z_high;
@@ -63,13 +64,32 @@ public class Drop : MonoBehaviour
 
 			Frame frame = leap.Frame ();
 			foreach (Hand hand in frame.Hands) {
-				Debug.Log (hand.Fingers.Frontmost.TipPosition);
+				// Debug.Log (hand.Fingers.Frontmost.TipPosition);
 				foreach (Finger finger in hand.Fingers) {
 					FingerPos = finger.TipPosition;
 					// Destroy note if tap success
 					if (lim_y_low < FingerPos.y && FingerPos.y < lim_y_high && 
 						lim_x_low < FingerPos.x && FingerPos.x < lim_x_high && 
 						lim_z_low < FingerPos.z && FingerPos.z < lim_z_high) {
+
+						Quaternion rt = Quaternion.identity;
+						if (transform.rotation.eulerAngles.x == 0)
+							rt.eulerAngles = new Vector3(0, -90, 0);
+						else if (transform.rotation.eulerAngles.x == 90)
+							rt.eulerAngles = new Vector3(0, 0, 0);
+						else// if (transform.rotation.eulerAngles.x == 180)
+							rt.eulerAngles = new Vector3(0, 90, 0);
+						//Debug.Log(transform.rotation.eulerAngles.x / 2);
+						GameObject tmp = (GameObject) Instantiate (score, transform.position, rt);
+						if (Mathf.Abs(notePos.z) < 0.5)
+							tmp.GetComponent<TextMesh>().text = "Perfect!";
+						else if (Mathf.Abs(notePos.z) < 1)
+							tmp.GetComponent<TextMesh>().text = "Good!";
+						else if (Mathf.Abs(notePos.z) < 1.5)
+							tmp.GetComponent<TextMesh>().text = "Bad!";
+						else
+							tmp.GetComponent<TextMesh>().text = "Miss!";
+
 						Destroy (gameObject);
 						return;
 					}

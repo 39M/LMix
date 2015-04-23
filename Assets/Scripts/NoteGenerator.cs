@@ -20,6 +20,6 @@ public class NoteGenerator : MonoBehaviour {
 	{
 		Quaternion rt = Quaternion.identity;
 		rt.eulerAngles = note.transform.rotation.eulerAngles + rotation;
-		Instantiate (note, positon, rt);
+		GameObject note_tmp = (GameObject) Instantiate (note, positon, rt);
 	}
 }
