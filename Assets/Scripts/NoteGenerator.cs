@@ -8,7 +8,7 @@ public class NoteGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		InvokeRepeating ("GenerateNote", 0, 1);
+		//InvokeRepeating ("GenerateNote", 0, 1);
 	}
 	
 	// Update is called once per frame
@@ -16,7 +16,7 @@ public class NoteGenerator : MonoBehaviour {
 
 	}
 
-	void GenerateNote()
+	public void GenerateNote()
 	{
 		Quaternion rt = Quaternion.identity;
 		rt.eulerAngles = note.transform.rotation.eulerAngles + rotation;
