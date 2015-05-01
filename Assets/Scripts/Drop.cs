@@ -7,14 +7,18 @@ public class Drop : MonoBehaviour
 	public float speed;
 	public GameObject score;
 	Controller leap;
+	AudioSource audio;
 	Vector FingerPos;
 	float lim_x_low, lim_x_high, lim_y_low, lim_y_high, lim_z_low, lim_z_high;
 	Vector3 notePos;
+	bool hit;
 
 	// Use this for initialization
 	void Start ()
 	{
 		leap = new Controller ();
+		hit = false;
+		audio = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -22,7 +26,7 @@ public class Drop : MonoBehaviour
 	{
 		transform.Translate (new Vector3 (15, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
-		if (notePos.z < 1.75 && notePos.z > -1.75) {
+		if (!hit && notePos.z < 1.75 && notePos.z > -1.75) {
 			lim_z_low = -175;
 			lim_z_high = 0;
 			if (notePos.x > 0) {
@@ -90,14 +94,17 @@ public class Drop : MonoBehaviour
 						else
 							tmp.GetComponent<TextMesh>().text = "Miss!";
 
-						Destroy (gameObject);
+						hit = true;
+						audio.Play();
+						GetComponent<Renderer>().enabled = false;
+						//Destroy (gameObject);
 						return;
 					}
 				}
 			}
 		}
 
-		if (notePos.z < -10)
+		if (notePos.z < -10 || (hit && !audio.isPlaying))
 			Destroy (gameObject);
 	}
 }
