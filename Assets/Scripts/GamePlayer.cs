@@ -3,6 +3,7 @@ using System.Collections;
 using SimpleJSON;
 
 public class GamePlayer : MonoBehaviour {
+	AudioSource music;
 	NoteGenerator NGDL;
 	NoteGenerator NGDR;
 	NoteGenerator NGRU;
@@ -14,6 +15,7 @@ public class GamePlayer : MonoBehaviour {
 	JSONArray now;
 	float time;
 	int i;
+	//bool isPlaying;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +25,7 @@ public class GamePlayer : MonoBehaviour {
 		NGRD = GameObject.Find ("NoteGeneratorRD").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
-
+		music = GetComponent<AudioSource> ();
 /*
 {
     "Tags": [],  // 标签
@@ -56,9 +58,20 @@ public class GamePlayer : MonoBehaviour {
     ""GameObject"": {
         ""Hard"": [],
         ""Easy"": [[0, 1, 1, 1],
-                 [0, 1, 2, 2],
-                 [0, 1, 3, 2],
-                 [0, 1, 4, 1]],
+                 [0, 2, 2, 2],
+                 [0, 3, 3, 2],
+                 [0, 4, 4, 1],
+				 [0, 5, 5, 1],
+                 [0, 6, 6, 2],
+                 [0, 7, 1, 2],
+                 [0, 8, 2, 1],
+			     [0, 9, 3, 2],
+                 [0, 10, 4, 2],
+                 [0, 11, 5, 1],
+				 [0, 12, 6, 1],
+                 [0, 13, 1, 2],
+                 [0, 14, 2, 2],
+                 [0, 15, 3, 1]],
         ""Normal"": []
     },
     ""Artist"": ""who"",
@@ -84,10 +97,16 @@ public class GamePlayer : MonoBehaviour {
 		time = 0f;
 		i = 0;
 		now = Easy [0].AsArray;
+		music.Play ();
+		Debug.Log (music.time);
+		//isPlaying = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (!music.isPlaying)
+			return;
+
 		time += Time.deltaTime;	// Timing
 
 		if (Easy.Count <= i)	// notes count < i
@@ -118,6 +137,33 @@ public class GamePlayer : MonoBehaviour {
 			}
 			i++;
 			now = Easy[i].AsArray;	// move to next note
+		}
+	}
+
+	void OnGUI() {
+		if(GUILayout.Button("播放/继续"))
+		{
+			//播放/继续播放音频
+			if(!music.isPlaying)
+			{
+				//isPlaying = true;
+				music.Play();
+			}
+			
+		}
+		
+		if(GUILayout.Button("暂停播放"))
+		{
+			//暂停播放
+			//isPlaying = false;
+			music.Pause();
+		}
+		
+		if(GUILayout.Button("停止播放"))
+		{
+			//停止播放
+			//isPlaying = false;
+			music.Stop();
 		}
 	}
 }
