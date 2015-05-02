@@ -24,7 +24,7 @@ public class Drop : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		transform.Translate (new Vector3 (15, 0, 0) * Time.deltaTime * speed);
+		transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
 		if (!hit && notePos.z < 1.75 && notePos.z > -1.75) {
 			lim_z_low = -175;
