@@ -6,8 +6,11 @@ public class Drop : MonoBehaviour
 {
 	public float speed;
 	public GameObject score;
+	public bool pause;
+	public bool stop;
 	Controller leap;
 	AudioSource audio;
+	GamePlayer status;
 	Vector FingerPos;
 	float lim_x_low, lim_x_high, lim_y_low, lim_y_high, lim_z_low, lim_z_high;
 	Vector3 notePos;
@@ -17,13 +20,19 @@ public class Drop : MonoBehaviour
 	void Start ()
 	{
 		leap = new Controller ();
-		hit = false;
+		hit = pause = stop = false;
 		audio = GetComponent<AudioSource>();
+		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
+		if (status.stop)
+			Destroy (gameObject);
+		if (status.pause)
+			return;
+
 		transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
 		if (!hit && notePos.z < 1.75 && notePos.z > -1.75) {

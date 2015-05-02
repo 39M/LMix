@@ -3,6 +3,8 @@ using System.Collections;
 using SimpleJSON;
 
 public class GamePlayer : MonoBehaviour {
+	public bool pause;
+	public bool stop;
 	AudioSource music;
 	NoteGenerator NGDL;
 	NoteGenerator NGDR;
@@ -100,6 +102,7 @@ public class GamePlayer : MonoBehaviour {
 		music.Play ();
 		Debug.Log (music.time);
 		//isPlaying = true;
+		pause = stop = false;
 	}
 	
 	// Update is called once per frame
@@ -147,6 +150,7 @@ public class GamePlayer : MonoBehaviour {
 			if(!music.isPlaying)
 			{
 				//isPlaying = true;
+				pause = stop = false;
 				music.Play();
 			}
 			
@@ -156,6 +160,7 @@ public class GamePlayer : MonoBehaviour {
 		{
 			//暂停播放
 			//isPlaying = false;
+			pause = true;
 			music.Pause();
 		}
 		
@@ -163,6 +168,10 @@ public class GamePlayer : MonoBehaviour {
 		{
 			//停止播放
 			//isPlaying = false;
+			stop = true;
+			time = 0f;
+			i = 0;
+			now = Easy [0].AsArray;
 			music.Stop();
 		}
 	}
