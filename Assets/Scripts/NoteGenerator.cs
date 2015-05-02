@@ -16,10 +16,12 @@ public class NoteGenerator : MonoBehaviour {
 
 	}
 
-	public void GenerateNote()
+	public void GenerateNote(float speed)
 	{
 		Quaternion rt = Quaternion.identity;
 		rt.eulerAngles = note.transform.rotation.eulerAngles + rotation;
 		GameObject note_tmp = (GameObject) Instantiate (note, positon, rt);
+		Drop temp = note_tmp.GetComponent ("Drop") as Drop;
+		temp.speed = speed;
 	}
 }
