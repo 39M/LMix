@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 using SimpleJSON;
 
 public class GamePlayer : MonoBehaviour {
@@ -15,7 +16,7 @@ public class GamePlayer : MonoBehaviour {
 	JSONNode Beatmap;
 	JSONArray Easy, Normal, Hard;
 	JSONArray now;
-	float time;
+	//float time;
 	int i;
 	//bool isPlaying;
 
@@ -88,19 +89,28 @@ public class GamePlayer : MonoBehaviour {
         ""Name"": ""theaudio""
     }
 }";
-		/****************
+		/****************/
 			// Get beatmap from file
-		****************/
+		StreamReader f = File.OpenText("./Beatmap.LMix");
+		/*try{
+			f = File.OpenText("./Beatmap.LMix");
+		}catch(IOException){
+			Destroy(gameObject);
+		}*/
+		s = f.ReadToEnd ();
+		//Debug.Log (s);
+
+		/****************/
 
 
 		Beatmap = JSON.Parse (s);
 		Easy = Beatmap["GameObject"]["Easy"].AsArray;
 
-		time = 0f;
+		//time = 0f;
 		i = 0;
 		now = Easy [0].AsArray;
 		music.Play ();
-		Debug.Log (music.time);
+		//Debug.Log (music.time);
 		//isPlaying = true;
 		pause = stop = false;
 	}
@@ -110,12 +120,12 @@ public class GamePlayer : MonoBehaviour {
 		if (!music.isPlaying)
 			return;
 
-		time += Time.deltaTime;	// Timing
+		//time += Time.deltaTime;	// Timing
 
 		if (Easy.Count <= i)	// notes count < i
 			return;
-
-		if (time >= now[1].AsFloat) {	// time > generate time
+		//Debug.Log (music.time);
+		if (music.time >= now[1].AsFloat) {	// time > generate time
 			switch (now[2].AsInt){	// select generator
 			case 1:
 				NGDL.GenerateNote (now[3].AsFloat);
@@ -169,7 +179,7 @@ public class GamePlayer : MonoBehaviour {
 			//停止播放
 			//isPlaying = false;
 			stop = true;
-			time = 0f;
+			//time = 0f;
 			i = 0;
 			now = Easy [0].AsArray;
 			music.Stop();
