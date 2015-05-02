@@ -125,7 +125,7 @@ public class GamePlayer : MonoBehaviour {
 		if (Easy.Count <= i)	// notes count < i
 			return;
 		//Debug.Log (music.time);
-		if (music.time >= now[1].AsFloat) {	// time > generate time
+		if (music.time >= now[1].AsFloat - 5) {	// time > generate time
 			switch (now[2].AsInt){	// select generator
 			case 1:
 				NGDL.GenerateNote (now[3].AsFloat);
