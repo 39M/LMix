@@ -24,9 +24,9 @@ public class GamePlayer : MonoBehaviour {
 	void Start () {
 		NGDL = GameObject.Find ("NoteGeneratorDL").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGDR = GameObject.Find ("NoteGeneratorDR").GetComponent ("NoteGenerator") as NoteGenerator;
-		NGRU = GameObject.Find ("NoteGeneratorRU").GetComponent ("NoteGenerator") as NoteGenerator;
+		//NGRU = GameObject.Find ("NoteGeneratorRU").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGRD = GameObject.Find ("NoteGeneratorRD").GetComponent ("NoteGenerator") as NoteGenerator;
-		NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
+		//NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
 		music = GetComponent<AudioSource> ();
 /*
@@ -134,13 +134,13 @@ public class GamePlayer : MonoBehaviour {
 				NGDR.GenerateNote (now[3].AsFloat);
 				break;
 			case 3:
-				NGLU.GenerateNote (now[3].AsFloat);
+				//NGLU.GenerateNote (now[3].AsFloat);
 				break;
 			case 4:
 				NGLD.GenerateNote (now[3].AsFloat);
 				break;
 			case 5:
-				NGRU.GenerateNote (now[3].AsFloat);	
+				//NGRU.GenerateNote (now[3].AsFloat);	
 				break;
 			case 6:
 				NGRD.GenerateNote (now[3].AsFloat);	

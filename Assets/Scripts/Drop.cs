@@ -37,7 +37,7 @@ public class Drop : MonoBehaviour
 		notePos = transform.position;
 		if (!hit && notePos.z < 1.75 && notePos.z > -1.75) {
 			lim_z_low = -175;
-			lim_z_high = 0;
+			lim_z_high = 200;
 			if (notePos.x > 0) {
 				if (notePos.y < -0.5) {
 					lim_x_low = 0;
