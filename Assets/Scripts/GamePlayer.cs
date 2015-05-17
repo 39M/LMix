@@ -7,6 +7,7 @@ public class GamePlayer : MonoBehaviour {
 	public bool pause;
 	public bool stop;
 	AudioSource music;
+	MovieTexture mov;
 	NoteGenerator NGDL;
 	NoteGenerator NGDR;
 	NoteGenerator NGRU;
@@ -29,6 +30,8 @@ public class GamePlayer : MonoBehaviour {
 		//NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
 		music = GetComponent<AudioSource> ();
+		mov = null;
+		//mov = (GameObject.Find ("Plane").GetComponent("Movie") as movie).movTexture;
 /*
 {
     "Tags": [],  // 标签
@@ -110,6 +113,8 @@ public class GamePlayer : MonoBehaviour {
 		i = 0;
 		now = Easy [0].AsArray;
 		music.Play ();
+		if (mov != null)
+			mov.Play();
 		//Debug.Log (music.time);
 		//isPlaying = true;
 		pause = stop = false;
@@ -162,6 +167,8 @@ public class GamePlayer : MonoBehaviour {
 				//isPlaying = true;
 				pause = stop = false;
 				music.Play();
+				if (mov != null)
+					mov.Play();
 			}
 			
 		}
@@ -172,6 +179,8 @@ public class GamePlayer : MonoBehaviour {
 			//isPlaying = false;
 			pause = true;
 			music.Pause();
+			if (mov != null)
+				mov.Pause();
 		}
 		
 		if(GUILayout.Button("停止播放"))
@@ -183,6 +192,8 @@ public class GamePlayer : MonoBehaviour {
 			i = 0;
 			now = Easy [0].AsArray;
 			music.Stop();
+			if (mov != null)
+				mov.Stop();
 		}
 	}
 }
