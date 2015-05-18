@@ -3,9 +3,14 @@ using System.Collections;
 using System.IO;
 using SimpleJSON;
 
-public class GamePlayer : MonoBehaviour {
+public class GamePlayer : MonoBehaviour
+{
 	public bool pause;
 	public bool stop;
+	public GUIText ScoreText;
+	public GUIText ComboText;
+	public int ScoreCounter;
+	public int ComboCounter;
 	AudioSource music;
 	MovieTexture mov;
 	NoteGenerator NGDL;
@@ -22,7 +27,8 @@ public class GamePlayer : MonoBehaviour {
 	//bool isPlaying;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		NGDL = GameObject.Find ("NoteGeneratorDL").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGDR = GameObject.Find ("NoteGeneratorDR").GetComponent ("NoteGenerator") as NoteGenerator;
 		//NGRU = GameObject.Find ("NoteGeneratorRU").GetComponent ("NoteGenerator") as NoteGenerator;
@@ -93,8 +99,8 @@ public class GamePlayer : MonoBehaviour {
     }
 }";
 		/****************/
-			// Get beatmap from file
-		StreamReader f = File.OpenText("./Beatmap.LMix");
+		// Get beatmap from file
+		StreamReader f = File.OpenText ("./Beatmap.LMix");
 		/*try{
 			f = File.OpenText("./Beatmap.LMix");
 		}catch(IOException){
@@ -107,21 +113,25 @@ public class GamePlayer : MonoBehaviour {
 
 
 		Beatmap = JSON.Parse (s);
-		Easy = Beatmap["GameObject"]["Easy"].AsArray;
+		Easy = Beatmap ["GameObject"] ["Easy"].AsArray;
 
 		//time = 0f;
+
+		// Init
 		i = 0;
 		now = Easy [0].AsArray;
 		music.Play ();
 		if (mov != null)
-			mov.Play();
-		//Debug.Log (music.time);
-		//isPlaying = true;
+			mov.Play ();
 		pause = stop = false;
+		ScoreCounter = ComboCounter = 0;
+		ScoreText.text = "Score: " + ScoreCounter.ToString ();
+		ComboText.text = "Combo: " + ComboCounter.ToString ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (!music.isPlaying)
 			return;
 
@@ -130,70 +140,70 @@ public class GamePlayer : MonoBehaviour {
 		if (Easy.Count <= i)	// notes count < i
 			return;
 		//Debug.Log (music.time);
-		if (music.time >= now[1].AsFloat - 5) {	// time > generate time
-			switch (now[2].AsInt){	// select generator
+		if (music.time >= now [1].AsFloat - 5) {	// time > generate time
+			switch (now [2].AsInt) {	// select generator
 			case 1:
-				NGDL.GenerateNote (now[3].AsFloat);
+				NGDL.GenerateNote (now [3].AsFloat);
 				break;
 			case 2:
-				NGDR.GenerateNote (now[3].AsFloat);
+				NGDR.GenerateNote (now [3].AsFloat);
 				break;
 			case 3:
 				//NGLU.GenerateNote (now[3].AsFloat);
 				break;
 			case 4:
-				NGLD.GenerateNote (now[3].AsFloat);
+				NGLD.GenerateNote (now [3].AsFloat);
 				break;
 			case 5:
 				//NGRU.GenerateNote (now[3].AsFloat);	
 				break;
 			case 6:
-				NGRD.GenerateNote (now[3].AsFloat);	
+				NGRD.GenerateNote (now [3].AsFloat);	
 				break;
 			default:
 				break;
 			}
 			i++;
-			now = Easy[i].AsArray;	// move to next note
+			now = Easy [i].AsArray;	// move to next note
 		}
 	}
 
-	void OnGUI() {
-		if(GUILayout.Button("播放/继续"))
-		{
+	void OnGUI ()
+	{
+		if (GUILayout.Button ("播放/继续")) {
 			//播放/继续播放音频
-			if(!music.isPlaying)
-			{
+			if (!music.isPlaying) {
 				//isPlaying = true;
 				pause = stop = false;
-				music.Play();
+				music.Play ();
 				if (mov != null)
-					mov.Play();
+					mov.Play ();
 			}
 			
 		}
 		
-		if(GUILayout.Button("暂停播放"))
-		{
+		if (GUILayout.Button ("暂停播放")) {
 			//暂停播放
 			//isPlaying = false;
 			pause = true;
-			music.Pause();
+			music.Pause ();
 			if (mov != null)
-				mov.Pause();
+				mov.Pause ();
 		}
 		
-		if(GUILayout.Button("停止播放"))
-		{
+		if (GUILayout.Button ("停止播放")) {
 			//停止播放
 			//isPlaying = false;
 			stop = true;
 			//time = 0f;
 			i = 0;
 			now = Easy [0].AsArray;
-			music.Stop();
+			music.Stop ();
 			if (mov != null)
-				mov.Stop();
+				mov.Stop ();
+			ScoreCounter = ComboCounter = 0;
+			ScoreText.text = "Score: " + ScoreCounter.ToString ();
+			ComboText.text = "Combo: " + ComboCounter.ToString ();
 		}
 	}
 }

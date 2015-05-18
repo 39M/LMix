@@ -21,7 +21,7 @@ public class Drop : MonoBehaviour
 	{
 		leap = new Controller ();
 		hit = pause = stop = false;
-		audio = GetComponent<AudioSource>();
+		audio = GetComponent<AudioSource> ();
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 	}
 	
@@ -87,25 +87,35 @@ public class Drop : MonoBehaviour
 
 						Quaternion rt = Quaternion.identity;
 						if (transform.rotation.eulerAngles.x == 0)
-							rt.eulerAngles = new Vector3(0, -90, 0);
+							rt.eulerAngles = new Vector3 (0, -90, 0);
 						else if (transform.rotation.eulerAngles.x == 90)
-							rt.eulerAngles = new Vector3(0, 0, 0);
+							rt.eulerAngles = new Vector3 (0, 0, 0);
 						else// if (transform.rotation.eulerAngles.x == 180)
-							rt.eulerAngles = new Vector3(0, 90, 0);
+							rt.eulerAngles = new Vector3 (0, 90, 0);
 						//Debug.Log(transform.rotation.eulerAngles.x / 2);
-						GameObject tmp = (GameObject) Instantiate (score, transform.position, rt);
-						if (Mathf.Abs(notePos.z) < 0.5)
-							tmp.GetComponent<TextMesh>().text = "Perfect!";
-						else if (Mathf.Abs(notePos.z) < 1)
-							tmp.GetComponent<TextMesh>().text = "Good!";
-						else if (Mathf.Abs(notePos.z) < 1.5)
-							tmp.GetComponent<TextMesh>().text = "Bad!";
-						else
-							tmp.GetComponent<TextMesh>().text = "Miss!";
+						GameObject tmp = (GameObject)Instantiate (score, transform.position, rt);
+						if (Mathf.Abs (notePos.z) < 0.5) {
+							tmp.GetComponent<TextMesh> ().text = "Perfect!";
+							status.ComboCounter++;
+							status.ScoreCounter += 300 * status.ComboCounter;
+						} else if (Mathf.Abs (notePos.z) < 1) {
+							tmp.GetComponent<TextMesh> ().text = "Good!";
+							status.ComboCounter++;
+							status.ScoreCounter += 100 * status.ComboCounter;
+						} else if (Mathf.Abs (notePos.z) < 1.5) {
+							tmp.GetComponent<TextMesh> ().text = "Bad!";
+							status.ComboCounter = 0;
+							status.ScoreCounter += 50 * status.ComboCounter;
+						} else {
+							tmp.GetComponent<TextMesh> ().text = "Miss!";
+							status.ComboCounter = 0;
+						}
+						status.ScoreText.text = "Score: " + status.ScoreCounter.ToString ();
+						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 
 						hit = true;
-						audio.Play();
-						GetComponent<Renderer>().enabled = false;
+						audio.Play ();
+						GetComponent<Renderer> ().enabled = false;
 						//Destroy (gameObject);
 						return;
 					}
