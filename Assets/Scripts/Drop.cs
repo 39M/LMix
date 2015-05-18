@@ -98,15 +98,15 @@ public class Drop : MonoBehaviour
 							rt.eulerAngles = new Vector3 (0, 90, 0);
 						//Debug.Log(transform.rotation.eulerAngles.x / 2);
 						GameObject tmp = (GameObject)Instantiate (score, transform.position, rt);
-						if (Mathf.Abs (notePos.z) < 0.5) {
+						if (Mathf.Abs (notePos.z) < 0.75) {
 							tmp.GetComponent<TextMesh> ().text = "Perfect!";
 							status.ComboCounter++;
 							status.ScoreCounter += 300 * status.ComboCounter;
-						} else if (Mathf.Abs (notePos.z) < 1) {
+						} else if (Mathf.Abs (notePos.z) < 1.5) {
 							tmp.GetComponent<TextMesh> ().text = "Good!";
 							status.ComboCounter++;
 							status.ScoreCounter += 100 * status.ComboCounter;
-						} else if (Mathf.Abs (notePos.z) < 1.5) {
+						} else if (Mathf.Abs (notePos.z) < 1.75) {
 							tmp.GetComponent<TextMesh> ().text = "Bad!";
 							status.ComboCounter = 0;
 							status.ScoreCounter += 50 * status.ComboCounter;
