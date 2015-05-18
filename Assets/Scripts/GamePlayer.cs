@@ -31,7 +31,7 @@ public class GamePlayer : MonoBehaviour {
 		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
 		music = GetComponent<AudioSource> ();
 		mov = null;
-		//mov = (GameObject.Find ("Plane").GetComponent("Movie") as movie).movTexture;
+		//mov = (GameObject.Find ("Plane").GetComponent("VideoPlayer") as VideoPlayer).movTexture;
 /*
 {
     "Tags": [],  // 标签

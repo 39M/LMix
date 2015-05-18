@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class movie : MonoBehaviour {
+public class VideoPlayer : MonoBehaviour {
 
 	// Use this for initialization
 	//电影纹理
