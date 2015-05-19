@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Leap;
-public class menucontroller : MonoBehaviour {
+public class MenuController : MonoBehaviour {
 	public GameObject menuitemobj;
 	public List<GameObject> menulist= new List<GameObject> ();
 	public int musicnum;

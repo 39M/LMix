@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Leap;
-public class hands : MonoBehaviour {
+public class Hands : MonoBehaviour {
 	Controller leap;
 	// Use this for initialization
 	void Start () {
