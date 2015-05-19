@@ -97,21 +97,25 @@ public class Drop : MonoBehaviour
 						else// if (transform.rotation.eulerAngles.x == 180)
 							rt.eulerAngles = new Vector3 (0, 90, 0);
 						//Debug.Log(transform.rotation.eulerAngles.x / 2);
-						GameObject tmp = (GameObject)Instantiate (score, transform.position, rt);
+						TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
 						if (Mathf.Abs (notePos.z) < 0.75) {
-							tmp.GetComponent<TextMesh> ().text = "Perfect!";
+							tmp.text = "Perfect!";
+							tmp.color = Color.yellow;
 							status.ComboCounter++;
 							status.ScoreCounter += 300 * status.ComboCounter;
 						} else if (Mathf.Abs (notePos.z) < 1.5) {
-							tmp.GetComponent<TextMesh> ().text = "Good!";
+							tmp.text = "Good!";
+							tmp.color = Color.green;
 							status.ComboCounter++;
 							status.ScoreCounter += 100 * status.ComboCounter;
 						} else if (Mathf.Abs (notePos.z) < 1.75) {
-							tmp.GetComponent<TextMesh> ().text = "Bad!";
+							tmp.text = "Bad!";
+							tmp.color = Color.blue;
 							status.ComboCounter = 0;
 							status.ScoreCounter += 50 * status.ComboCounter;
 						} else {
-							tmp.GetComponent<TextMesh> ().text = "Miss!";
+							tmp.text = "Miss!";
+							tmp.color = Color.red;
 							status.ComboCounter = 0;
 						}
 						status.ScoreText.text = "Score: " + status.ScoreCounter.ToString ();
@@ -136,11 +140,13 @@ public class Drop : MonoBehaviour
 			else// if (transform.rotation.eulerAngles.x == 180)
 				rt.eulerAngles = new Vector3 (0, 90, 0);
 
-			GameObject tmp = (GameObject)Instantiate (score, transform.position, rt);
-			tmp.GetComponent<TextMesh> ().text = "Miss!";
+			TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
+			tmp.text = "Miss!";
+			tmp.color = Color.red;
 			status.ComboCounter = 0;
-			GetComponent<Renderer> ().enabled = false;
+
 			missSE.Play ();
+			GetComponent<Renderer> ().enabled = false;
 		}
 	}
 }
