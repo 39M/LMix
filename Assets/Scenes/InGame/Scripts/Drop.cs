@@ -102,20 +102,24 @@ public class Drop : MonoBehaviour
 							tmp.text = "Perfect!";
 							tmp.color = Color.yellow;
 							status.ComboCounter++;
+							status.PerfectCount++;
 							status.ScoreCounter += 300 * status.ComboCounter;
 						} else if (Mathf.Abs (notePos.z) < 1.5) {
 							tmp.text = "Good!";
 							tmp.color = Color.green;
 							status.ComboCounter++;
+							status.GoodCount++;
 							status.ScoreCounter += 100 * status.ComboCounter;
 						} else if (Mathf.Abs (notePos.z) < 1.75) {
 							tmp.text = "Bad!";
 							tmp.color = Color.blue;
 							status.ComboCounter = 0;
+							status.BadCount++;
 							status.ScoreCounter += 50 * status.ComboCounter;
 						} else {
 							tmp.text = "Miss!";
 							tmp.color = Color.red;
+							status.MissCount++;
 							status.ComboCounter = 0;
 						}
 						status.ScoreText.text = "Score: " + status.ScoreCounter.ToString ();
@@ -144,6 +148,7 @@ public class Drop : MonoBehaviour
 			tmp.text = "Miss!";
 			tmp.color = Color.red;
 			status.ComboCounter = 0;
+			status.MissCount++;
 
 			missSE.Play ();
 			GetComponent<Renderer> ().enabled = false;

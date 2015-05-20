@@ -11,6 +11,10 @@ public class GamePlayer : MonoBehaviour
 	public GUIText ComboText;
 	public int ScoreCounter;
 	public int ComboCounter;
+	public int PerfectCount;
+	public int GoodCount;
+	public int BadCount;
+	public int MissCount;
 	AudioSource music;
 	MovieTexture mov;
 	NoteGenerator NGDL;
@@ -124,7 +128,7 @@ public class GamePlayer : MonoBehaviour
 		if (mov != null)
 			mov.Play ();
 		pause = stop = false;
-		ScoreCounter = ComboCounter = 0;
+		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
 	}
