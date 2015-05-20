@@ -205,7 +205,7 @@ public class GamePlayer : MonoBehaviour
 			music.Stop ();
 			if (mov != null)
 				mov.Stop ();
-			ScoreCounter = ComboCounter = 0;
+			ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 			ScoreText.text = "Score: " + ScoreCounter.ToString ();
 			ComboText.text = "Combo: " + ComboCounter.ToString ();
 		}
