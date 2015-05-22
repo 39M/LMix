@@ -68,24 +68,19 @@ public class GamePlayer : MonoBehaviour
 		beatmapName = "Nya";
 		difficulty = 0;
 
-		//beatmapName = "MirrorNight";
-		//difficulty = 2;
+		beatmapName = "MirrorNight";
+		difficulty = 2;
 		/*******/
 
 		loadFail = true;	// Asume load fail
 
 		// Get beatmap from file
-		StreamReader f = null;
-		try {
-			f = File.OpenText ("./Assets/Resources/Music/" + beatmapName + "/beatmap.lmix");
-		} catch (IOException) {
-			return;		// load fail
-		}
+		TextAsset f = Resources.Load("Music/" + beatmapName + "/beatmap") as TextAsset;
 		if (f == null) 	// load fail
 			return;
 
-		string s = f.ReadToEnd ();
-		Debug.Log (s);
+		string s = f.ToString ();
+		//Debug.Log (s);
 		Beatmap = JSON.Parse (s);
 		if (Beatmap == null)	// load fail
 			return;
@@ -138,7 +133,7 @@ public class GamePlayer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (!music.isPlaying || loadFail)
+		if (loadFail || !music.isPlaying)
 			return;
 
 		//Debug.Log (music.time);
