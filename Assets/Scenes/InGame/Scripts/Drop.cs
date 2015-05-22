@@ -22,6 +22,7 @@ public class Drop : MonoBehaviour
 		leap = new Controller ();
 		hit = pause = stop = false;
 		hitSE = GetComponent<AudioSource> ();
+		hitSE.clip = Resources.Load ("hit") as AudioClip;
 		missSE = hitSE;
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 	}

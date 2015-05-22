@@ -40,6 +40,7 @@ public class GamePlayer : MonoBehaviour
 		//NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
 		music = GetComponent<AudioSource> ();
+		music.clip = Resources.Load ("Nyan") as AudioClip;
 		mov = null;
 		//mov = (GameObject.Find ("Plane").GetComponent("VideoPlayer") as VideoPlayer).movTexture;
 /*
