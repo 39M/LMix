@@ -21,10 +21,13 @@ public class Drop : MonoBehaviour
 	{
 		leap = new Controller ();
 		hit = pause = stop = false;
-		hitSE = GetComponent<AudioSource> ();
-		hitSE.clip = Resources.Load ("hit") as AudioClip;
-		missSE = hitSE;
+
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
+		if (status.enableSE) {
+			hitSE = GetComponent<AudioSource> ();
+			hitSE.clip = Resources.Load ("Music/" + status.beatmapName + "/hit") as AudioClip;
+			missSE = hitSE;
+		}
 	}
 
 	void Update ()
@@ -127,7 +130,10 @@ public class Drop : MonoBehaviour
 						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 
 						hit = true;
-						hitSE.Play ();
+						if (status.enableSE) {
+							hitSE.enabled = true;
+							hitSE.Play ();
+						}
 						GetComponent<Renderer> ().enabled = false;
 						//Destroy (gameObject);
 						return;
@@ -151,7 +157,10 @@ public class Drop : MonoBehaviour
 			status.ComboCounter = 0;
 			status.MissCount++;
 
-			missSE.Play ();
+			if (status.enableSE) {
+				missSE.enabled = true;
+				missSE.Play ();
+			}
 			GetComponent<Renderer> ().enabled = false;
 		}
 	}

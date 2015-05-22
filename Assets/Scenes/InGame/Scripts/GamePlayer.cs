@@ -5,8 +5,9 @@ using SimpleJSON;
 
 public class GamePlayer : MonoBehaviour
 {
-	public bool pause;
-	public bool stop;
+	public string beatmapName;	// Unique name of beatmap
+	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
+	public bool enableSE;
 	public GUIText ScoreText;
 	public GUIText ComboText;
 	public int ScoreCounter;
@@ -15,17 +16,21 @@ public class GamePlayer : MonoBehaviour
 	public int GoodCount;
 	public int BadCount;
 	public int MissCount;
+	public bool pause;	// status of music
+	public bool stop;	// status of music
+
+	bool loadFail;
 	AudioSource music;
 	MovieTexture mov;
 	NoteGenerator NGDL;
 	NoteGenerator NGDR;
-	NoteGenerator NGRU;
+	//NoteGenerator NGRU;
 	NoteGenerator NGRD;
-	NoteGenerator NGLU;
+	//NoteGenerator NGLU;
 	NoteGenerator NGLD;
 	JSONNode Beatmap;
-	JSONArray Easy, Normal, Hard;
-	JSONArray now;
+	JSONArray Objects;	// Objects like note, spinner
+	JSONArray now;	// next Object
 	//float time;
 	int i;
 	//bool isPlaying;
@@ -33,16 +38,6 @@ public class GamePlayer : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		NGDL = GameObject.Find ("NoteGeneratorDL").GetComponent ("NoteGenerator") as NoteGenerator;
-		NGDR = GameObject.Find ("NoteGeneratorDR").GetComponent ("NoteGenerator") as NoteGenerator;
-		//NGRU = GameObject.Find ("NoteGeneratorRU").GetComponent ("NoteGenerator") as NoteGenerator;
-		NGRD = GameObject.Find ("NoteGeneratorRD").GetComponent ("NoteGenerator") as NoteGenerator;
-		//NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
-		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
-		music = GetComponent<AudioSource> ();
-		music.clip = Resources.Load ("Nyan") as AudioClip;
-		mov = null;
-		//mov = (GameObject.Find ("Plane").GetComponent("VideoPlayer") as VideoPlayer).movTexture;
 /*
 {
     "Tags": [],  // 标签
@@ -68,63 +63,68 @@ public class GamePlayer : MonoBehaviour
     }
 }
 */
+		/*******/
+		enableSE = true;
+		beatmapName = "Nya";
+		difficulty = 0;
 
-		string s = @"{
-    ""Tags"": [""First Blood""],
-    ""Creator"": "",w,"",
-    ""GameObject"": {
-        ""Hard"": [],
-        ""Easy"": [[0, 1, 1, 1],
-                 [0, 2, 2, 2],
-                 [0, 3, 3, 2],
-                 [0, 4, 4, 1],
-				 [0, 5, 5, 1],
-                 [0, 6, 6, 2],
-                 [0, 7, 1, 2],
-                 [0, 8, 2, 1],
-			     [0, 9, 3, 2],
-                 [0, 10, 4, 2],
-                 [0, 11, 5, 1],
-				 [0, 12, 6, 1],
-                 [0, 13, 1, 2],
-                 [0, 14, 2, 2],
-                 [0, 15, 3, 1]],
-        ""Normal"": []
-    },
-    ""Artist"": ""who"",
-    ""Difficulty"": {
-        ""Speed"": 1
-    },
-    ""Source"": ""where"",
-    ""Version"": ""1.0"",
-    ""Title"": ""title"",
-    ""Audio"": {
-        ""Length"": 30000,
-        ""Name"": ""theaudio""
-    }
-}";
-		/****************/
+		//beatmapName = "MirrorNight";
+		//difficulty = 2;
+		/*******/
+
+		loadFail = true;	// Asume load fail
+
 		// Get beatmap from file
-		StreamReader f = File.OpenText ("./Beatmap.LMix");
-		/*try{
-			f = File.OpenText("./Beatmap.LMix");
-		}catch(IOException){
-			Destroy(gameObject);
-		}*/
-		s = f.ReadToEnd ();
-		//Debug.Log (s);
+		StreamReader f = null;
+		try {
+			f = File.OpenText ("./Assets/Resources/Music/" + beatmapName + "/beatmap.lmix");
+		} catch (IOException) {
+			return;		// load fail
+		}
+		if (f == null) 	// load fail
+			return;
 
-		/****************/
-
-
+		string s = f.ReadToEnd ();
 		Beatmap = JSON.Parse (s);
-		Easy = Beatmap ["GameObject"] ["Easy"].AsArray;
+		if (Beatmap == null)	// load fail
+			return;
 
-		//time = 0f;
+		music = GetComponent<AudioSource> ();
+		music.clip = Resources.Load ("Music/" + beatmapName + "/" + Beatmap ["Audio"] ["Name"]) as AudioClip;	// No name-extension
+		if (music.clip == null)	// load fail
+			return;
+
+		mov = null;
+		//mov = (GameObject.Find ("Plane").GetComponent("VideoPlayer") as VideoPlayer).movTexture;
+
+		switch (difficulty) {
+		case 0:
+			Objects = Beatmap ["GameObject"] ["Easy"].AsArray;
+			break;
+		case 1:
+			Objects = Beatmap ["GameObject"] ["Normal"].AsArray;
+			break;
+		case 2:
+			Objects = Beatmap ["GameObject"] ["Hard"].AsArray;
+			break;
+		default:
+			return;
+		}
+		if (Objects == null)
+			return;
+
+		loadFail = false;	// load success
+
+		NGDL = GameObject.Find ("NoteGeneratorDL").GetComponent ("NoteGenerator") as NoteGenerator;
+		NGDR = GameObject.Find ("NoteGeneratorDR").GetComponent ("NoteGenerator") as NoteGenerator;
+		//NGRU = GameObject.Find ("NoteGeneratorRU").GetComponent ("NoteGenerator") as NoteGenerator;
+		NGRD = GameObject.Find ("NoteGeneratorRD").GetComponent ("NoteGenerator") as NoteGenerator;
+		//NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
+		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
 
 		// Init
 		i = 0;
-		now = Easy [0].AsArray;
+		now = Objects [0].AsArray;
 		music.Play ();
 		if (mov != null)
 			mov.Play ();
@@ -137,15 +137,15 @@ public class GamePlayer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (!music.isPlaying)
+		if (!music.isPlaying || loadFail)
 			return;
 
 		//time += Time.deltaTime;	// Timing
 
-		if (Easy.Count <= i)	// notes count < i
+		if (Objects.Count <= i)	// notes count < i
 			return;
 		//Debug.Log (music.time);
-		if (music.time >= now [1].AsFloat - 5) {	// time > generate time
+		if (music.time >= now [1].AsFloat - 7 / now [3].AsFloat) {	// time > generate time
 			switch (now [2].AsInt) {	// select generator
 			case 1:
 				NGDL.GenerateNote (now [3].AsFloat);
@@ -169,7 +169,7 @@ public class GamePlayer : MonoBehaviour
 				break;
 			}
 			i++;
-			now = Easy [i].AsArray;	// move to next note
+			now = Objects [i].AsArray;	// move to next note
 		}
 	}
 
@@ -202,7 +202,7 @@ public class GamePlayer : MonoBehaviour
 			stop = true;
 			//time = 0f;
 			i = 0;
-			now = Easy [0].AsArray;
+			now = Objects [0].AsArray;
 			music.Stop ();
 			if (mov != null)
 				mov.Stop ();
