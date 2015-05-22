@@ -85,6 +85,7 @@ public class GamePlayer : MonoBehaviour
 			return;
 
 		string s = f.ReadToEnd ();
+		Debug.Log (s);
 		Beatmap = JSON.Parse (s);
 		if (Beatmap == null)	// load fail
 			return;
@@ -140,12 +141,8 @@ public class GamePlayer : MonoBehaviour
 		if (!music.isPlaying || loadFail)
 			return;
 
-		//time += Time.deltaTime;	// Timing
-
-		if (Objects.Count <= i)	// notes count < i
-			return;
 		//Debug.Log (music.time);
-		if (music.time >= now [1].AsFloat - 7 / now [3].AsFloat) {	// time > generate time
+		while (music.time >= now [1].AsFloat - 7 / now [3].AsFloat && Objects.Count > i) {	// time > generate time
 			switch (now [2].AsInt) {	// select generator
 			case 1:
 				NGDL.GenerateNote (now [3].AsFloat);

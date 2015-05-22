@@ -142,7 +142,7 @@ public class Drop : MonoBehaviour
 			}
 		}
 
-		if (notePos.z <= -2 && !hit && !missSE.isPlaying) {
+		if (notePos.z <= -1.75 && !hit && !missSE.isPlaying) {
 			Quaternion rt = Quaternion.identity;
 			if (transform.rotation.eulerAngles.x == 0)
 				rt.eulerAngles = new Vector3 (0, -90, 0);
