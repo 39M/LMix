@@ -16,11 +16,12 @@ public class Drop : MonoBehaviour
 	Vector3 notePos;
 	float lim_x_low, lim_x_high, lim_y_low, lim_y_high, lim_z_low, lim_z_high;
 	bool hit;
+	bool miss;
 
 	void Start ()
 	{
 		leap = new Controller ();
-		hit = pause = stop = false;
+		hit = miss = pause = stop = false;
 
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 		if (status.enableSE) {
@@ -37,13 +38,14 @@ public class Drop : MonoBehaviour
 		if (status.pause)
 			return;
 
-		if ((notePos.z <= -2 && !missSE.isPlaying) || (hit && !hitSE.isPlaying)) {
+		if ((notePos.z <= -1.75 && !missSE.isPlaying) || (hit && !hitSE.isPlaying)) {
 			Destroy (gameObject);
 		}
 
-		transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
+		if (!hit)
+			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
-		if (!hit && notePos.z < 2 && notePos.z > -2) {
+		if (!hit && notePos.z < 2 && notePos.z > -1.75) {
 			lim_z_low = -175;
 			lim_z_high = 175;
 			if (notePos.x > 0) {
@@ -156,6 +158,7 @@ public class Drop : MonoBehaviour
 			tmp.color = Color.red;
 			status.ComboCounter = 0;
 			status.MissCount++;
+			miss = true;
 
 			if (status.enableSE) {
 				missSE.enabled = true;
