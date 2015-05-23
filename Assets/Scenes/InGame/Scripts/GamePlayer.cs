@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO;
 using SimpleJSON;
-
+using System.Collections.Generic;
 public class GamePlayer : MonoBehaviour
 {
 	public string beatmapName;	// Unique name of beatmap
@@ -38,6 +38,10 @@ public class GamePlayer : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+
+		/*
+			this part used to load seleted song
+		 */
 /*
 {
     "Tags": [],  // 标签
@@ -65,11 +69,15 @@ public class GamePlayer : MonoBehaviour
 */
 		/*******/
 		enableSE = true;
-		beatmapName = "Nya";
-		difficulty = 0;
-
-		beatmapName = "MirrorNight";
-		difficulty = 2;
+//		beatmapName = "Nya";
+//		difficulty = 0;
+//
+//		beatmapName = "MirrorNight";
+//		difficulty = 2;
+		this.beatmapName = PlayerPrefs.GetString("song");
+		Debug.Log (this.beatmapName);
+		System.Collections.Generic.Dictionary<string,int> tempset = new System.Collections.Generic.Dictionary<string,int>(){{"Nya",0},{"MirrorNight",2}};
+		this.difficulty = tempset[beatmapName];
 		/*******/
 
 		loadFail = true;	// Asume load fail

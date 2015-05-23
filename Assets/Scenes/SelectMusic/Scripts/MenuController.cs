@@ -15,7 +15,7 @@ public class MenuController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		leap = new Controller ();
-		List<string> a = new List<string>() {"1","2"};
+		List<string> a = new List<string>() {"MirrorNight","Nya"};
 		var i = 0;
 		foreach(var item in a){
 			Vector3 pos=new Vector3(transform.position.x,transform.position.y,transform.position.z);
@@ -76,7 +76,9 @@ public class MenuController : MonoBehaviour {
 						}
 						if(item.transform.position.y>0.8){
 							// select success
-							Debug.Log(item.GetComponent<GUIText>().text);
+							Debug.Log("enter "+item.GetComponent<GUIText>().text);
+							PlayerPrefs.SetString("song",item.GetComponent<GUIText>().text);
+							Application.LoadLevel("InGame");
 						}
 					}
 				}else{
