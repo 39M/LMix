@@ -79,8 +79,7 @@ public class GamePlayer : MonoBehaviour
 		//		beatmapName = "Nya";
 		//		difficulty = 0;
 		//
-				beatmapName = "MirrorNight";
-				difficulty = 2;
+
 
 		loadFail = true;	// Asume load fail
 

@@ -10,9 +10,13 @@ public class VideoPlayer : MonoBehaviour {
 	void Start()
 	{
 		//设置当前对象的主纹理为电影纹理
-		GetComponent<Renderer>().material.mainTexture = movTexture;
+		GetComponent<Renderer>().material.mainTexture  = movTexture;
 		//设置电影纹理播放模式为循环
 		movTexture.loop = true;
+		if(!movTexture.isPlaying)
+		{
+			movTexture.Play();
+		}
 	}
 }
 
