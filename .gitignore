@@ -31,6 +31,8 @@ Thumbs.db
 
 *.mp3.meta
 *.wav.meta
+*.mov.meta
 
 *.mp3
 *.wav
+*.mov
