@@ -28,10 +28,9 @@ Thumbs.db
 .DS_Store
 .DS_Store?
 
-*.meta
+
 *.mp3.meta
 *.wav.meta
-*.jpg.meta
-*.txt.meta
+
 *.mp3
 *.wav
