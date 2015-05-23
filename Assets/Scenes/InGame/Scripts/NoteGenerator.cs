@@ -3,6 +3,7 @@ using System.Collections;
 
 public class NoteGenerator : MonoBehaviour {
 	public GameObject note;
+	public GameObject slidenote;
 	//public Vector3 positon;
 	//public Vector3 rotation;
 
@@ -16,12 +17,21 @@ public class NoteGenerator : MonoBehaviour {
 
 	}
 
-	public void GenerateNote(float speed)
+	public void GenerateNote(int type, float speed)
 	{
 		Quaternion rt = Quaternion.identity;
 		rt.eulerAngles = note.transform.rotation.eulerAngles + transform.rotation.eulerAngles;
-		GameObject note_tmp = (GameObject) Instantiate (note, transform.position, rt);
-		Drop temp = note_tmp.GetComponent ("Drop") as Drop;
-		temp.speed = speed;
+		GameObject note_tmp;
+
+		switch (type) {
+		case 0:
+			(((GameObject) Instantiate (note, transform.position, rt)).GetComponent ("Drop") as Drop).speed = speed;
+			break;
+		case 1:
+			(((GameObject) Instantiate (slidenote, transform.position, rt)).GetComponent ("SlideDrop") as SlideDrop).speed = speed;
+			break;
+		default:
+			break;
+		}
 	}
 }

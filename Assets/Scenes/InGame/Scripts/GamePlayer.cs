@@ -69,16 +69,18 @@ public class GamePlayer : MonoBehaviour
 */
 		/*******/
 		enableSE = true;
-//		beatmapName = "Nya";
-//		difficulty = 0;
-//
-//		beatmapName = "MirrorNight";
-//		difficulty = 2;
+
 		this.beatmapName = PlayerPrefs.GetString("song");
 		Debug.Log (this.beatmapName);
 		System.Collections.Generic.Dictionary<string,int> tempset = new System.Collections.Generic.Dictionary<string,int>(){{"Nya",0},{"MirrorNight",2}};
 		this.difficulty = tempset[beatmapName];
 		/*******/
+
+		//		beatmapName = "Nya";
+		//		difficulty = 0;
+		//
+				beatmapName = "MirrorNight";
+				difficulty = 2;
 
 		loadFail = true;	// Asume load fail
 
@@ -149,22 +151,22 @@ public class GamePlayer : MonoBehaviour
 			now = Objects [i].AsArray;	// get current note
 			switch (now [2].AsInt) {	// select generator
 			case 1:
-				NGDL.GenerateNote (now [3].AsFloat);
+				NGDL.GenerateNote (1, now [3].AsFloat);
 				break;
 			case 2:
-				NGDR.GenerateNote (now [3].AsFloat);
+				NGDR.GenerateNote (1, now [3].AsFloat);
 				break;
 			case 3:
 				//NGLU.GenerateNote (now[3].AsFloat);
 				break;
 			case 4:
-				NGLD.GenerateNote (now [3].AsFloat);
+				NGLD.GenerateNote (now[0].AsInt, now [3].AsFloat);
 				break;
 			case 5:
 				//NGRU.GenerateNote (now[3].AsFloat);	
 				break;
 			case 6:
-				NGRD.GenerateNote (now [3].AsFloat);	
+				NGRD.GenerateNote (now[0].AsInt, now [3].AsFloat);	
 				break;
 			default:
 				break;
