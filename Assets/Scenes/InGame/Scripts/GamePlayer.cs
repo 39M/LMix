@@ -141,11 +141,12 @@ public class GamePlayer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (loadFail || !music.isPlaying)
+		if (loadFail || Objects.Count <= i || !music.isPlaying)
 			return;
 
 		//Debug.Log (music.time);
-		while (music.time >= now [1].AsFloat - 7 / now [3].AsFloat && Objects.Count > i) {	// time > generate time
+		while (Objects.Count > i && music.time >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
+			now = Objects [i].AsArray;	// get current note
 			switch (now [2].AsInt) {	// select generator
 			case 1:
 				NGDL.GenerateNote (now [3].AsFloat);
@@ -168,8 +169,7 @@ public class GamePlayer : MonoBehaviour
 			default:
 				break;
 			}
-			i++;
-			now = Objects [i].AsArray;	// move to next note
+			i++;	// move to next note
 		}
 	}
 
