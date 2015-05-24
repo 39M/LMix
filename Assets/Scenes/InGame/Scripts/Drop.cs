@@ -17,17 +17,61 @@ public class Drop : MonoBehaviour
 	float lim_x_low, lim_x_high, lim_y_low, lim_y_high, lim_z_low, lim_z_high;
 	bool hit;
 	bool miss;
+	bool hitable;
 
 	void Start ()
 	{
 		leap = new Controller ();
-		hit = miss = pause = stop = false;
+		hit = miss = pause = stop = hitable = false;
 
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 		if (status.enableSE) {
 			hitSE = GetComponent<AudioSource> ();
 			hitSE.clip = Resources.Load ("Music/" + status.beatmapName + "/hit") as AudioClip;
 			missSE = hitSE;
+		}
+
+
+		int width = 200, y_base = 0;
+		float y_basef = 1.15f;
+		lim_z_low = -175;
+		lim_z_high = 175;
+
+		notePos = transform.position;
+		if (notePos.x > 0) {
+			if (notePos.y < y_basef - 0.5) {
+				lim_x_low = 0;
+				lim_x_high = 200;
+				lim_y_low = y_base - 80;
+				lim_y_high = lim_y_low + width;	// 80
+			} else if (notePos.y < y_basef + 2) {
+				lim_x_low = 170;
+				lim_x_high = 300;
+				lim_y_low = y_base + 50;
+				lim_y_high = lim_y_low + width;
+			} else {
+				lim_x_low = 170;
+				lim_x_high = 300;
+				lim_y_low = 250;
+				lim_y_high = 450;
+			}
+		} else {
+			if (notePos.y < y_basef - 0.5) {
+				lim_x_low = -200;
+				lim_x_high = 0;
+				lim_y_low = y_base - 80;
+				lim_y_high = lim_y_low + width;	// 80
+			} else if (notePos.y < y_basef + 2) {
+				lim_x_low = -300;
+				lim_x_high = -170;
+				lim_y_low = y_base + 50;
+				lim_y_high = lim_y_low + width;
+			} else {
+				lim_x_low = -300;
+				lim_x_high = -170;
+				lim_y_low = 250;
+				lim_y_high = 450;
+			}
 		}
 	}
 
@@ -46,45 +90,6 @@ public class Drop : MonoBehaviour
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
 		if (!hit && notePos.z < 2 && notePos.z > -1.75) {
-			lim_z_low = -175;
-			lim_z_high = 175;
-			if (notePos.x > 0) {
-				if (notePos.y < -0.5) {
-					lim_x_low = 0;
-					lim_x_high = 200;
-					lim_y_low = -100;
-					lim_y_high = 80;
-
-				} else if (notePos.y < 2) {
-					lim_x_low = 170;
-					lim_x_high = 300;
-					lim_y_low = 50;
-					lim_y_high = 250;
-				} else {
-					lim_x_low = 170;
-					lim_x_high = 300;
-					lim_y_low = 250;
-					lim_y_high = 450;
-				}
-			} else {
-				if (notePos.y < -0.5) {
-					lim_x_low = -200;
-					lim_x_high = 0;
-					lim_y_low = -100;
-					lim_y_high = 80;
-				} else if (notePos.y < 2) {
-					lim_x_low = -300;
-					lim_x_high = -170;
-					lim_y_low = 50;
-					lim_y_high = 250;
-				} else {
-					lim_x_low = -300;
-					lim_x_high = -170;
-					lim_y_low = 250;
-					lim_y_high = 450;
-				}
-			}
-
 			Frame frame = leap.Frame ();
 			foreach (Hand hand in frame.Hands) {
 				// Debug.Log (hand.Fingers.Frontmost.TipPosition);
@@ -94,6 +99,8 @@ public class Drop : MonoBehaviour
 					if (lim_y_low < FingerPos.y && FingerPos.y < lim_y_high && 
 						lim_x_low < FingerPos.x && FingerPos.x < lim_x_high && 
 						lim_z_low < FingerPos.z && FingerPos.z < lim_z_high) {
+						if (!hitable)
+							return;
 
 						Quaternion rt = Quaternion.identity;
 						if (transform.rotation.eulerAngles.x == 0)
@@ -142,6 +149,7 @@ public class Drop : MonoBehaviour
 					}
 				}
 			}
+			hitable = true;
 		}
 
 		if (notePos.z <= -1.75 && !hit && !missSE.isPlaying) {

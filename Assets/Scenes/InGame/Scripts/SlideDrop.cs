@@ -29,6 +29,48 @@ public class SlideDrop : MonoBehaviour
 			hitSE.clip = Resources.Load ("Music/" + status.beatmapName + "/hit") as AudioClip;
 			missSE = hitSE;
 		}
+
+		int width = 200, y_base = 0;
+		float y_basef = 1.15f;
+		lim_z_low = -175;
+		lim_z_high = 175;
+		
+		notePos = transform.position;
+		if (notePos.x > 0) {
+			if (notePos.y < y_basef - 0.5) {
+				lim_x_low = 0;
+				lim_x_high = 200;
+				lim_y_low = y_base - 80;
+				lim_y_high = lim_y_low + width;	// 80
+			} else if (notePos.y < y_basef + 2) {
+				lim_x_low = 170;
+				lim_x_high = 300;
+				lim_y_low = y_base + 50;
+				lim_y_high = lim_y_low + width;
+			} else {
+				lim_x_low = 170;
+				lim_x_high = 300;
+				lim_y_low = 250;
+				lim_y_high = 450;
+			}
+		} else {
+			if (notePos.y < y_basef - 0.5) {
+				lim_x_low = -200;
+				lim_x_high = 0;
+				lim_y_low = y_base - 80;
+				lim_y_high = lim_y_low + width;	// 80
+			} else if (notePos.y < y_basef + 2) {
+				lim_x_low = -300;
+				lim_x_high = -170;
+				lim_y_low = y_base + 50;
+				lim_y_high = lim_y_low + width;
+			} else {
+				lim_x_low = -300;
+				lim_x_high = -170;
+				lim_y_low = 250;
+				lim_y_high = 450;
+			}
+		}
 	}
 
 	void Update ()
@@ -46,7 +88,7 @@ public class SlideDrop : MonoBehaviour
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
 		if (!hit && notePos.z <= 0 && notePos.z > -1.75) {
-			lim_z_low = -175;
+			/*lim_z_low = -175;
 			lim_z_high = 175;
 			if (notePos.x > 0) {
 				if (notePos.y < -0.5) {
@@ -83,7 +125,7 @@ public class SlideDrop : MonoBehaviour
 					lim_y_low = 250;
 					lim_y_high = 450;
 				}
-			}
+			}*/
 
 			Frame frame = leap.Frame ();
 			foreach (Hand hand in frame.Hands) {
