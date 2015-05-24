@@ -10,7 +10,6 @@ public class GamePlayer : MonoBehaviour
 	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
 	public bool enableSE;
 	public bool enableBG;
-
 	public GUIText ScoreText;
 	public GUIText ComboText;
 	public int ScoreCounter;
@@ -31,6 +30,7 @@ public class GamePlayer : MonoBehaviour
 	NoteGenerator NGRD;
 	//NoteGenerator NGLU;
 	NoteGenerator NGLD;
+	SpinnerGenerator SG;
 	JSONNode Beatmap;
 	JSONArray Objects;	// Objects like note, spinner
 	JSONArray now;	// next Object
@@ -109,13 +109,13 @@ public class GamePlayer : MonoBehaviour
 		if (music.clip == null)	// load fail
 			return;
 
-		if (enableBG && Beatmap["Background"]["Enable"].AsBool) {
-			switch (Beatmap["Background"]["Type"].AsInt){
+		if (enableBG && Beatmap ["Background"] ["Enable"].AsBool) {
+			switch (Beatmap ["Background"] ["Type"].AsInt) {
 			case 0:
 				// use Picture as background
 				break;
 			case 1:
-				mov = Resources.Load ("Music/" + beatmapName + "/" + Beatmap["Background"]["Name"]) as MovieTexture;
+				mov = Resources.Load ("Music/" + beatmapName + "/" + Beatmap ["Background"] ["Name"]) as MovieTexture;
 				break;
 			default:
 				break;
@@ -171,31 +171,44 @@ public class GamePlayer : MonoBehaviour
 			return;
 
 		//Debug.Log (music.time);
-		while (Objects.Count > i && music.time >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
-			now = Objects [i].AsArray;	// get current note
-			switch (now [2].AsInt) {	// select generator
-			case 1:
-				NGDL.GenerateNote (1, now [3].AsFloat);
-				break;
-			case 2:
-				NGDR.GenerateNote (1, now [3].AsFloat);
-				break;
-			case 3:
-				//NGLU.GenerateNote (now[3].AsFloat);
-				break;
-			case 4:
-				NGLD.GenerateNote (now [0].AsInt, now [3].AsFloat);
-				break;
-			case 5:
-				//NGRU.GenerateNote (now[3].AsFloat);	
-				break;
-			case 6:
-				NGRD.GenerateNote (now [0].AsInt, now [3].AsFloat);	
-				break;
-			default:
-				break;
+		switch (now [0].AsInt) {
+		case 3:	// Generate Spinner
+			if (Objects.Count > i && music.time >= now [1].AsFloat) {
+				SG.Generate ();
+				i++;	// move to next note
+				if (Objects.Count > i)
+					now = Objects [i].AsArray;	// get current note
 			}
-			i++;	// move to next note
+			break;
+		default:	// Generate Note
+			while (Objects.Count > i && music.time >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
+				switch (now [2].AsInt) {	// select generator
+				case 1:
+					NGDL.GenerateNote (1, now [3].AsFloat);
+					break;
+				case 2:
+					NGDR.GenerateNote (1, now [3].AsFloat);
+					break;
+				case 3:
+					//NGLU.GenerateNote (now[3].AsFloat);
+					break;
+				case 4:
+					NGLD.GenerateNote (now [0].AsInt, now [3].AsFloat);
+					break;
+				case 5:
+					//NGRU.GenerateNote (now[3].AsFloat);	
+					break;
+				case 6:
+					NGRD.GenerateNote (now [0].AsInt, now [3].AsFloat);	
+					break;
+				default:
+					break;
+				}
+				i++;	// move to next note
+				if (Objects.Count > i)
+					now = Objects [i].AsArray;	// get current note
+			}
+			break;
 		}
 	}
 

@@ -4,18 +4,10 @@ using System.Collections;
 public class NoteGenerator : MonoBehaviour {
 	public GameObject note;
 	public GameObject slidenote;
-	//public Vector3 positon;
-	//public Vector3 rotation;
 
-	// Use this for initialization
-	void Start () {
+	/*void Start () {
 		//InvokeRepeating ("GenerateNote", 0, 1);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
+	}*/
 
 	public void GenerateNote(int type, float speed)
 	{
