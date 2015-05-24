@@ -89,6 +89,8 @@ public class GamePlayer : MonoBehaviour
 		//difficulty = 0;
 		//beatmapName = "MirrorNight";
 		//difficulty = 2;
+		//beatmapName = "LetItGo";
+		//difficulty = 0;
 
 
 		loadFail = true;	// Asume load fail
@@ -181,13 +183,14 @@ public class GamePlayer : MonoBehaviour
 			}
 			break;
 		default:	// Generate Note
+			//Debug.Log(Objects.Count);
 			while (Objects.Count > i && music.time >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
 				switch (now [2].AsInt) {	// select generator
 				case 1:
-					NGDL.GenerateNote (1, now [3].AsFloat);
+					NGDL.GenerateNote (now [0].AsInt, now [3].AsFloat);
 					break;
 				case 2:
-					NGDR.GenerateNote (1, now [3].AsFloat);
+					NGDR.GenerateNote (now [0].AsInt, now [3].AsFloat);
 					break;
 				case 3:
 					//NGLU.GenerateNote (now[3].AsFloat);

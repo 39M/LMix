@@ -19,7 +19,7 @@
     }
     "Background": {
         "Enable": true,
-        "Type": "1",
+        "Type": 1,
         "Name": "background"
     }
 }
