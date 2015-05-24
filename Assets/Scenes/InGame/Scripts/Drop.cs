@@ -158,6 +158,7 @@ public class Drop : MonoBehaviour
 			tmp.color = Color.red;
 			status.ComboCounter = 0;
 			status.MissCount++;
+			status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 			miss = true;
 
 			if (status.enableSE) {
