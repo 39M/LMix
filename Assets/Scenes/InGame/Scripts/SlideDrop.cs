@@ -17,6 +17,7 @@ public class SlideDrop : MonoBehaviour
 	float lim_x_low, lim_x_high, lim_y_low, lim_y_high, lim_z_low, lim_z_high;
 	bool hit;
 	bool miss;
+	Color c300, c100, c50, c0;
 
 	void Start ()
 	{
@@ -29,6 +30,11 @@ public class SlideDrop : MonoBehaviour
 			hitSE.clip = Resources.Load ("Music/" + status.beatmapName + "/hit") as AudioClip;
 			missSE = hitSE;
 		}
+
+		c300 = new Color (58 / 255f, 183 / 255f, 239 / 255f);
+		c100 = new Color(191 / 255f, 255 / 255f, 160 / 255f);
+		c50 = new Color(251 / 255f, 208 / 255f, 114 / 255f);
+		c0 = new Color(249 / 255f, 90 / 255f, 101 / 255f);
 
 		int width = 200, y_base = 0;
 		float y_basef = 1.15f;
@@ -148,25 +154,25 @@ public class SlideDrop : MonoBehaviour
 						TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
 						if (notePos.z > -0.75) {
 							tmp.text = "Perfect!";
-							tmp.color = Color.yellow;
+							tmp.color = c300;
 							status.ComboCounter++;
 							status.PerfectCount++;
 							status.ScoreCounter += 300 * status.ComboCounter;
 						} else if (notePos.z > -1.5) {
 							tmp.text = "Good!";
-							tmp.color = Color.green;
+							tmp.color = c100;
 							status.ComboCounter++;
 							status.GoodCount++;
 							status.ScoreCounter += 100 * status.ComboCounter;
 						} else if (notePos.z > -1.75) {
 							tmp.text = "Bad!";
-							tmp.color = Color.blue;
+							tmp.color = c50;
 							status.ComboCounter = 0;
 							status.BadCount++;
 							status.ScoreCounter += 50 * status.ComboCounter;
 						} else {
 							tmp.text = "Miss!";
-							tmp.color = Color.red;
+							tmp.color = c0;
 							status.MissCount++;
 							status.ComboCounter = 0;
 						}
@@ -197,7 +203,7 @@ public class SlideDrop : MonoBehaviour
 
 			TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
 			tmp.text = "Miss!";
-			tmp.color = Color.red;
+			tmp.color = c0;
 			status.ComboCounter = 0;
 			status.MissCount++;
 			status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
