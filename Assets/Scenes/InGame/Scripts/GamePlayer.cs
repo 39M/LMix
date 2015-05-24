@@ -3,11 +3,14 @@ using System.Collections;
 using System.IO;
 using SimpleJSON;
 using System.Collections.Generic;
+
 public class GamePlayer : MonoBehaviour
 {
 	public string beatmapName;	// Unique name of beatmap
 	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
 	public bool enableSE;
+	public bool enableBG;
+
 	public GUIText ScoreText;
 	public GUIText ComboText;
 	public int ScoreCounter;
@@ -65,26 +68,33 @@ public class GamePlayer : MonoBehaviour
         "Length": 0,
         "Name": ""
     }
+    "Background": {	// 背景信息
+        "Enable": false,	// 是否启用
+        "Type": "",	// 类型 0-图片 1-视频
+        "Name": ""	// 文件名
+    }
 }
 */
 		/*******/
 		enableSE = true;
+		enableBG = false;
 
-		this.beatmapName = PlayerPrefs.GetString("song");
+		this.beatmapName = PlayerPrefs.GetString ("song");
 		Debug.Log (this.beatmapName);
-		System.Collections.Generic.Dictionary<string,int> tempset = new System.Collections.Generic.Dictionary<string,int>(){{"Nya",0},{"MirrorNight",2}};
-		this.difficulty = tempset[beatmapName];
+		System.Collections.Generic.Dictionary<string,int> tempset = new System.Collections.Generic.Dictionary<string,int> (){{"Nya",0},{"MirrorNight",2}};
+		this.difficulty = tempset [beatmapName];
 		/*******/
 
-		//		beatmapName = "Nya";
-		//		difficulty = 0;
-		//
+		//beatmapName = "Nya";
+		//difficulty = 0;
+		//beatmapName = "MirrorNight";
+		//difficulty = 2;
 
 
 		loadFail = true;	// Asume load fail
 
 		// Get beatmap from file
-		TextAsset f = Resources.Load("Music/" + beatmapName + "/beatmap") as TextAsset;
+		TextAsset f = Resources.Load ("Music/" + beatmapName + "/beatmap") as TextAsset;
 		if (f == null) 	// load fail
 			return;
 
@@ -99,8 +109,24 @@ public class GamePlayer : MonoBehaviour
 		if (music.clip == null)	// load fail
 			return;
 
-		mov = null;
-		//mov = (GameObject.Find ("Plane").GetComponent("VideoPlayer") as VideoPlayer).movTexture;
+		if (enableBG && Beatmap["Background"]["Enable"].AsBool) {
+			switch (Beatmap["Background"]["Type"].AsInt){
+			case 0:
+				// use Picture as background
+				break;
+			case 1:
+				mov = Resources.Load ("Music/" + beatmapName + "/" + Beatmap["Background"]["Name"]) as MovieTexture;
+				break;
+			default:
+				break;
+			}
+		} else {
+			mov = Resources.Load ("Default/background") as MovieTexture;
+		}
+		if (mov == null)	// load fail
+			return;
+		(GameObject.Find ("Backgound").GetComponent ("VideoPlayer") as VideoPlayer).movTexture = mov;
+
 
 		switch (difficulty) {
 		case 0:
@@ -131,8 +157,7 @@ public class GamePlayer : MonoBehaviour
 		i = 0;
 		now = Objects [0].AsArray;
 		music.Play ();
-		if (mov != null)
-			mov.Play ();
+		mov.Play ();
 		pause = stop = false;
 		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
@@ -159,13 +184,13 @@ public class GamePlayer : MonoBehaviour
 				//NGLU.GenerateNote (now[3].AsFloat);
 				break;
 			case 4:
-				NGLD.GenerateNote (now[0].AsInt, now [3].AsFloat);
+				NGLD.GenerateNote (now [0].AsInt, now [3].AsFloat);
 				break;
 			case 5:
 				//NGRU.GenerateNote (now[3].AsFloat);	
 				break;
 			case 6:
-				NGRD.GenerateNote (now[0].AsInt, now [3].AsFloat);	
+				NGRD.GenerateNote (now [0].AsInt, now [3].AsFloat);	
 				break;
 			default:
 				break;
@@ -182,7 +207,7 @@ public class GamePlayer : MonoBehaviour
 				//isPlaying = true;
 				pause = stop = false;
 				music.Play ();
-				if (mov != null)
+				if (enableBG)
 					mov.Play ();
 			}
 			
@@ -193,7 +218,7 @@ public class GamePlayer : MonoBehaviour
 			//isPlaying = false;
 			pause = true;
 			music.Pause ();
-			if (mov != null)
+			if (enableBG)
 				mov.Pause ();
 		}
 		
@@ -205,7 +230,7 @@ public class GamePlayer : MonoBehaviour
 			i = 0;
 			now = Objects [0].AsArray;
 			music.Stop ();
-			if (mov != null)
+			if (enableBG)
 				mov.Stop ();
 			ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 			ScoreText.text = "Score: " + ScoreCounter.ToString ();

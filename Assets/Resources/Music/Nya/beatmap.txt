@@ -17,4 +17,9 @@
         "Length": 30000,
         "Name": "Nya"
     }
+    "Background": {
+        "Enable": true,
+        "Type": "1",
+        "Name": "background"
+    }
 }
