@@ -81,7 +81,7 @@ public class GamePlayer : MonoBehaviour
 
 		this.beatmapName = PlayerPrefs.GetString ("song");
 		Debug.Log (this.beatmapName);
-		System.Collections.Generic.Dictionary<string,int> tempset = new System.Collections.Generic.Dictionary<string,int> (){{"Nya",0},{"MirrorNight",2}};
+		System.Collections.Generic.Dictionary<string,int> tempset = new System.Collections.Generic.Dictionary<string,int> (){{"Nya",0},{"MirrorNight",2},{"LetItGo",0}};
 		this.difficulty = tempset [beatmapName];
 		/*******/
 

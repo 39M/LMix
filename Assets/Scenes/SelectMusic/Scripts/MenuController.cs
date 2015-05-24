@@ -15,7 +15,7 @@ public class MenuController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		leap = new Controller ();
-		List<string> a = new List<string>() {"MirrorNight","Nya"};
+		List<string> a = new List<string>() {"MirrorNight","Nya","LetItGo"};
 		var i = 0;
 		foreach(var item in a){
 			Vector3 pos=new Vector3(transform.position.x,transform.position.y,transform.position.z);

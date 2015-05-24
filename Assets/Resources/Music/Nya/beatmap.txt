@@ -18,7 +18,7 @@
         "Name": "Nya"
     }
     "Background": {
-        "Enable": true,
+        "Enable": false,
         "Type": 1,
         "Name": "background"
     }
