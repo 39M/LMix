@@ -22,4 +22,8 @@
         "Type": 0,
         "Name": ""
     }
+    "SoundEffect": {
+    	"Enable": false,
+    	"SE": []
+    }
 }

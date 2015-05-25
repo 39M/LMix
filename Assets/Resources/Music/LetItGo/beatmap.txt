@@ -22,4 +22,11 @@
         "Type": 0,
         "Name": ""
     }
+    "SoundEffect": {
+    	"Enable": true,
+    	"Name": {
+            "hit": "hit",
+            "miss": ""
+        }
+    }
 }

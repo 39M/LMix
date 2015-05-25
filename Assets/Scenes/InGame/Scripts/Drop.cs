@@ -16,21 +16,25 @@ public class Drop : MonoBehaviour
 	Vector3 notePos;
 	float lim_x_low, lim_x_high, lim_y_low, lim_y_high, lim_z_low, lim_z_high;
 	bool hit;
-	bool miss;
+	//bool miss;
 	bool hitable;
 	Color c300, c100, c50, c0;
 
 	void Start ()
 	{
 		leap = new Controller ();
-		hit = miss = pause = stop = hitable = false;
+		hit = pause = stop = hitable = false;
 
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
-		if (status.enableSE) {
-			hitSE = GetComponent<AudioSource> ();
-			hitSE.clip = Resources.Load ("Music/" + status.beatmapName + "/hit") as AudioClip;
-			missSE = hitSE;
-		}
+
+		hitSE = GetComponent<AudioSource> ();
+		if (!status.defaultSE)
+			hitSE.clip = Resources.Load ("Music/" + status.beatmapName + "/" + status.SEname ["hit"]) as AudioClip;
+		else
+			hitSE.clip = Resources.Load ("Default/hit") as AudioClip;
+		missSE = hitSE;
+		if (!status.enableSE)
+			hitSE.mute = true;
 
 		c300 = new Color (58 / 255f, 183 / 255f, 239 / 255f);
 		c100 = new Color(191 / 255f, 255 / 255f, 160 / 255f);
@@ -172,7 +176,7 @@ public class Drop : MonoBehaviour
 			status.ComboCounter = 0;
 			status.MissCount++;
 			status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
-			miss = true;
+			//miss = true;
 
 			if (status.enableSE) {
 				missSE.enabled = true;

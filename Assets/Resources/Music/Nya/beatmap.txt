@@ -18,8 +18,12 @@
         "Name": "Nya"
     }
     "Background": {
-        "Enable": false,
+        "Enable": true,
         "Type": 1,
         "Name": "background"
+    }
+    "SoundEffect": {
+    	"Enable": false,
+    	"SE": []
     }
 }

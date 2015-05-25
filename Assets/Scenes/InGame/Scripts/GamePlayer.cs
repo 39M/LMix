@@ -10,6 +10,9 @@ public class GamePlayer : MonoBehaviour
 	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
 	public bool enableSE;
 	public bool enableBG;
+
+	public bool defaultSE;
+	public JSONNode SEname;
 	public GUIText ScoreText;
 	public GUIText ComboText;
 	public int ScoreCounter;
@@ -73,11 +76,15 @@ public class GamePlayer : MonoBehaviour
         "Type": "",	// 类型 0-图片 1-视频
         "Name": ""	// 文件名
     }
+    "SoundEffect": {
+    	"Enable": false,
+    	"SE": []
+    }
 }
 */
 		/*******/
 		enableSE = true;
-		enableBG = false;
+		enableBG = true;
 
 		this.beatmapName = PlayerPrefs.GetString ("song");
 		Debug.Log (this.beatmapName);
@@ -89,8 +96,8 @@ public class GamePlayer : MonoBehaviour
 		//difficulty = 0;
 		//beatmapName = "MirrorNight";
 		//difficulty = 2;
-		//beatmapName = "LetItGo";
-		//difficulty = 0;
+		beatmapName = "LetItGo";
+		difficulty = 0;
 
 
 		loadFail = true;	// Asume load fail
@@ -99,36 +106,52 @@ public class GamePlayer : MonoBehaviour
 		TextAsset f = Resources.Load ("Music/" + beatmapName + "/beatmap") as TextAsset;
 		if (f == null) 	// load fail
 			return;
+		Debug.Log ("Beatmap load success");
 
 		string s = f.ToString ();
 		//Debug.Log (s);
 		Beatmap = JSON.Parse (s);
 		if (Beatmap == null)	// load fail
 			return;
+		Debug.Log ("Beatmap parse success");
 
 		music = GetComponent<AudioSource> ();
 		music.clip = Resources.Load ("Music/" + beatmapName + "/" + Beatmap ["Audio"] ["Name"]) as AudioClip;	// No name-extension
 		if (music.clip == null)	// load fail
 			return;
+		Debug.Log ("audio load success");
 
-		if (enableBG && Beatmap ["Background"] ["Enable"].AsBool) {
-			switch (Beatmap ["Background"] ["Type"].AsInt) {
-			case 0:
-				// use Picture as background
-				break;
-			case 1:
-				mov = Resources.Load ("Music/" + beatmapName + "/" + Beatmap ["Background"] ["Name"]) as MovieTexture;
-				break;
-			default:
-				break;
-			}
+		if (Beatmap ["SoundEffect"] ["Enable"].AsBool) {
+			defaultSE = false;
+			SEname = Beatmap ["SoundEffect"] ["Name"];
+			Debug.Log("use custom SE");
 		} else {
-			mov = Resources.Load ("Default/background") as MovieTexture;
+			defaultSE = true;
+			Debug.Log("use default SE");
 		}
-		if (mov == null)	// load fail
-			return;
-		(GameObject.Find ("Backgound").GetComponent ("VideoPlayer") as VideoPlayer).movTexture = mov;
 
+		if (enableBG) {
+			if (Beatmap ["Background"] ["Enable"].AsBool) {
+				switch (Beatmap ["Background"] ["Type"].AsInt) {
+				case 0:
+				// use Picture as background
+					break;
+				case 1:
+					mov = Resources.Load ("Music/" + beatmapName + "/" + Beatmap ["Background"] ["Name"]) as MovieTexture;
+					break;
+				default:
+					break;
+				}
+				Debug.Log("use custom BG");
+			} else {
+				mov = Resources.Load ("Default/background") as MovieTexture;
+				Debug.Log("use default BG");
+			}
+			if (mov == null)	// load fail
+				return;
+			(GameObject.Find ("Backgound").GetComponent ("VideoPlayer") as VideoPlayer).movTexture = mov;
+		}
+		Debug.Log ("background load success");
 
 		switch (difficulty) {
 		case 0:
@@ -145,8 +168,10 @@ public class GamePlayer : MonoBehaviour
 		}
 		if (Objects == null)
 			return;
+		Debug.Log ("hitObjects load success");
 
 		loadFail = false;	// load success
+		Debug.Log ("load success");
 
 		NGDL = GameObject.Find ("NoteGeneratorDL").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGDR = GameObject.Find ("NoteGeneratorDR").GetComponent ("NoteGenerator") as NoteGenerator;
@@ -159,7 +184,8 @@ public class GamePlayer : MonoBehaviour
 		i = 0;
 		now = Objects [0].AsArray;
 		music.Play ();
-		mov.Play ();
+		if (enableBG)
+			mov.Play ();
 		pause = stop = false;
 		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();

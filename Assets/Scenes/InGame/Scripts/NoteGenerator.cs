@@ -13,7 +13,7 @@ public class NoteGenerator : MonoBehaviour {
 	{
 		Quaternion rt = Quaternion.identity;
 		rt.eulerAngles = note.transform.rotation.eulerAngles + transform.rotation.eulerAngles;
-		GameObject note_tmp;
+		//GameObject note_tmp;
 
 		switch (type) {
 		case 0:
