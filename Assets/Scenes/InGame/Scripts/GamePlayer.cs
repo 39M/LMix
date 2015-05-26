@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.IO;
 using SimpleJSON;
@@ -13,8 +14,13 @@ public class GamePlayer : MonoBehaviour
 
 	public bool defaultSE;
 	public JSONNode SEname;
-	public GUIText ScoreText;
-	public GUIText ComboText;
+	public Text ScoreText;
+	public Text ComboText;
+	public Button PauseButton;
+	public Text PauseButtonText;
+	public Button StopButton;
+	public Text StopButtonText;
+
 	public int ScoreCounter;
 	public int ComboCounter;
 	public int PerfectCount;
@@ -35,7 +41,7 @@ public class GamePlayer : MonoBehaviour
 	NoteGenerator NGLD;
 	SpinnerGenerator SG;
 	JSONNode Beatmap;
-	JSONArray Objects;	// Objects like note, spinner
+	JSONArray HitObjects;	// HitObjects like note, spinner
 	JSONArray now;	// next Object
 	//float time;
 	int i;
@@ -44,7 +50,6 @@ public class GamePlayer : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-
 		/*
 			this part used to load seleted song
 		 */
@@ -155,18 +160,18 @@ public class GamePlayer : MonoBehaviour
 
 		switch (difficulty) {
 		case 0:
-			Objects = Beatmap ["GameObject"] ["Easy"].AsArray;
+			HitObjects = Beatmap ["GameObject"] ["Easy"].AsArray;
 			break;
 		case 1:
-			Objects = Beatmap ["GameObject"] ["Normal"].AsArray;
+			HitObjects = Beatmap ["GameObject"] ["Normal"].AsArray;
 			break;
 		case 2:
-			Objects = Beatmap ["GameObject"] ["Hard"].AsArray;
+			HitObjects = Beatmap ["GameObject"] ["Hard"].AsArray;
 			break;
 		default:
 			return;
 		}
-		if (Objects == null)
+		if (HitObjects == null)
 			return;
 		Debug.Log ("hitObjects load success");
 
@@ -182,7 +187,7 @@ public class GamePlayer : MonoBehaviour
 
 		// Init
 		i = 0;
-		now = Objects [0].AsArray;
+		now = HitObjects [0].AsArray;
 		music.Play ();
 		if (enableBG)
 			mov.Play ();
@@ -190,27 +195,30 @@ public class GamePlayer : MonoBehaviour
 		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
+
+		PauseButton.onClick.AddListener(PauseResume);
+		StopButton.onClick.AddListener(StopGame);
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if (loadFail || Objects.Count <= i || !music.isPlaying)
+		if (loadFail || HitObjects.Count <= i || !music.isPlaying)
 			return;
 
 		//Debug.Log (music.time);
 		switch (now [0].AsInt) {
 		case 3:	// Generate Spinner
-			if (Objects.Count > i && music.time >= now [1].AsFloat) {
+			if (HitObjects.Count > i && music.time >= now [1].AsFloat) {
 				SG.Generate ();
 				i++;	// move to next note
-				if (Objects.Count > i)
-					now = Objects [i].AsArray;	// get current note
+				if (HitObjects.Count > i)
+					now = HitObjects [i].AsArray;	// get current note
 			}
 			break;
 		default:	// Generate Note
-			//Debug.Log(Objects.Count);
-			while (Objects.Count > i && music.time >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
+			//Debug.Log(HitObjects.Count);
+			while (HitObjects.Count > i && music.time >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
 				switch (now [2].AsInt) {	// select generator
 				case 1:
 					NGDL.GenerateNote (now [0].AsInt, now [3].AsFloat);
@@ -234,49 +242,42 @@ public class GamePlayer : MonoBehaviour
 					break;
 				}
 				i++;	// move to next note
-				if (Objects.Count > i)
-					now = Objects [i].AsArray;	// get current note
+				if (HitObjects.Count > i)
+					now = HitObjects [i].AsArray;	// get current note
 			}
 			break;
 		}
 	}
 
-	void OnGUI ()
-	{
-		if (GUILayout.Button ("播放/继续")) {
-			//播放/继续播放音频
-			if (!music.isPlaying) {
-				//isPlaying = true;
-				pause = stop = false;
-				music.Play ();
-				if (enableBG)
-					mov.Play ();
-			}
-			
-		}
-		
-		if (GUILayout.Button ("暂停播放")) {
-			//暂停播放
-			//isPlaying = false;
+
+
+	void PauseResume(){
+		if (!music.isPlaying) {
+			pause = stop = false;
+			music.Play ();
+			if (enableBG)
+				mov.Play ();
+			PauseButtonText.text = "Pause";
+		} else {
 			pause = true;
 			music.Pause ();
 			if (enableBG)
 				mov.Pause ();
+			PauseButtonText.text = "Resume";
 		}
-		
-		if (GUILayout.Button ("停止播放")) {
-			//停止播放
-			//isPlaying = false;
-			stop = true;
-			//time = 0f;
-			i = 0;
-			now = Objects [0].AsArray;
-			music.Stop ();
-			if (enableBG)
-				mov.Stop ();
-			ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
-			ScoreText.text = "Score: " + ScoreCounter.ToString ();
-			ComboText.text = "Combo: " + ComboCounter.ToString ();
-		}
+	}
+
+	void StopGame(){
+		stop = true;
+		//time = 0f;
+		i = 0;
+		now = HitObjects [0].AsArray;
+		music.Stop ();
+		if (enableBG)
+			mov.Stop ();
+		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
+		ScoreText.text = "Score: " + ScoreCounter.ToString ();
+		ComboText.text = "Combo: " + ComboCounter.ToString ();
+
 	}
 }
