@@ -94,6 +94,10 @@ public class SlideDrop : MonoBehaviour
 			Destroy (gameObject);
 		}
 
+		if (status.ScoreNow < status.ScoreCounter)
+			status.ScoreNow += 5;
+		status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
+
 		if (!hit)
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
@@ -156,31 +160,35 @@ public class SlideDrop : MonoBehaviour
 							rt.eulerAngles = new Vector3 (0, 90, 0);
 						//Debug.Log(transform.rotation.eulerAngles.x / 2);
 						TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
+						int ScoreGet;
 						if (notePos.z > -0.75) {
 							tmp.text = "Perfect!";
 							tmp.color = c300;
 							status.ComboCounter++;
 							status.PerfectCount++;
-							status.ScoreCounter += 300 * status.ComboCounter;
+							ScoreGet = 300 * status.ComboCounter;
 						} else if (notePos.z > -1.5) {
 							tmp.text = "Good!";
 							tmp.color = c100;
 							status.ComboCounter++;
 							status.GoodCount++;
-							status.ScoreCounter += 100 * status.ComboCounter;
+							ScoreGet = 100 * status.ComboCounter;
 						} else if (notePos.z > -1.75) {
 							tmp.text = "Bad!";
 							tmp.color = c50;
 							status.ComboCounter = 0;
 							status.BadCount++;
-							status.ScoreCounter += 50 * status.ComboCounter;
+							ScoreGet = 50 * status.ComboCounter;
 						} else {
 							tmp.text = "Miss!";
 							tmp.color = c0;
 							status.MissCount++;
-							status.ComboCounter = 0;
+							ScoreGet = 0;
 						}
-						status.ScoreText.text = "Score: " + status.ScoreCounter.ToString ();
+						status.ScoreCounter += ScoreGet;
+						if (ScoreGet > 900)
+							status.ScoreNow += ScoreGet - 900;
+						status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
 						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 
 						hit = true;

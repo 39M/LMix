@@ -23,6 +23,7 @@ public class GamePlayer : MonoBehaviour
 
 	public int ScoreCounter;
 	public int ComboCounter;
+	public int ScoreNow;
 	public int PerfectCount;
 	public int GoodCount;
 	public int BadCount;
@@ -193,8 +194,10 @@ public class GamePlayer : MonoBehaviour
 			mov.Play ();
 		pause = stop = false;
 		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
+		ScoreNow = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
+		ScoreText.fontSize = ComboText.fontSize = (int) (Screen.width * 0.03f);
 
 		PauseButton.onClick.AddListener(PauseResume);
 		StopButton.onClick.AddListener(StopGame);
