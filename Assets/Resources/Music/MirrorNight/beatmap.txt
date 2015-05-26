@@ -15,7 +15,7 @@
     "Title": "title",
     "Audio": {
         "Length": 30000,
-        "Name": "MirrorNight"
+        "Name": "Mirror Night"
     }
     "Background": {
         "Enable": false,
