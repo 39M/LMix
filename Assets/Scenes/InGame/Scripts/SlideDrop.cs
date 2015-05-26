@@ -35,10 +35,10 @@ public class SlideDrop : MonoBehaviour
 		if (!status.enableSE)
 			hitSE.mute = true;
 
-		c300 = new Color (58 / 255f, 183 / 255f, 239 / 255f);
-		c100 = new Color(191 / 255f, 255 / 255f, 160 / 255f);
-		c50 = new Color(251 / 255f, 208 / 255f, 114 / 255f);
-		c0 = new Color(249 / 255f, 90 / 255f, 101 / 255f);
+		c300 = new Color (58 / 255f, 183 / 255f, 239 / 255f, 0);
+		c100 = new Color(191 / 255f, 255 / 255f, 160 / 255f, 0);
+		c50 = new Color(251 / 255f, 208 / 255f, 114 / 255f, 0);
+		c0 = new Color(249 / 255f, 90 / 255f, 101 / 255f, 0);
 
 		int width = 200, y_base = 0;
 		float y_basef = 1.15f;
@@ -162,25 +162,25 @@ public class SlideDrop : MonoBehaviour
 						TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
 						int ScoreGet;
 						if (notePos.z > -0.75) {
-							tmp.text = "Perfect!";
+							tmp.text = "Perfect";
 							tmp.color = c300;
 							status.ComboCounter++;
 							status.PerfectCount++;
 							ScoreGet = 300 * status.ComboCounter;
 						} else if (notePos.z > -1.5) {
-							tmp.text = "Good!";
+							tmp.text = "Good";
 							tmp.color = c100;
 							status.ComboCounter++;
 							status.GoodCount++;
 							ScoreGet = 100 * status.ComboCounter;
 						} else if (notePos.z > -1.75) {
-							tmp.text = "Bad!";
+							tmp.text = "Bad";
 							tmp.color = c50;
 							status.ComboCounter = 0;
 							status.BadCount++;
 							ScoreGet = 50 * status.ComboCounter;
 						} else {
-							tmp.text = "Miss!";
+							tmp.text = "Miss";
 							tmp.color = c0;
 							status.MissCount++;
 							ScoreGet = 0;
@@ -214,7 +214,7 @@ public class SlideDrop : MonoBehaviour
 				rt.eulerAngles = new Vector3 (0, 90, 0);
 
 			TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
-			tmp.text = "Miss!";
+			tmp.text = "Miss";
 			tmp.color = c0;
 			status.ComboCounter = 0;
 			status.MissCount++;
