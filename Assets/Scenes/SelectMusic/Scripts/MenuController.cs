@@ -112,7 +112,7 @@ public class MenuController : MonoBehaviour {
 							PlayerPrefs.SetInt("enableSE",1);
 							PlayerPrefs.SetInt("enableBG",1);
 							Debug.Log("set difficulty "+ this.diff[item.GetComponent<GUIText>().text]);
-							PlayerPrefs.SetInt("difficulty",this.diff[item.GetComponent<GUIText>().text]);
+							PlayerPrefs.SetInt("Difficulty",this.diff[item.GetComponent<GUIText>().text]);
 							Application.LoadLevel("InGame");
 						}
 					}
