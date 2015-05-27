@@ -18,12 +18,16 @@ public class Drop : MonoBehaviour
 	bool hit;
 	//bool miss;
 	bool hitable;
+
+	int track;
+	bool busy;
+
 	Color c300, c100, c50, c0;
 
 	void Start ()
 	{
 		leap = new Controller ();
-		hit = pause = stop = hitable = false;
+		hit = pause = stop = hitable = busy = false;
 
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 
@@ -53,11 +57,13 @@ public class Drop : MonoBehaviour
 				lim_x_high = 200;
 				lim_y_low = y_base - 80;
 				lim_y_high = lim_y_low + width;	// 80
+				track = 0;
 			} else if (notePos.y < y_basef + 2) {
 				lim_x_low = 170;
 				lim_x_high = 300;
 				lim_y_low = y_base + 50;
 				lim_y_high = lim_y_low + width;
+				track = 2;
 			} else {
 				lim_x_low = 170;
 				lim_x_high = 300;
@@ -70,11 +76,13 @@ public class Drop : MonoBehaviour
 				lim_x_high = 0;
 				lim_y_low = y_base - 80;
 				lim_y_high = lim_y_low + width;	// 80
+				track = 1;
 			} else if (notePos.y < y_basef + 2) {
 				lim_x_low = -300;
 				lim_x_high = -170;
 				lim_y_low = y_base + 50;
 				lim_y_high = lim_y_low + width;
+				track = 3;
 			} else {
 				lim_x_low = -300;
 				lim_x_high = -170;
@@ -103,6 +111,11 @@ public class Drop : MonoBehaviour
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
 		if (!hit && notePos.z < 2 && notePos.z > -1.75) {
+			if (status.trackbusy[track] && !busy)
+				return;
+
+			status.trackbusy[track] = busy = true;
+
 			Frame frame = leap.Frame ();
 			foreach (Hand hand in frame.Hands) {
 				// Debug.Log (hand.Fingers.Frontmost.TipPosition);
@@ -156,6 +169,7 @@ public class Drop : MonoBehaviour
 						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 
 						hit = true;
+						status.trackbusy[track] = false;
 						if (status.enableSE) {
 							hitSE.enabled = true;
 							hitSE.Play ();
@@ -185,7 +199,7 @@ public class Drop : MonoBehaviour
 			status.MissCount++;
 			status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 			//miss = true;
-
+			status.trackbusy[track] = false;
 			if (status.enableSE) {
 				missSE.enabled = true;
 				missSE.Play ();

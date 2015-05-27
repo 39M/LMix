@@ -30,6 +30,7 @@ public class GamePlayer : MonoBehaviour
 	public int MissCount;
 	public bool pause;	// status of music
 	public bool stop;	// status of music
+	public bool[] trackbusy = {false, false, false, false};
 
 	bool loadFail;
 	AudioSource music;

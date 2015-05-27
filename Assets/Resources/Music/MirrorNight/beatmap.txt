@@ -12,10 +12,10 @@
     },
     "Source": "where",
     "Version": "1.0",
-    "Title": "title",
+    "Title": "Mirror Night",
     "Audio": {
         "Length": 30000,
-        "Name": "Mirror Night"
+        "Name": "MirrorNight"
     }
     "Background": {
         "Enable": false,

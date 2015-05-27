@@ -7,9 +7,10 @@ public class VideoPlayer : MonoBehaviour
 	
 	void Start ()
 	{
-		GetComponent<Renderer> ().material.mainTexture = movTexture;
-		if ((GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer).enableBG)
+		if ((GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer).enableBG) {
+			GetComponent<Renderer> ().material.mainTexture = movTexture;
 			movTexture.loop = true;
+		}
 	}
 }
 
