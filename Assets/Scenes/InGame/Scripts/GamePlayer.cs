@@ -210,6 +210,11 @@ public class GamePlayer : MonoBehaviour
 		if (loadFail || HitObjects.Count <= i || !music.isPlaying)
 			return;
 
+		if (ScoreNow < ScoreCounter)
+			ScoreNow += 5;
+		ScoreText.text = "Score: " + ScoreNow.ToString ();
+
+
 		//Debug.Log (music.time);
 		switch (now [0].AsInt) {
 		case 3:	// Generate Spinner

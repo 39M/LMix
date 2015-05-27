@@ -103,9 +103,7 @@ public class Drop : MonoBehaviour
 			Destroy (gameObject);
 		}
 
-		if (status.ScoreNow < status.ScoreCounter)
-			status.ScoreNow += 5;
-		status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
+
 
 		if (!hit)
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
