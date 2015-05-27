@@ -11,11 +11,11 @@
         "Easy": {
             "Enable": true,
             "Speed": 1
-        }
+        },
         "Normal": {
             "Enable": false,
             "Speed": 1
-        }
+        },
         "Hard": {
             "Enable": false,
             "Speed": 1
