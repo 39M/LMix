@@ -6,6 +6,7 @@ public class SpinnerGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//InvokeRepeating ("Generate", 0, 1);	// Generate() need be private
+		Generate();
 	}
 
 	public void Generate() {
