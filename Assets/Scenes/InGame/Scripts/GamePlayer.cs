@@ -21,9 +21,9 @@ public class GamePlayer : MonoBehaviour
 	public Button StopButton;
 	public Text StopButtonText;
 
-	public long ScoreCounter;
+	public int ScoreCounter;
 	public int ComboCounter;
-	public long ScoreNow;
+	public int ScoreNow;
 	public int PerfectCount;
 	public int GoodCount;
 	public int BadCount;
@@ -31,8 +31,10 @@ public class GamePlayer : MonoBehaviour
 	public bool pause;	// status of music
 	public bool stop;	// status of music
 	public bool[] trackbusy = {false, false, false, false};
-
+	
 	bool loadFail;
+	bool gameover;
+	float gameoverTimer;
 	AudioSource music;
 	MovieTexture mov;
 	NoteGenerator NGDL;
@@ -193,7 +195,7 @@ public class GamePlayer : MonoBehaviour
 		music.Play ();
 		if (enableBG)
 			mov.Play ();
-		pause = stop = false;
+		pause = stop = gameover = false;
 		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreNow = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
@@ -219,8 +221,25 @@ public class GamePlayer : MonoBehaviour
 			ScoreText.text = "Score: " + ScoreNow.ToString ();
 		}
 
-		if (HitObjects.Count <= i)
+		if (HitObjects.Count <= i) {
+			if (!gameover) {
+				gameover = true;
+				gameoverTimer = 5f;
+				PlayerPrefs.SetInt("ScoreCount", ScoreCounter);
+				PlayerPrefs.SetInt("ComboCount", ComboCounter);
+				PlayerPrefs.SetInt("PerfectCount", PerfectCount);
+				PlayerPrefs.SetInt("GoodCount", GoodCount);
+				PlayerPrefs.SetInt("BadCount", BadCount);
+				PlayerPrefs.SetInt("MissCount", MissCount);
+			}
+
+			gameoverTimer -= Time.deltaTime;
+			music.volume -= Time.deltaTime / 5f;
+
+			if (gameoverTimer < 0)
+				Application.LoadLevel("GameOver");
 			return;
+		}
 
 		if (!music.isPlaying)
 			return;
@@ -291,7 +310,7 @@ public class GamePlayer : MonoBehaviour
 	}
 
 	void StopGame(){
-		stop = true;
+		/*stop = true;
 		//time = 0f;
 		i = 0;
 		now = HitObjects [0].AsArray;
@@ -301,6 +320,8 @@ public class GamePlayer : MonoBehaviour
 		ScoreCounter = ScoreNow = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
-		PauseButtonText.text = "Start";
+		PauseButtonText.text = "Start";*/
+		Application.LoadLevel("SelectMusic");
+		Debug.Log("222");
 	}
 }
