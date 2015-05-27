@@ -104,7 +104,7 @@ public class GamePlayer : MonoBehaviour
 		//beatmapName = "MirrorNight";
 		//difficulty = 2;
 		//beatmapName = "LetItGo";
-		//difficulty = 0;
+		//difficulty = 2;
 
 
 		loadFail = true;	// Asume load fail

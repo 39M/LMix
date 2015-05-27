@@ -8,7 +8,18 @@
     },
     "Artist": "who",
     "Difficulty": {
-        "Speed": 1
+        "Easy": {
+            "Enable": false,
+            "Speed": 1
+        },
+        "Normal": {
+            "Enable": false,
+            "Speed": 1
+        },
+        "Hard": {
+            "Enable": true,
+            "Speed": 1
+        }
     },
     "Source": "where",
     "Version": "1.0",
@@ -16,12 +27,16 @@
     "Audio": {
         "Length": 30000,
         "Name": "MirrorNight"
-    }
+    },
+    "Album": {
+        "Type": "png",
+        "Name": "Album"
+    },
     "Background": {
         "Enable": false,
         "Type": 0,
         "Name": ""
-    }
+    },
     "SoundEffect": {
     	"Enable": false,
     	"SE": []
