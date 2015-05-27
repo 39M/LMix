@@ -21,9 +21,9 @@ public class GamePlayer : MonoBehaviour
 	public Button StopButton;
 	public Text StopButtonText;
 
-	public int ScoreCounter;
+	public long ScoreCounter;
 	public int ComboCounter;
-	public int ScoreNow;
+	public long ScoreNow;
 	public int PerfectCount;
 	public int GoodCount;
 	public int BadCount;
@@ -99,8 +99,8 @@ public class GamePlayer : MonoBehaviour
 		this.difficulty = tempset [beatmapName];
 		/*******/
 
-		beatmapName = "Nya";
-		difficulty = 0;
+		//beatmapName = "Nya";
+		//difficulty = 0;
 		//beatmapName = "MirrorNight";
 		//difficulty = 2;
 		//beatmapName = "LetItGo";

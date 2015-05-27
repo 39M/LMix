@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScoreDisplay : MonoBehaviour {
+public class JudgementDisplay : MonoBehaviour {
 	float timer;
 	GamePlayer status;
 	TextMesh tm;
@@ -19,8 +19,8 @@ public class ScoreDisplay : MonoBehaviour {
 		if (status.pause)
 			return;
 
-		if (timer > 0.9f) {
-			c.a += Time.deltaTime * 10;
+		if (timer > 0.8f) {
+			c.a += Time.deltaTime * 5;
 			tm.color = c;
 		}
 
