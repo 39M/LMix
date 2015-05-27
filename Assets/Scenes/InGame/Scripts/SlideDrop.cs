@@ -160,21 +160,21 @@ public class SlideDrop : MonoBehaviour
 						if (notePos.z > -0.75) {
 							tmp.text = "Perfect";
 							tmp.color = c300;
+							ScoreGet = 300 + 300 / 25 * status.ComboCounter;
 							status.ComboCounter++;
 							status.PerfectCount++;
-							ScoreGet = 300 * status.ComboCounter;
 						} else if (notePos.z > -1.5) {
 							tmp.text = "Good";
 							tmp.color = c100;
 							status.ComboCounter++;
 							status.GoodCount++;
-							ScoreGet = 100 * status.ComboCounter;
+							ScoreGet = 100 + 100 / 25 * status.ComboCounter;
 						} else if (notePos.z > -1.75) {
 							tmp.text = "Bad";
 							tmp.color = c50;
+							ScoreGet = 50 + 50 / 25 * status.ComboCounter;
 							status.ComboCounter = 0;
 							status.BadCount++;
-							ScoreGet = 50 * status.ComboCounter;
 						} else {
 							tmp.text = "Miss";
 							tmp.color = c0;
@@ -182,9 +182,7 @@ public class SlideDrop : MonoBehaviour
 							ScoreGet = 0;
 						}
 						status.ScoreCounter += ScoreGet;
-						if (ScoreGet > 900)
-							status.ScoreNow += ScoreGet - 900;
-						status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
+						//status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
 						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 
 						hit = true;

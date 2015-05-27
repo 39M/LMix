@@ -103,8 +103,6 @@ public class Drop : MonoBehaviour
 			Destroy (gameObject);
 		}
 
-
-
 		if (!hit)
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
@@ -139,21 +137,21 @@ public class Drop : MonoBehaviour
 						if (Mathf.Abs (notePos.z) < 0.75) {
 							tmp.text = "Perfect";
 							tmp.color = c300;
+							ScoreGet = 300 + 300 / 25 * status.ComboCounter;
 							status.ComboCounter++;
 							status.PerfectCount++;
-							ScoreGet = 300 * status.ComboCounter;
 						} else if (Mathf.Abs (notePos.z) < 1.5) {
 							tmp.text = "Good";
 							tmp.color = c100;
+							ScoreGet = 100 + 100 / 25 * status.ComboCounter;
 							status.ComboCounter++;
 							status.GoodCount++;
-							ScoreGet = 100 * status.ComboCounter;
 						} else if (Mathf.Abs (notePos.z) < 1.75) {
 							tmp.text = "Bad";
 							tmp.color = c50;
+							ScoreGet = 50 + 50 / 25 * status.ComboCounter;
 							status.ComboCounter = 0;
 							status.BadCount++;
-							ScoreGet = 50 * status.ComboCounter;
 						} else {
 							tmp.text = "Miss";
 							tmp.color = c0;
@@ -161,9 +159,7 @@ public class Drop : MonoBehaviour
 							ScoreGet = 0;
 						}
 						status.ScoreCounter += ScoreGet;
-						if (ScoreGet > 900)
-							status.ScoreNow += ScoreGet - 900;
-						status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
+						//status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
 						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 
 						hit = true;
@@ -194,6 +190,9 @@ public class Drop : MonoBehaviour
 			tmp.text = "Miss";
 			tmp.color = c0;
 			status.ComboCounter = 0;
+			/*status.ComboCounter++;
+			int ScoreGet = 300 * status.ComboCounter;
+			status.ScoreCounter += ScoreGet;*/
 			status.MissCount++;
 			status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 			//miss = true;

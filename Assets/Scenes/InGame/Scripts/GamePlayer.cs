@@ -99,12 +99,12 @@ public class GamePlayer : MonoBehaviour
 		this.difficulty = tempset [beatmapName];
 		/*******/
 
-		//beatmapName = "Nya";
-		//difficulty = 0;
+		beatmapName = "Nya";
+		difficulty = 0;
 		//beatmapName = "MirrorNight";
 		//difficulty = 2;
-		beatmapName = "LetItGo";
-		difficulty = 0;
+		//beatmapName = "LetItGo";
+		//difficulty = 0;
 
 
 		loadFail = true;	// Asume load fail
@@ -207,13 +207,23 @@ public class GamePlayer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (loadFail || HitObjects.Count <= i || !music.isPlaying)
+		if (loadFail)
 			return;
 
-		if (ScoreNow < ScoreCounter)
-			ScoreNow += 5;
-		ScoreText.text = "Score: " + ScoreNow.ToString ();
+		if (!pause && !stop) {
+			if (ScoreNow < ScoreCounter)
+				if (ScoreCounter - ScoreNow < 10)
+					ScoreNow++;
+				else
+					ScoreNow += (ScoreCounter - ScoreNow) / 10;
+			ScoreText.text = "Score: " + ScoreNow.ToString ();
+		}
 
+		if (HitObjects.Count <= i)
+			return;
+
+		if (!music.isPlaying)
+			return;
 
 		//Debug.Log (music.time);
 		switch (now [0].AsInt) {
@@ -231,21 +241,25 @@ public class GamePlayer : MonoBehaviour
 				switch (now [2].AsInt) {	// select generator
 				case 1:
 					NGDL.GenerateNote (now [0].AsInt, now [3].AsFloat);
+					//NGDL.GenerateNote (1, now [3].AsFloat);
 					break;
 				case 2:
 					NGDR.GenerateNote (now [0].AsInt, now [3].AsFloat);
+					//NGDR.GenerateNote (1, now [3].AsFloat);
 					break;
 				case 3:
 					//NGLU.GenerateNote (now[3].AsFloat);
 					break;
 				case 4:
 					NGLD.GenerateNote (now [0].AsInt, now [3].AsFloat);
+					//NGLD.GenerateNote (1, now [3].AsFloat);
 					break;
 				case 5:
 					//NGRU.GenerateNote (now[3].AsFloat);	
 					break;
 				case 6:
 					NGRD.GenerateNote (now [0].AsInt, now [3].AsFloat);	
+					//NGRD.GenerateNote (1, now [3].AsFloat);	
 					break;
 				default:
 					break;
@@ -284,9 +298,9 @@ public class GamePlayer : MonoBehaviour
 		music.Stop ();
 		if (enableBG)
 			mov.Stop ();
-		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
+		ScoreCounter = ScoreNow = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
-
+		PauseButtonText.text = "Start";
 	}
 }
