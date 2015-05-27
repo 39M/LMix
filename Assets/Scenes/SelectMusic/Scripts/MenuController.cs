@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Leap;
+using SimpleJSON;
 public class MenuController : MonoBehaviour {
 	public GameObject menuitemobj;
 	public List<GameObject> menulist= new List<GameObject> ();
@@ -14,8 +15,25 @@ public class MenuController : MonoBehaviour {
 	protected Vector3 lastpos;
 	// Use this for initialization
 	void Start () {
+		// read dir from resource music
+		string[] files = Directory.GetDirectories (@"Assets/Resources/Music/");
+		List<string> a = new List<string> ();
+		foreach (var item in files) {
+			string folder = Path.GetFileName(item);
+			Debug.Log(" Read Music Dir " + folder + " and load beatmap.");
+
+			TextAsset f = Resources.Load ("Music/" + folder + "/beatmap") as TextAsset;
+			if (f == null) 	{
+				Debug.Log ("Beatmap for "+ folder+" load failed !!!");
+				return;
+			}
+			Debug.Log ("Beatmap for "+ folder+"load success");
+			var Beatmap = JSON.Parse (f.ToString ());
+
+		}
+		//
 		leap = new Controller ();
-		List<string> a = new List<string>() {"MirrorNight","Nya","LetItGo"};
+
 		var i = 0;
 		foreach(var item in a){
 			Vector3 pos=new Vector3(transform.position.x,transform.position.y,transform.position.z);
