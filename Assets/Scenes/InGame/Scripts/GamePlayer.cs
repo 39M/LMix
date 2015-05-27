@@ -92,13 +92,13 @@ public class GamePlayer : MonoBehaviour
 }
 */
 		/*******/
-		enableSE = true;
-		enableBG = true;
+
+		enableSE = PlayerPrefs.GetInt("enableSE") != 0;
+		enableBG = PlayerPrefs.GetInt("enableBG") != 0;
 
 		this.beatmapName = PlayerPrefs.GetString ("song");
-		Debug.Log (this.beatmapName);
-		System.Collections.Generic.Dictionary<string,int> tempset = new System.Collections.Generic.Dictionary<string,int> (){{"Nya",0},{"MirrorNight",2},{"LetItGo",0}};
-		this.difficulty = tempset [beatmapName];
+		Debug.Log (" Play " +this.beatmapName);
+		this.difficulty = PlayerPrefs.GetInt("Difficulty");
 		/*******/
 
 		//beatmapName = "Nya";
