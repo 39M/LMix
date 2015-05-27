@@ -291,7 +291,7 @@ public class GamePlayer : MonoBehaviour
 	}
 
 	void StopGame(){
-		stop = true;
+		/*stop = true;
 		//time = 0f;
 		i = 0;
 		now = HitObjects [0].AsArray;
@@ -301,6 +301,8 @@ public class GamePlayer : MonoBehaviour
 		ScoreCounter = ScoreNow = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
-		PauseButtonText.text = "Start";
+		PauseButtonText.text = "Start";*/
+		Application.LoadLevel("SelectMusic");
+		Debug.Log("222");
 	}
 }
