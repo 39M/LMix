@@ -234,7 +234,7 @@ public class GamePlayer : MonoBehaviour
 				PlayerPrefs.SetInt("MissCount", MissCount);
 
 				if (PerfectCount == HitObjects.Count)
-					PlayerPrefs.SetString("Judgement", "SS");
+					PlayerPrefs.SetString("Judgement", "X");
 				else if (PerfectCount >= HitObjects.Count * 0.9f && BadCount <= HitObjects.Count * 0.01f && MissCount == 0)
 					PlayerPrefs.SetString("Judgement", "S");
 				else if (PerfectCount >= HitObjects.Count * 0.8f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.9f)

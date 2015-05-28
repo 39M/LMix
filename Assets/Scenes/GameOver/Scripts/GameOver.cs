@@ -5,31 +5,25 @@ using UnityEngine.UI;
 public class GameOver : MonoBehaviour
 {
 	public Image Background;
-
 	public Text ScoreLabel;
 	public Text ComboLabel;
 	public Text PerfectLabel;
 	public Text GoodLabel;
 	public Text BadLabel;
 	public Text MissLabel;
-
 	public Text ScoreText;
 	public Text ComboText;
 	public Text PerfectText;
 	public Text GoodText;
 	public Text BadText;
 	public Text MissText;
-
 	public Text Judgement;
-
 	public Button RetryButton;
 	public Text RetryButtonText;
 	public Button BackButton;
 	public Text BackButtonText;
-
 	public Image BigCover;
 	public Image SmallCover;
-
 	int TotalScore;
 	int ScoreNow;
 	int MaxCombo;
@@ -57,6 +51,16 @@ public class GameOver : MonoBehaviour
 		BadCount = PlayerPrefs.GetInt ("BadCount");
 		MissCount = PlayerPrefs.GetInt ("MissCount");
 		Judgement.text = PlayerPrefs.GetString ("Judgement");
+
+		if (Judgement.text == "A")
+			Judgement.color = new Color (58 / 255f, 183 / 255f, 239 / 255f);
+		else if (Judgement.text == "B")
+			Judgement.color = new Color (191 / 255f, 255 / 255f, 160 / 255f);
+		else if (Judgement.text == "C")
+			Judgement.color = new Color (251 / 255f, 208 / 255f, 114 / 255f);
+		else if (Judgement.text == "D")
+			Judgement.color = new Color (249 / 255f, 90 / 255f, 101 / 255f);
+
 
 		ScoreNow = ComboNow = PerfectNow = GoodNow = BadNow = MissNow = 0;
 		ShowUI = false;
@@ -116,7 +120,7 @@ public class GameOver : MonoBehaviour
 			if (CoverColor.a <= 0) {
 				ShowUI = true;
 				CoverColor.a = 1f;
-				Destroy(BigCover);
+				Destroy (BigCover);
 			}
 		}
 
@@ -129,12 +133,12 @@ public class GameOver : MonoBehaviour
 		CounterPlus (ref MissNow, MissCount, 20);
 
 		if (!DisplayDone) {
-			ScoreText.text = ScoreNow.ToString();
-			ComboText.text = ComboNow.ToString();
-			PerfectText.text = PerfectNow.ToString();
-			GoodText.text = GoodNow.ToString();
-			BadText.text = BadNow.ToString();
-			MissText.text = MissNow.ToString();
+			ScoreText.text = ScoreNow.ToString ();
+			ComboText.text = ComboNow.ToString ();
+			PerfectText.text = PerfectNow.ToString ();
+			GoodText.text = GoodNow.ToString ();
+			BadText.text = BadNow.ToString ();
+			MissText.text = MissNow.ToString ();
 		}
 
 		if (DisplayDone)
@@ -148,7 +152,7 @@ public class GameOver : MonoBehaviour
 			CoverColor.a -= Time.deltaTime * 2;
 			SmallCover.color = CoverColor;
 			if (CoverColor.a <= 0)
-				Destroy(SmallCover);
+				Destroy (SmallCover);
 		}
 	}
 
