@@ -159,6 +159,8 @@ public class Drop : MonoBehaviour
 							ScoreGet = 0;
 						}
 						status.ScoreCounter += ScoreGet;
+						if (status.ComboCounter > status.MaxCombo)
+							status.MaxCombo = status.ComboCounter;
 						//status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
 						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 

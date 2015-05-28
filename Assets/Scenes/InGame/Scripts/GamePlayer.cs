@@ -22,8 +22,9 @@ public class GamePlayer : MonoBehaviour
 	public Text StopButtonText;
 
 	public int ScoreCounter;
-	public int ComboCounter;
 	public int ScoreNow;
+	public int ComboCounter;
+	public int MaxCombo;
 	public int PerfectCount;
 	public int GoodCount;
 	public int BadCount;
@@ -196,7 +197,7 @@ public class GamePlayer : MonoBehaviour
 		if (enableBG)
 			mov.Play ();
 		pause = stop = gameover = false;
-		ScoreCounter = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
+		ScoreCounter = ComboCounter = MaxCombo = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreNow = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
@@ -231,6 +232,19 @@ public class GamePlayer : MonoBehaviour
 				PlayerPrefs.SetInt("GoodCount", GoodCount);
 				PlayerPrefs.SetInt("BadCount", BadCount);
 				PlayerPrefs.SetInt("MissCount", MissCount);
+
+				if (PerfectCount == HitObjects.Count)
+					PlayerPrefs.SetString("Judgement", "SS");
+				else if (PerfectCount >= HitObjects.Count * 0.9f && BadCount <= HitObjects.Count * 0.01f && MissCount == 0)
+					PlayerPrefs.SetString("Judgement", "S");
+				else if (PerfectCount >= HitObjects.Count * 0.8f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.9f)
+					PlayerPrefs.SetString("Judgement", "A");
+				else if (PerfectCount >= HitObjects.Count * 0.7f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.8f)
+					PlayerPrefs.SetString("Judgement", "B");
+				else if (PerfectCount >= HitObjects.Count * 0.6f)
+					PlayerPrefs.SetString("Judgement", "C");
+				else
+					PlayerPrefs.SetString("Judgement", "D");
 			}
 
 			gameoverTimer -= Time.deltaTime;
