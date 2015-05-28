@@ -45,7 +45,7 @@ public class Spin : MonoBehaviour {
 			// this.rotate is a float that remark the total angle that the spinner has been rotated before it ends; 
 
 			// distory this spinner
-
+			GetComponent<Renderer>().enabled = false;
 		}
 	}
 	void rot(){
