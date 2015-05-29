@@ -85,8 +85,6 @@ public class SlideDrop : MonoBehaviour
 
 	void Update ()
 	{
-		if (status.stop)
-			Destroy (gameObject);
 		if (status.pause)
 			return;
 

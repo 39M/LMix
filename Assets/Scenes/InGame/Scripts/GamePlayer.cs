@@ -11,7 +11,6 @@ public class GamePlayer : MonoBehaviour
 	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
 	public bool enableSE;
 	public bool enableBG;
-
 	public bool defaultSE;
 	public JSONNode SEname;
 	public Text ScoreText;
@@ -20,7 +19,6 @@ public class GamePlayer : MonoBehaviour
 	public Text PauseButtonText;
 	public Button StopButton;
 	public Text StopButtonText;
-
 	public long ScoreCounter;
 	public long ScoreNow;
 	public int ComboCounter;
@@ -30,9 +28,7 @@ public class GamePlayer : MonoBehaviour
 	public int BadCount;
 	public int MissCount;
 	public bool pause;	// status of music
-	public bool stop;	// status of music
 	public bool[] trackbusy = {false, false, false, false};
-	
 	bool loadFail;
 	bool gameover;
 	float gameoverTimer;
@@ -48,8 +44,10 @@ public class GamePlayer : MonoBehaviour
 	JSONNode Beatmap;
 	JSONArray HitObjects;	// HitObjects like note, spinner
 	JSONArray now;	// next Object
-	//float time;
+	float Timer;
+	bool NotesBeforeDone;
 	int i;
+	int NotesBeforeMusic;
 	//bool isPlaying;
 
 	// Use this for initialization
@@ -94,16 +92,16 @@ public class GamePlayer : MonoBehaviour
 */
 		/*******/
 
-		enableSE = PlayerPrefs.GetInt("enableSE") != 0;
-		enableBG = PlayerPrefs.GetInt("enableBG") != 0;
+		enableSE = PlayerPrefs.GetInt ("enableSE") != 0;
+		enableBG = PlayerPrefs.GetInt ("enableBG") != 0;
 
 		this.beatmapName = PlayerPrefs.GetString ("song");
-		Debug.Log (" Play " +this.beatmapName);
-		this.difficulty = PlayerPrefs.GetInt("Difficulty");
+		Debug.Log (" Play " + this.beatmapName);
+		this.difficulty = PlayerPrefs.GetInt ("Difficulty");
 		/*******/
 
-		//beatmapName = "Nya";
-		//difficulty = 0;
+		beatmapName = "Nya";
+		difficulty = 0;
 		//beatmapName = "MirrorNight";
 		//difficulty = 2;
 		//beatmapName = "LetItGo";
@@ -134,10 +132,10 @@ public class GamePlayer : MonoBehaviour
 		if (Beatmap ["SoundEffect"] ["Enable"].AsBool) {
 			defaultSE = false;
 			SEname = Beatmap ["SoundEffect"] ["Name"];
-			Debug.Log("use custom SE");
+			Debug.Log ("use custom SE");
 		} else {
 			defaultSE = true;
-			Debug.Log("use default SE");
+			Debug.Log ("use default SE");
 		}
 
 		if (enableBG) {
@@ -152,10 +150,10 @@ public class GamePlayer : MonoBehaviour
 				default:
 					break;
 				}
-				Debug.Log("use custom BG");
+				Debug.Log ("use custom BG");
 			} else {
 				mov = Resources.Load ("Default/background") as MovieTexture;
-				Debug.Log("use default BG");
+				Debug.Log ("use default BG");
 			}
 			if (mov == null)	// load fail
 				return;
@@ -193,18 +191,39 @@ public class GamePlayer : MonoBehaviour
 		// Init
 		i = 0;
 		now = HitObjects [0].AsArray;
-		music.Play ();
-		if (enableBG)
-			mov.Play ();
-		pause = stop = gameover = false;
+		pause = gameover = false;
 		ScoreCounter = ComboCounter = MaxCombo = PerfectCount = GoodCount = BadCount = MissCount = 0;
 		ScoreNow = 0;
 		ScoreText.text = "Score: " + ScoreCounter.ToString ();
 		ComboText.text = "Combo: " + ComboCounter.ToString ();
-		ScoreText.fontSize = ComboText.fontSize = (int) (Screen.width * 0.03f);
+		ScoreText.fontSize = ComboText.fontSize = (int)(Screen.width * 0.03f);
 
-		PauseButton.onClick.AddListener(PauseResume);
-		StopButton.onClick.AddListener(StopGame);
+		PauseButton.onClick.AddListener (PauseResume);
+		StopButton.onClick.AddListener (StopGame);
+		
+		Timer = 0;
+		NotesBeforeDone = true;
+		/*NotesBeforeMusic = 0;
+		while (HitObjects.Count > NotesBeforeMusic && now [1].AsFloat - 7 / now [3].AsFloat < 0) {
+			NotesBeforeMusic++;
+			if (HitObjects.Count > NotesBeforeMusic)
+				now = HitObjects [NotesBeforeMusic].AsArray;
+		}
+		if (NotesBeforeMusic > 0) {
+			now = HitObjects [NotesBeforeMusic - 1].AsArray;
+			Timer = Mathf.Abs (now [1].AsFloat - 7 / now [3].AsFloat);
+			NotesBeforeDone = false;
+		}*/
+		if (now [1].AsFloat - 7 / now [3].AsFloat < 0) {
+			Timer = Mathf.Abs (now [1].AsFloat - 7 / now [3].AsFloat);
+			NotesBeforeDone = false;
+		} else {
+			StartGame();
+		}
+		/*Timer = 0f;
+		NotesBeforeDone = true;
+		StartGame();*/
+		//Debug.Log (Timer);
 	}
 	
 	// Update is called once per frame
@@ -213,50 +232,61 @@ public class GamePlayer : MonoBehaviour
 		if (loadFail)
 			return;
 
-		if (!pause && !stop) {
+		if (!pause) {
 			if (ScoreNow < ScoreCounter)
-				if (ScoreCounter - ScoreNow < 10)
-					ScoreNow++;
-				else
-					ScoreNow += (ScoreCounter - ScoreNow) / 10;
+			if (ScoreCounter - ScoreNow < 10)
+				ScoreNow++;
+			else
+				ScoreNow += (ScoreCounter - ScoreNow) / 10;
 			ScoreText.text = "Score: " + ScoreNow.ToString ();
-		}
+		} else 
+			return;
 
 		if (HitObjects.Count <= i) {
 			if (!gameover) {
 				gameover = true;
-				gameoverTimer = 5f;
-				PlayerPrefs.SetString("ScoreCount", ScoreCounter.ToString());
-				PlayerPrefs.SetInt("ComboCount", ComboCounter);
-				PlayerPrefs.SetInt("PerfectCount", PerfectCount);
-				PlayerPrefs.SetInt("GoodCount", GoodCount);
-				PlayerPrefs.SetInt("BadCount", BadCount);
-				PlayerPrefs.SetInt("MissCount", MissCount);
-
-				if (PerfectCount == HitObjects.Count)
-					PlayerPrefs.SetString("Judgement", "X");
-				else if (PerfectCount >= HitObjects.Count * 0.9f && BadCount <= HitObjects.Count * 0.01f && MissCount == 0)
-					PlayerPrefs.SetString("Judgement", "S");
-				else if (PerfectCount >= HitObjects.Count * 0.8f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.9f)
-					PlayerPrefs.SetString("Judgement", "A");
-				else if (PerfectCount >= HitObjects.Count * 0.7f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.8f)
-					PlayerPrefs.SetString("Judgement", "B");
-				else if (PerfectCount >= HitObjects.Count * 0.6f)
-					PlayerPrefs.SetString("Judgement", "C");
-				else
-					PlayerPrefs.SetString("Judgement", "D");
+				gameoverTimer = 5f + 7 / now [3].AsFloat;
 			}
 
 			gameoverTimer -= Time.deltaTime;
-			music.volume -= Time.deltaTime / 5f;
+			if (gameoverTimer < 4)
+			music.volume -= Time.deltaTime / 4f;
 
-			if (gameoverTimer < 0)
-				Application.LoadLevel("GameOver");
+			if (gameoverTimer < 0) {
+				PlayerPrefs.SetString ("ScoreCount", ScoreCounter.ToString ());
+				PlayerPrefs.SetInt ("ComboCount", MaxCombo);
+				PlayerPrefs.SetInt ("PerfectCount", PerfectCount);
+				PlayerPrefs.SetInt ("GoodCount", GoodCount);
+				PlayerPrefs.SetInt ("BadCount", BadCount);
+				PlayerPrefs.SetInt ("MissCount", MissCount);
+
+				if (PerfectCount == HitObjects.Count)
+					PlayerPrefs.SetString ("Judgement", "X");
+				else if (PerfectCount >= HitObjects.Count * 0.9f && BadCount <= HitObjects.Count * 0.01f && MissCount == 0)
+					PlayerPrefs.SetString ("Judgement", "S");
+				else if (PerfectCount >= HitObjects.Count * 0.8f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.9f)
+					PlayerPrefs.SetString ("Judgement", "A");
+				else if (PerfectCount >= HitObjects.Count * 0.7f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.8f)
+					PlayerPrefs.SetString ("Judgement", "B");
+				else if (PerfectCount >= HitObjects.Count * 0.6f)
+					PlayerPrefs.SetString ("Judgement", "C");
+				else
+					PlayerPrefs.SetString ("Judgement", "D");
+
+				Application.LoadLevel ("GameOver");
+			}
 			return;
 		}
 
-		if (!music.isPlaying)
-			return;
+
+		if (!NotesBeforeDone) {
+			Timer -= Time.deltaTime;
+			if (Timer <= 0) {
+				NotesBeforeDone = true;
+				Timer = 0;
+				StartGame ();
+			}
+		}
 
 		//Debug.Log (music.time);
 		switch (now [0].AsInt) {
@@ -270,7 +300,7 @@ public class GamePlayer : MonoBehaviour
 			break;
 		default:	// Generate Note
 			//Debug.Log(HitObjects.Count);
-			while (HitObjects.Count > i && music.time >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
+			while (HitObjects.Count > i && music.time - Timer >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
 				switch (now [2].AsInt) {	// select generator
 				case 1:
 					NGDL.GenerateNote (now [0].AsInt, now [3].AsFloat);
@@ -305,11 +335,17 @@ public class GamePlayer : MonoBehaviour
 		}
 	}
 
+	void StartGame ()
+	{
+		music.Play ();
+		if (enableBG)
+			mov.Play ();
+	}
 
-
-	void PauseResume(){
+	void PauseResume ()
+	{
 		if (!music.isPlaying) {
-			pause = stop = false;
+			pause = false;
 			music.Play ();
 			if (enableBG)
 				mov.Play ();
@@ -323,19 +359,8 @@ public class GamePlayer : MonoBehaviour
 		}
 	}
 
-	void StopGame(){
-		/*stop = true;
-		//time = 0f;
-		i = 0;
-		now = HitObjects [0].AsArray;
-		music.Stop ();
-		if (enableBG)
-			mov.Stop ();
-		ScoreCounter = ScoreNow = ComboCounter = PerfectCount = GoodCount = BadCount = MissCount = 0;
-		ScoreText.text = "Score: " + ScoreCounter.ToString ();
-		ComboText.text = "Combo: " + ComboCounter.ToString ();
-		PauseButtonText.text = "Start";*/
-		Application.LoadLevel("SelectMusic");
-		Debug.Log("222");
+	void StopGame ()
+	{
+		Application.LoadLevel ("SelectMusic");
 	}
 }

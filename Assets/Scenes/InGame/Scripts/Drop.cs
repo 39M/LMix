@@ -94,8 +94,6 @@ public class Drop : MonoBehaviour
 
 	void Update ()
 	{
-		if (status.stop)
-			Destroy (gameObject);
 		if (status.pause)
 			return;
 
@@ -180,6 +178,7 @@ public class Drop : MonoBehaviour
 		}
 
 		if (notePos.z <= -1.75 && !hit && !missSE.isPlaying) {
+			Debug.Log(notePos.z);
 			Quaternion rt = Quaternion.identity;
 			if (transform.rotation.eulerAngles.x == 0)
 				rt.eulerAngles = new Vector3 (0, -90, 0);
