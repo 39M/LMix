@@ -21,8 +21,8 @@ public class GamePlayer : MonoBehaviour
 	public Button StopButton;
 	public Text StopButtonText;
 
-	public int ScoreCounter;
-	public int ScoreNow;
+	public long ScoreCounter;
+	public long ScoreNow;
 	public int ComboCounter;
 	public int MaxCombo;
 	public int PerfectCount;
@@ -226,7 +226,7 @@ public class GamePlayer : MonoBehaviour
 			if (!gameover) {
 				gameover = true;
 				gameoverTimer = 5f;
-				PlayerPrefs.SetInt("ScoreCount", ScoreCounter);
+				PlayerPrefs.SetString("ScoreCount", ScoreCounter.ToString());
 				PlayerPrefs.SetInt("ComboCount", ComboCounter);
 				PlayerPrefs.SetInt("PerfectCount", PerfectCount);
 				PlayerPrefs.SetInt("GoodCount", GoodCount);

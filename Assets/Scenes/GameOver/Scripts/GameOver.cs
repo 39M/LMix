@@ -24,8 +24,8 @@ public class GameOver : MonoBehaviour
 	public Text BackButtonText;
 	public Image BigCover;
 	public Image SmallCover;
-	int TotalScore;
-	int ScoreNow;
+	long TotalScore;
+	long ScoreNow;
 	int MaxCombo;
 	int ComboNow;
 	int PerfectCount;
@@ -44,7 +44,7 @@ public class GameOver : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		TotalScore = PlayerPrefs.GetInt ("ScoreCount");
+		TotalScore = long.Parse(PlayerPrefs.GetString ("ScoreCount")); 
 		MaxCombo = PlayerPrefs.GetInt ("ComboCount");
 		PerfectCount = PlayerPrefs.GetInt ("PerfectCount");
 		GoodCount = PlayerPrefs.GetInt ("GoodCount");
@@ -157,6 +157,17 @@ public class GameOver : MonoBehaviour
 	}
 
 	void CounterPlus (ref int Counter, int max, int step)
+	{
+		if (Counter < max) {
+			if (max - Counter >= step)
+				Counter += (max - Counter) / step;
+			else
+				Counter++;
+			DisplayDone = false;
+		}
+	}
+
+	void CounterPlus (ref long Counter, long max, int step)
 	{
 		if (Counter < max) {
 			if (max - Counter >= step)
