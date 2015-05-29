@@ -112,8 +112,8 @@ public class GamePlayer : MonoBehaviour
 		this.difficulty = PlayerPrefs.GetInt ("Difficulty");
 		/*******/
 
-		beatmapName = "Nya";
-		difficulty = 0;
+		//beatmapName = "Nya";
+		//difficulty = 0;
 		//beatmapName = "MirrorNight";
 		//difficulty = 2;
 		//beatmapName = "LetItGo";
