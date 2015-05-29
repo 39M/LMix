@@ -19,8 +19,8 @@ public class JudgementDisplay : MonoBehaviour {
 		if (status.pause)
 			return;
 
-		if (timer > 0.8f) {
-			c.a += Time.deltaTime * 5;
+		if (timer > 0.9f) {
+			c.a += Time.deltaTime * 10;
 			tm.color = c;
 		}
 
