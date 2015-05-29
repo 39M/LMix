@@ -11,14 +11,17 @@ public class GamePlayer : MonoBehaviour
 	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
 	public bool enableSE;
 	public bool enableBG;
+
 	public bool defaultSE;
 	public JSONNode SEname;
+
 	public Text ScoreText;
 	public Text ComboText;
 	public Button PauseButton;
 	public Text PauseButtonText;
 	public Button StopButton;
 	public Text StopButtonText;
+
 	public long ScoreCounter;
 	public long ScoreNow;
 	public int ComboCounter;
@@ -27,8 +30,15 @@ public class GamePlayer : MonoBehaviour
 	public int GoodCount;
 	public int BadCount;
 	public int MissCount;
+
 	public bool pause;	// status of music
 	public bool[] trackbusy = {false, false, false, false};
+
+	TextMesh CoverMesh;
+	Color CoverColor;
+	float CoverTimer;
+	bool CoverDone;
+
 	bool loadFail;
 	bool gameover;
 	float gameoverTimer;
@@ -41,13 +51,16 @@ public class GamePlayer : MonoBehaviour
 	//NoteGenerator NGLU;
 	NoteGenerator NGLD;
 	SpinnerGenerator SG;
+
 	JSONNode Beatmap;
 	JSONArray HitObjects;	// HitObjects like note, spinner
 	JSONArray now;	// next Object
-	float Timer;
-	bool NotesBeforeDone;
-	int i;
+
+	int i;	//note counter\
+
 	int NotesBeforeMusic;
+	bool NotesBeforeDone;
+	float Timer;
 	//bool isPlaying;
 
 	// Use this for initialization
@@ -91,7 +104,6 @@ public class GamePlayer : MonoBehaviour
 }
 */
 		/*******/
-
 		enableSE = PlayerPrefs.GetInt ("enableSE") != 0;
 		enableBG = PlayerPrefs.GetInt ("enableBG") != 0;
 
@@ -178,6 +190,12 @@ public class GamePlayer : MonoBehaviour
 			return;
 		Debug.Log ("hitObjects load success");
 
+		CoverMesh = GameObject.Find ("Cover").GetComponent<TextMesh> ();
+		CoverColor = new Color (CoverMesh.color.r, CoverMesh.color.g, CoverMesh.color.b, 1);
+		CoverTimer = 0.5f;
+		CoverDone = false;
+
+
 		loadFail = false;	// load success
 		Debug.Log ("load success");
 
@@ -201,7 +219,7 @@ public class GamePlayer : MonoBehaviour
 		PauseButton.onClick.AddListener (PauseResume);
 		StopButton.onClick.AddListener (StopGame);
 		
-		Timer = 0;
+		Timer = 0f;
 		NotesBeforeDone = true;
 		/*NotesBeforeMusic = 0;
 		while (HitObjects.Count > NotesBeforeMusic && now [1].AsFloat - 7 / now [3].AsFloat < 0) {
@@ -216,7 +234,7 @@ public class GamePlayer : MonoBehaviour
 		}*/
 		if (now [1].AsFloat - 7 / now [3].AsFloat < 0) {
 			Timer = Mathf.Abs (now [1].AsFloat - 7 / now [3].AsFloat);
-			NotesBeforeDone = false;
+			//NotesBeforeDone = false;
 		} else {
 			StartGame();
 		}
@@ -245,12 +263,19 @@ public class GamePlayer : MonoBehaviour
 		if (HitObjects.Count <= i) {
 			if (!gameover) {
 				gameover = true;
-				gameoverTimer = 5f + 7 / now [3].AsFloat;
+				gameoverTimer = 4f + 7 / now [3].AsFloat;
+
+				CoverDone = false;
 			}
 
 			gameoverTimer -= Time.deltaTime;
 			if (gameoverTimer < 4)
 			music.volume -= Time.deltaTime / 4f;
+
+			if (gameoverTimer < 0.5) {
+				CoverColor.a += Time.deltaTime * 2;
+				CoverMesh.color = CoverColor;
+			}
 
 			if (gameoverTimer < 0) {
 				PlayerPrefs.SetString ("ScoreCount", ScoreCounter.ToString ());
@@ -286,6 +311,14 @@ public class GamePlayer : MonoBehaviour
 				Timer = 0;
 				StartGame ();
 			}
+		}
+
+		if (!CoverDone) {
+			CoverColor.a -= Time.deltaTime * 2;
+			CoverMesh.color = CoverColor;
+			CoverTimer -= Time.deltaTime;
+			if (CoverTimer < 0)
+				CoverDone = true;
 		}
 
 		//Debug.Log (music.time);
