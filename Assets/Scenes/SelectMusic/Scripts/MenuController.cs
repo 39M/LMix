@@ -47,7 +47,10 @@ public class MenuController : MonoBehaviour {
 					GameObject menuitem_tmp = (GameObject) Instantiate(menuitemobj,pos,transform.rotation);
 					Debug.Log("loading "+"Music/"+folder+Beatmap["Album"]["Name"]);
 					menuitem_tmp.GetComponent<GUITexture>().texture=(Texture)Resources.Load("Music/"+folder+"/"+Beatmap["Album"]["Name"]);
+					Debug.Log(menuitem_tmp.GetComponent<GUITexture>().border.ToString());
 					menuitem_tmp.GetComponent<GUIText>().text=Beatmap["Title"]+difficulty;
+					Vector2 tpos = new Vector2(0, - UnityEngine.Screen.height/4.0f);
+					menuitem_tmp.GetComponent<GUIText>().pixelOffset = tpos;
 					menulist.Add(menuitem_tmp);
 					diff[Beatmap["Title"]+difficulty]=diffmap[difficulty];
 					song[Beatmap["Title"]+difficulty]=folder;

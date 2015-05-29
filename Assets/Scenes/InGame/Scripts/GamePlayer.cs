@@ -220,7 +220,7 @@ public class GamePlayer : MonoBehaviour
 		StopButton.onClick.AddListener (StopGame);
 		
 		Timer = 0f;
-		NotesBeforeDone = true;
+		NotesBeforeDone = false;
 		/*NotesBeforeMusic = 0;
 		while (HitObjects.Count > NotesBeforeMusic && now [1].AsFloat - 7 / now [3].AsFloat < 0) {
 			NotesBeforeMusic++;
@@ -234,7 +234,7 @@ public class GamePlayer : MonoBehaviour
 		}*/
 		if (now [1].AsFloat - 7 / now [3].AsFloat < 0) {
 			Timer = Mathf.Abs (now [1].AsFloat - 7 / now [3].AsFloat);
-			//NotesBeforeDone = false;
+			NotesBeforeDone = false;
 		} else {
 			StartGame();
 		}
