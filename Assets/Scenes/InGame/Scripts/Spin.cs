@@ -3,6 +3,13 @@ using System.Collections;
 using Leap;
 public class Spin : MonoBehaviour {
 
+	public GameObject judgement;
+	public float TotalTime = 3.0f;
+
+	Color c300, c100, c50, c0;
+
+	GamePlayer status;
+
 	float rotate = 0.0f;
 	float rotatespeed = 20.0f;
 	float remaintime = 3.0f;
@@ -24,6 +31,12 @@ public class Spin : MonoBehaviour {
 
 		}
 		fingeroldposition = FingerPos;
+
+		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
+		c300 = new Color (58 / 255f, 183 / 255f, 239 / 255f, 0);
+		c100 = new Color(191 / 255f, 255 / 255f, 160 / 255f, 0);
+		c50 = new Color(251 / 255f, 208 / 255f, 114 / 255f, 0);
+		c0 = new Color(249 / 255f, 90 / 255f, 101 / 255f, 0);
 	}
 	
 	// Update is called once per frame
@@ -44,8 +57,49 @@ public class Spin : MonoBehaviour {
 			// add score
 			// this.rotate is a float that remark the total angle that the spinner has been rotated before it ends; 
 
+			Debug.Log(rotate);
+
+			TextMesh tmp = ((GameObject)Instantiate (judgement, transform.position, Quaternion.identity)).GetComponent<TextMesh> ();
+			int ScoreGet;
+			if (rotate >= TotalTime / 2f * 360) {
+				tmp.text = "Perfect";
+				tmp.color = c300;
+				ScoreGet = 300 + 300 / 25 * status.ComboCounter;
+				status.ComboCounter++;
+				status.PerfectCount++;
+			}
+			else if (rotate >= TotalTime / 4f * 360) {
+				tmp.text = "Good";
+				tmp.color = c100;
+				ScoreGet = 100 + 100 / 25 * status.ComboCounter;
+				status.ComboCounter++;
+				status.GoodCount++;
+			}
+			else if (rotate >= TotalTime / 8f * 360) {
+				tmp.text = "Bad";
+				tmp.color = c50;
+				ScoreGet = 50 + 50 / 25 * status.ComboCounter;
+				status.ComboCounter = 0;
+				status.BadCount++;
+			}
+			else {
+				tmp.text = "Miss";
+				tmp.color = c0;
+				status.MissCount++;
+				ScoreGet = 0;
+			}
+
+			status.ScoreCounter += ScoreGet;
+			if (status.ComboCounter > status.MaxCombo)
+				status.MaxCombo = status.ComboCounter;
+			//status.ScoreText.text = "Score: " + status.ScoreNow.ToString ();
+			status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
+
+
+
 			// distory this spinner
-			GetComponent<Renderer>().enabled = false;
+			Destroy(gameObject);
+			//GetComponent<Renderer>().enabled = false;
 		}
 	}
 	void rot(){
