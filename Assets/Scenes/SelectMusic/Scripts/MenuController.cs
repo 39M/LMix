@@ -8,11 +8,10 @@ public class MenuController : MonoBehaviour {
 	public GameObject menuitemobj;
 	public List<GameObject> menulist= new List<GameObject> ();
 	public int musicnum = 0;
-	protected bool motionlock=false;
-	protected bool selectlock = false;
+	protected bool motionlock = false;
 	protected double lastx;
 	protected Controller leap;
-	protected Vector3 lastpos;
+	protected int lastmotion;
 	protected Dictionary<string,int> diff ;
 	protected Dictionary<string,string> song ;
 	// Use this for initialization
@@ -58,79 +57,68 @@ public class MenuController : MonoBehaviour {
 				}
 			}
 		}
-		//
-	
+		//open the guesture
+		leap.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
+		//leap.Config.SetFloat("Gesture.Swipe.MinLength", 100.0f);
+		leap.Config.SetFloat("Gesture.Swipe.MinVelocity", 750f);
+		leap.Config.Save();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (!motionlock) {
-			Frame fream = leap.Frame ();
-			Hand hand = fream.Hands [0];
-			lastpos = new Vector3( hand.WristPosition.x/100.0f, hand.WristPosition.y/100.0f-0.7f, 5) ;
-		}
-		if (lastpos.x < 0.3f || lastpos.x > 0.7f) {
-			// the first and last song can't out off the edge
-			if(!selectlock){
-				if (menulist [0].transform.position.x > 0.5f && lastpos.x > 0.5) {
-					motionlock = false;
-					Debug.Log ("z");
-					lastpos.x = 0.5f;
-					return;
-				} else if ((menulist [0].transform.position.x + (menulist.Count - 1) * 0.5) < 0.5f && lastpos.x < 0.5) {
-					motionlock = false;
-					Debug.Log ("y");
-					lastpos.x = 0.5f;
-					return;
-				}
-				
-				motionlock = true;
+		// guesture judgement
+		if(motionlock){
+			if(lastmotion!=0){
 				foreach (var item in menulist) {
 					Vector3 position = item.transform.position;
 					double lx = position.x;
-					position.x += (lastpos.x - 0.5f) * Time.deltaTime;
+					position.x += 0.5f * lastmotion * Time.deltaTime;
 					item.transform.position = position;
 					// if any item cross the 0.5f , release the lock;
 					if ((position.x - 0.5) * (lx - 0.5) < 0)
 						motionlock = false;
 				}
-			}
-		} else {
-			if (!motionlock) {
-				Frame fream = leap.Frame ();
-				Hand hand = fream.Hands [0];
-				if(hand.WristPosition.y/100.0f>1.5){
-					foreach (var item in menulist) {
-						Vector3 position=item.transform.position;
-						if(position.x>0.4 && position.x<0.6){
-							position.y+=0.3f*Time.deltaTime;
-							item.transform.position=position;
-						}
-						if(item.transform.position.y>0.8){
-							// select success
-							Debug.Log("enter "+this.song[item.GetComponent<GUIText>().text]);
-							PlayerPrefs.SetString("song",this.song[item.GetComponent<GUIText>().text]);
-							//enableSE = true;
-							//enableBG = true;
-							PlayerPrefs.SetInt("enableSE",1);
-							PlayerPrefs.SetInt("enableBG",1);
-							Debug.Log("set difficulty "+ this.diff[item.GetComponent<GUIText>().text]);
-							PlayerPrefs.SetInt("Difficulty",this.diff[item.GetComponent<GUIText>().text]);
-							Application.LoadLevel("InGame");
-						}
+			}else{
+				foreach (var item in menulist) {
+					Vector3 position=item.transform.position;
+					if(position.x>0.4 && position.x<0.6){
+						position.y+=0.5f*Time.deltaTime;
+						item.transform.position=position;
 					}
-				}else{
-					foreach (var item in menulist) {
-						Vector3 position=item.transform.position;
-						if(position.x>0.4 && position.x<0.6){
-							position.y=0.5f;
-							item.transform.position=position;
-						}
+					if(item.transform.position.y>0.8){
+						// select success
+						Debug.Log("enter "+this.song[item.GetComponent<GUIText>().text]);
+						PlayerPrefs.SetString("song",this.song[item.GetComponent<GUIText>().text]);
+						//enableSE = true;
+						//enableBG = true;
+						PlayerPrefs.SetInt("enableSE",1);
+						PlayerPrefs.SetInt("enableBG",1);
+						Debug.Log("set difficulty "+ this.diff[item.GetComponent<GUIText>().text]);
+						PlayerPrefs.SetInt("Difficulty",this.diff[item.GetComponent<GUIText>().text]);
+						Application.LoadLevel("InGame");
 					}
 				}
 			}
+
+		}else{
+			Frame sfream = leap.Frame();
+			foreach (var gesture in sfream.Gestures()) {
+				if(gesture.Type == Gesture.GestureType.TYPE_SWIPE) {
+					SwipeGesture swipeGesture = new SwipeGesture(gesture);
+					Debug.Log(" gesture read success : "+swipeGesture.Direction.ToString());
+					Vector gestureVector = swipeGesture.Direction;
+					float x= gestureVector.x;
+					float y= gestureVector.y;
+					if (x < 0.3f && (menulist [0].transform.position.x + (menulist.Count - 1) * 0.5) > 0.6f){
+						lastmotion = -1;
+					}else if(x > 0.7f && menulist[0].transform.position.x<0.4f) {
+						lastmotion = 1;
+					}else if(y>0.6){
+						lastmotion=0;
+					}else{return;}
+					motionlock=true;
+				}
+			}
 		}
-
-
 	}
 }
