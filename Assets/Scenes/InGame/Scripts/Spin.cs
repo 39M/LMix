@@ -50,7 +50,7 @@ public class Spin : MonoBehaviour {
 		foreach (var finger in hand.Fingers) {
 			FingerPos =FingerPos +  new Vector3(finger.TipPosition.x,finger.TipPosition.y,finger.TipPosition.z);
 		}
-		rotatespeed =Time.deltaTime *(FingerPos - fingeroldposition).sqrMagnitude;
+		rotatespeed +=0.04f*Time.deltaTime *(FingerPos - fingeroldposition).sqrMagnitude;
 		fingeroldposition = FingerPos;
 		remaintime-=Time.deltaTime;
 		if(remaintime <= 0.0f){
