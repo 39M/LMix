@@ -12,7 +12,7 @@ public class Spin : MonoBehaviour {
 	float scorecount = 0;
 
 	float rotate = 0.0f;
-	float rotatespeed = 20.0f;
+	float rotatespeed = 0.0f;
 	float maxrotatespeed = 1200f;
 	float remaintime = 3.0f;
 	CircleGesture circlegesture;
@@ -53,8 +53,8 @@ public class Spin : MonoBehaviour {
 			FingerPos =FingerPos +  new Vector3(finger.TipPosition.x,finger.TipPosition.y,finger.TipPosition.z);
 		}
 		if (rotatespeed < maxrotatespeed)
-			rotatespeed +=0.04f*Time.deltaTime *(FingerPos - fingeroldposition).sqrMagnitude;
-
+			rotatespeed +=0.04f*Time.deltaTime *((FingerPos - fingeroldposition).sqrMagnitude-1500.0f);
+		if(rotatespeed<0.0f)rotatespeed=0.0f;
 		fingeroldposition = FingerPos;
 		remaintime-=Time.deltaTime;
 		if(remaintime <= 0.0f){
