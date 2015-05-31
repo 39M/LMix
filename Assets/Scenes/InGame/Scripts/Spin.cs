@@ -9,9 +9,11 @@ public class Spin : MonoBehaviour {
 	Color c300, c100, c50, c0;
 
 	GamePlayer status;
+	float scorecount = 0;
 
 	float rotate = 0.0f;
 	float rotatespeed = 20.0f;
+	float maxrotatespeed = 1200f;
 	float remaintime = 3.0f;
 	CircleGesture circlegesture;
 	Vector3 fingeroldposition ;
@@ -50,7 +52,9 @@ public class Spin : MonoBehaviour {
 		foreach (var finger in hand.Fingers) {
 			FingerPos =FingerPos +  new Vector3(finger.TipPosition.x,finger.TipPosition.y,finger.TipPosition.z);
 		}
-		rotatespeed +=0.04f*Time.deltaTime *(FingerPos - fingeroldposition).sqrMagnitude;
+		if (rotatespeed < maxrotatespeed)
+			rotatespeed +=0.04f*Time.deltaTime *(FingerPos - fingeroldposition).sqrMagnitude;
+
 		fingeroldposition = FingerPos;
 		remaintime-=Time.deltaTime;
 		if(remaintime <= 0.0f){
@@ -104,6 +108,11 @@ public class Spin : MonoBehaviour {
 	}
 	void rot(){
 		rotate += rotatespeed * Time.deltaTime;
+		scorecount += rotatespeed * Time.deltaTime;
+		if (scorecount > 1) {
+			status.ScoreCounter += (int) scorecount;
+			scorecount = 0f;
+		}
 		Debug.Log(rotate);
 		Vector3 rot = new Vector3();
 		rot = transform.localEulerAngles;
