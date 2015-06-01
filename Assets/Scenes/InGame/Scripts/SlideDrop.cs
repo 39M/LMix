@@ -5,7 +5,7 @@ using Leap;
 public class SlideDrop : MonoBehaviour
 {
 	public float speed;
-	public GameObject score;
+	public GameObject judgement;
 	public bool pause;
 	public bool stop;
 	Controller leap;
@@ -153,7 +153,7 @@ public class SlideDrop : MonoBehaviour
 						else// if (transform.rotation.eulerAngles.x == 180)
 							rt.eulerAngles = new Vector3 (0, 90, 0);
 						//Debug.Log(transform.rotation.eulerAngles.x / 2);
-						TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
+						TextMesh tmp = ((GameObject)Instantiate (judgement, transform.position, rt)).GetComponent<TextMesh> ();
 						int ScoreGet;
 						if (notePos.z > -0.75) {
 							tmp.text = "Perfect";
@@ -207,7 +207,7 @@ public class SlideDrop : MonoBehaviour
 			else// if (transform.rotation.eulerAngles.x == 180)
 				rt.eulerAngles = new Vector3 (0, 90, 0);
 
-			TextMesh tmp = ((GameObject)Instantiate (score, transform.position, rt)).GetComponent<TextMesh> ();
+			TextMesh tmp = ((GameObject)Instantiate (judgement, transform.position, rt)).GetComponent<TextMesh> ();
 			tmp.text = "Miss";
 			tmp.color = c0;
 			status.ComboCounter = 0;
