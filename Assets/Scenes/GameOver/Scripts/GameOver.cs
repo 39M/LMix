@@ -24,6 +24,8 @@ public class GameOver : MonoBehaviour
 	public Text BackButtonText;
 	public Image BigCover;
 	public Image SmallCover;
+	public Image EndCover;
+	Leap.Controller leap;
 	long TotalScore;
 	long ScoreNow;
 	int MaxCombo;
@@ -40,11 +42,14 @@ public class GameOver : MonoBehaviour
 	bool DisplayDone;
 	Color CoverColor;
 	float Timer;
+	bool Retrying = false;
+	bool Backing = false;
+	bool RBDone = false;
 
 	// Use this for initialization
 	void Start ()
 	{
-		TotalScore = long.Parse(PlayerPrefs.GetString ("ScoreCount")); 
+		TotalScore = long.Parse (PlayerPrefs.GetString ("ScoreCount")); 
 		MaxCombo = PlayerPrefs.GetInt ("ComboCount");
 		PerfectCount = PlayerPrefs.GetInt ("PerfectCount");
 		GoodCount = PlayerPrefs.GetInt ("GoodCount");
@@ -102,6 +107,13 @@ public class GameOver : MonoBehaviour
 
 		Timer = 10f;
 
+		leap = new Leap.Controller ();
+
+		leap.EnableGesture (Leap.Gesture.GestureType.TYPE_SWIPE);
+		//leap.Config.SetFloat ("Gesture.Swipe.MinLength", 200.0f);
+		//leap.Config.SetFloat ("Gesture.Swipe.MinVelocity", 1050f);
+		//leap.Config.Save ();
+
 		/*TotalScore = 1000000;
 		MaxCombo = 512;
 		PerfectCount = 500;
@@ -114,6 +126,31 @@ public class GameOver : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		if (RBDone) {
+			if (Retrying)
+				Application.LoadLevel ("InGame");
+			else
+				Application.LoadLevel ("SelectMusic");
+			return;
+		}
+
+		if (Retrying || Backing) {
+			if (CoverColor.a < 0) {
+				Debug.Log(1);
+				//BigCover = Instantiate (CoverPrefab);
+				EndCover.rectTransform.sizeDelta = new Vector2 (Screen.width * 2, Screen.height * 2);
+				CoverColor = new Color (EndCover.color.r, EndCover.color.g, EndCover.color.b, 0);
+			} else {
+				Debug.Log(2);
+				CoverColor.a += Time.deltaTime * 2f;
+				EndCover.color = CoverColor;
+				if (CoverColor.a >= 1)
+					RBDone = true;
+			}
+			return;
+		}
+
+
 		if (!ShowUI) {
 			CoverColor.a -= Time.deltaTime * 2;
 			BigCover.color = CoverColor;
@@ -141,12 +178,27 @@ public class GameOver : MonoBehaviour
 			MissText.text = MissNow.ToString ();
 		}
 
-		if (DisplayDone)
-		if (Timer > 1)
-			Timer = 0.5f;
-		else
-			Timer -= Time.deltaTime;
+		if (DisplayDone) {
+			if (Timer > 1)
+				Timer = 0.5f;
+			else if (Timer >= 0)
+				Timer -= Time.deltaTime;
 
+			Leap.Frame frame = leap.Frame ();
+			foreach (Leap.Gesture gesture in frame.Gestures()) {
+				if (gesture.Type == Leap.Gesture.GestureType.TYPE_SWIPE) {
+					Leap.SwipeGesture swipeGesture = new Leap.SwipeGesture (gesture);
+					Leap.Vector gestureDirection = swipeGesture.Direction;
+					//float x = gestureDirection.x;
+					float y = gestureDirection.y;
+					Debug.Log (y);
+					if (y > 0.7)
+						Retry ();
+					if (y < -0.7)
+						Back ();
+				}
+			}
+		}
 
 		if (DisplayDone && Timer < 0 && CoverColor.a > 0) {
 			CoverColor.a -= Time.deltaTime * 2;
@@ -180,11 +232,11 @@ public class GameOver : MonoBehaviour
 
 	void Retry ()
 	{
-		Application.LoadLevel ("InGame");
+		Retrying = true;
 	}
 
 	void Back ()
 	{
-		Application.LoadLevel ("SelectMusic");
+		Backing = true;
 	}
 }
