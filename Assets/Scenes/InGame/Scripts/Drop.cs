@@ -18,10 +18,8 @@ public class Drop : MonoBehaviour
 	bool hit;
 	//bool miss;
 	bool hitable;
-
 	int track;
 	bool busy;
-
 	Color c300, c100, c50, c0;
 
 	void Start ()
@@ -41,9 +39,9 @@ public class Drop : MonoBehaviour
 			hitSE.mute = true;
 
 		c300 = new Color (58 / 255f, 183 / 255f, 239 / 255f, 0);
-		c100 = new Color(191 / 255f, 255 / 255f, 160 / 255f, 0);
-		c50 = new Color(251 / 255f, 208 / 255f, 114 / 255f, 0);
-		c0 = new Color(249 / 255f, 90 / 255f, 101 / 255f, 0);
+		c100 = new Color (191 / 255f, 255 / 255f, 160 / 255f, 0);
+		c50 = new Color (251 / 255f, 208 / 255f, 114 / 255f, 0);
+		c0 = new Color (249 / 255f, 90 / 255f, 101 / 255f, 0);
 
 		int width = 200, y_base = 0;
 		float y_basef = 1.15f;
@@ -105,10 +103,10 @@ public class Drop : MonoBehaviour
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
 		if (!hit && notePos.z < 2 && notePos.z > -1.75) {
-			if (status.trackbusy[track] && !busy)
+			if (status.trackbusy [track] && !busy)
 				return;
 
-			status.trackbusy[track] = busy = true;
+			status.trackbusy [track] = busy = true;
 
 			Frame frame = leap.Frame ();
 			foreach (Hand hand in frame.Hands) {
@@ -163,7 +161,7 @@ public class Drop : MonoBehaviour
 						status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 
 						hit = true;
-						status.trackbusy[track] = false;
+						status.trackbusy [track] = false;
 						if (status.enableSE) {
 							hitSE.enabled = true;
 							hitSE.Play ();
@@ -178,7 +176,7 @@ public class Drop : MonoBehaviour
 		}
 
 		if (notePos.z <= -1.75 && !hit && !missSE.isPlaying) {
-			Debug.Log(notePos.z);
+			Debug.Log (notePos.z);
 			Quaternion rt = Quaternion.identity;
 			if (transform.rotation.eulerAngles.x == 0)
 				rt.eulerAngles = new Vector3 (0, -90, 0);
@@ -197,7 +195,7 @@ public class Drop : MonoBehaviour
 			status.MissCount++;
 			status.ComboText.text = "Combo: " + status.ComboCounter.ToString ();
 			//miss = true;
-			status.trackbusy[track] = false;
+			status.trackbusy [track] = false;
 			if (status.enableSE) {
 				missSE.enabled = true;
 				missSE.Play ();

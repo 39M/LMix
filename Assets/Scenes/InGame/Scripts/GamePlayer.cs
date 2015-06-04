@@ -11,17 +11,14 @@ public class GamePlayer : MonoBehaviour
 	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
 	public bool enableSE;
 	public bool enableBG;
-
 	public bool defaultSE;
 	public JSONNode SEname;
-
 	public Text ScoreText;
 	public Text ComboText;
 	public Button PauseButton;
 	public Text PauseButtonText;
 	public Button StopButton;
 	public Text StopButtonText;
-
 	public long ScoreCounter;
 	public long ScoreNow;
 	public int ComboCounter;
@@ -30,15 +27,12 @@ public class GamePlayer : MonoBehaviour
 	public int GoodCount;
 	public int BadCount;
 	public int MissCount;
-
 	public bool pause;	// status of music
 	public bool[] trackbusy = {false, false, false, false};
-
 	TextMesh CoverMesh;
 	Color CoverColor;
 	float CoverTimer;
 	bool CoverDone;
-
 	bool loadFail;
 	bool gameover;
 	float gameoverTimer;
@@ -51,7 +45,6 @@ public class GamePlayer : MonoBehaviour
 	//NoteGenerator NGLU;
 	NoteGenerator NGLD;
 	SpinnerGenerator SG;
-
 	JSONNode Beatmap;
 	JSONArray HitObjects;	// HitObjects like note, spinner
 	JSONArray now;	// next Object
@@ -236,7 +229,7 @@ public class GamePlayer : MonoBehaviour
 			Timer = Mathf.Abs (now [1].AsFloat - 7 / now [3].AsFloat);
 			NotesBeforeDone = false;
 		} else {
-			StartGame();
+			StartGame ();
 		}
 		/*Timer = 0f;
 		NotesBeforeDone = true;
@@ -270,7 +263,7 @@ public class GamePlayer : MonoBehaviour
 
 			gameoverTimer -= Time.deltaTime;
 			if (gameoverTimer < 4)
-			music.volume -= Time.deltaTime / 4f;
+				music.volume -= Time.deltaTime / 4f;
 
 			if (gameoverTimer < 0.5) {
 				CoverColor.a += Time.deltaTime * 2;

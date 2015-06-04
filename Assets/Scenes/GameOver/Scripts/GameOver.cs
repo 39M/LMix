@@ -136,12 +136,12 @@ public class GameOver : MonoBehaviour
 
 		if (Retrying || Backing) {
 			if (CoverColor.a < 0) {
-				Debug.Log(1);
+				Debug.Log (1);
 				//BigCover = Instantiate (CoverPrefab);
 				EndCover.rectTransform.sizeDelta = new Vector2 (Screen.width * 2, Screen.height * 2);
 				CoverColor = new Color (EndCover.color.r, EndCover.color.g, EndCover.color.b, 0);
 			} else {
-				Debug.Log(2);
+				Debug.Log (2);
 				CoverColor.a += Time.deltaTime * 2f;
 				EndCover.color = CoverColor;
 				if (CoverColor.a >= 1)

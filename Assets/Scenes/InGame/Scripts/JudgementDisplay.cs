@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class JudgementDisplay : MonoBehaviour {
+public class JudgementDisplay : MonoBehaviour
+{
 	float timer;
 	GamePlayer status;
 	TextMesh tm;
 	Color c;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 		tm = gameObject.GetComponent<TextMesh> ();
-		c = new Color(tm.color.r, tm.color.g, tm.color.b, 0);
+		c = new Color (tm.color.r, tm.color.g, tm.color.b, 0);
 		timer = 1f;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (status.pause)
 			return;
 
