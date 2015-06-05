@@ -42,8 +42,8 @@ public class SlideDrop : MonoBehaviour
 
 		int width = 200, y_base = 0;
 		float y_basef = 1.15f;
-		lim_z_low = -175;
-		lim_z_high = 175;
+		lim_z_low = -175 * speed / 1.4f;
+		lim_z_high = 175 * speed / 1.4f;
 		
 		notePos = transform.position;
 		if (notePos.x > 0) {
@@ -88,14 +88,14 @@ public class SlideDrop : MonoBehaviour
 		if (status.pause)
 			return;
 
-		if ((notePos.z <= -1.75 && !missSE.isPlaying) || (hit && !hitSE.isPlaying)) {
+		if ((notePos.z <= -1.75 * speed / 1.4 && !missSE.isPlaying) || (hit && !hitSE.isPlaying)) {
 			Destroy (gameObject);
 		}
 
 		if (!hit)
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
-		if (!hit && notePos.z <= 0 && notePos.z > -1.75) {
+		if (!hit && notePos.z <= 0 && notePos.z > -1.75 * speed / 1.4) {
 			/*lim_z_low = -175;
 			lim_z_high = 175;
 			if (notePos.x > 0) {
@@ -155,19 +155,19 @@ public class SlideDrop : MonoBehaviour
 						//Debug.Log(transform.rotation.eulerAngles.x / 2);
 						TextMesh tmp = ((GameObject)Instantiate (judgement, transform.position, rt)).GetComponent<TextMesh> ();
 						int ScoreGet;
-						if (notePos.z > -0.75) {
+						if (notePos.z > -0.75 * speed / 1.4) {
 							tmp.text = "Perfect";
 							tmp.color = c300;
 							ScoreGet = 300 + 300 / 25 * status.ComboCounter;
 							status.ComboCounter++;
 							status.PerfectCount++;
-						} else if (notePos.z > -1.5) {
+						} else if (notePos.z > -1.5 * speed / 1.4) {
 							tmp.text = "Good";
 							tmp.color = c100;
 							status.ComboCounter++;
 							status.GoodCount++;
 							ScoreGet = 100 + 100 / 25 * status.ComboCounter;
-						} else if (notePos.z > -1.75) {
+						} else if (notePos.z > -1.75 * speed / 1.4) {
 							tmp.text = "Bad";
 							tmp.color = c50;
 							ScoreGet = 50 + 50 / 25 * status.ComboCounter;
@@ -198,7 +198,7 @@ public class SlideDrop : MonoBehaviour
 			}
 		}
 
-		if (notePos.z <= -1.75 && !hit && !missSE.isPlaying) {
+		if (notePos.z <= -1.75 * speed / 1.4 && !hit && !missSE.isPlaying) {
 			Quaternion rt = Quaternion.identity;
 			if (transform.rotation.eulerAngles.x == 0)
 				rt.eulerAngles = new Vector3 (0, -90, 0);
