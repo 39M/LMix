@@ -14,14 +14,14 @@ public class Spin : MonoBehaviour
 	float rotatespeed = 0.0f;
 	float maxrotatespeed = 1200f;
 	float remaintime = 3.0f;
-	CircleGesture circlegesture;
+	//CircleGesture circlegesture;
 	Vector3 fingeroldposition ;
 	protected Controller leap;
 	// Use this for initialization
 	void Start ()
 	{
 
-		circlegesture = new CircleGesture ();
+		//circlegesture = new CircleGesture ();
 		leap = new Controller ();
 		leap.EnableGesture (Gesture.GestureType.TYPE_CIRCLE);
 		Frame fream = leap.Frame ();

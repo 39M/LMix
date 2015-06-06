@@ -10,8 +10,11 @@ public class GamePlayer : MonoBehaviour
 	public string beatmapName;	// Unique name of beatmap
 	public int difficulty;	// difficulty, 0 - easy, 1 - normal, 2 - hard
 	public bool enableSE;
-	public bool enableBG;
 	public bool defaultSE;
+	public bool enableBG;
+	bool useMovBG;
+	bool usePicBG;
+	bool defaultBG;
 	public JSONNode SEname;
 	public Text ScoreText;
 	public Text ComboText;
@@ -112,7 +115,6 @@ public class GamePlayer : MonoBehaviour
 		//beatmapName = "LetItGo";
 		//difficulty = 2;
 
-
 		loadFail = true;	// Asume load fail
 
 		// Get beatmap from file
@@ -143,26 +145,40 @@ public class GamePlayer : MonoBehaviour
 			Debug.Log ("use default SE");
 		}
 
+		//defaultBG = true;
+		useMovBG = false;
+		usePicBG = false;
 		if (enableBG) {
 			if (Beatmap ["Background"] ["Enable"].AsBool) {
+				Destroy (GameObject.Find ("SpaceGenetator"));
+				//defaultBG = false;
 				switch (Beatmap ["Background"] ["Type"].AsInt) {
 				case 0:
 				// use Picture as background
+					usePicBG = true;
+					Debug.Log ("use custom pic BG");
 					break;
 				case 1:
+					// use video as background
 					mov = Resources.Load ("Music/" + beatmapName + "/" + Beatmap ["Background"] ["Name"]) as MovieTexture;
+					if (mov == null)	// load fail
+						return;
+					(GameObject.Find ("Backgound").GetComponent ("VideoPlayer") as VideoPlayer).movTexture = mov;
+					useMovBG = true;
+					Debug.Log ("use custom mov BG");
 					break;
 				default:
 					break;
 				}
-				Debug.Log ("use custom BG");
 			} else {
-				mov = Resources.Load ("Default/background") as MovieTexture;
+				// use default space background
+				Destroy (GameObject.Find ("Backgound"));
 				Debug.Log ("use default BG");
 			}
-			if (mov == null)	// load fail
-				return;
-			(GameObject.Find ("Backgound").GetComponent ("VideoPlayer") as VideoPlayer).movTexture = mov;
+		} else {
+			Destroy (GameObject.Find ("Backgound"));
+			Destroy (GameObject.Find ("SpaceGenetator"));
+			Debug.Log ("not use BG");
 		}
 		Debug.Log ("background load success");
 
@@ -198,6 +214,7 @@ public class GamePlayer : MonoBehaviour
 		NGRD = GameObject.Find ("NoteGeneratorRD").GetComponent ("NoteGenerator") as NoteGenerator;
 		//NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
+		SG = GameObject.Find ("SpinnerGenerator").GetComponent ("SpinnerGenerator") as SpinnerGenerator;
 
 		// Init
 		i = 0;
@@ -214,27 +231,13 @@ public class GamePlayer : MonoBehaviour
 		
 		Timer = 0f;
 		NotesBeforeDone = false;
-		/*NotesBeforeMusic = 0;
-		while (HitObjects.Count > NotesBeforeMusic && now [1].AsFloat - 7 / now [3].AsFloat < 0) {
-			NotesBeforeMusic++;
-			if (HitObjects.Count > NotesBeforeMusic)
-				now = HitObjects [NotesBeforeMusic].AsArray;
-		}
-		if (NotesBeforeMusic > 0) {
-			now = HitObjects [NotesBeforeMusic - 1].AsArray;
-			Timer = Mathf.Abs (now [1].AsFloat - 7 / now [3].AsFloat);
-			NotesBeforeDone = false;
-		}*/
+
 		if (now [1].AsFloat - 7 / now [3].AsFloat < 0) {
 			Timer = Mathf.Abs (now [1].AsFloat - 7 / now [3].AsFloat);
 			NotesBeforeDone = false;
 		} else {
 			StartGame ();
 		}
-		/*Timer = 0f;
-		NotesBeforeDone = true;
-		StartGame();*/
-		//Debug.Log (Timer);
 	}
 	
 	// Update is called once per frame
@@ -364,7 +367,7 @@ public class GamePlayer : MonoBehaviour
 	void StartGame ()
 	{
 		music.Play ();
-		if (enableBG)
+		if (useMovBG)
 			mov.Play ();
 	}
 
@@ -373,13 +376,13 @@ public class GamePlayer : MonoBehaviour
 		if (!music.isPlaying) {
 			pause = false;
 			music.Play ();
-			if (enableBG)
+			if (useMovBG)
 				mov.Play ();
 			PauseButtonText.text = "Pause";
 		} else {
 			pause = true;
 			music.Pause ();
-			if (enableBG)
+			if (useMovBG)
 				mov.Pause ();
 			PauseButtonText.text = "Resume";
 		}

@@ -26,7 +26,7 @@ public class MenuController : MonoBehaviour
 
 		// read dir from resource music
 		string[] files = Directory.GetDirectories (@"Assets/Resources/Music/");
-		List<string> a = new List<string> ();
+		//List<string> a = new List<string> ();
 	
 		foreach (var item in files) {
 			string folder = Path.GetFileName (item);
