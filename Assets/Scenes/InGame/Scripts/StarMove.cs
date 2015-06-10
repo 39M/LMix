@@ -17,7 +17,7 @@ public class StarMove : MonoBehaviour
 
 		transform.Translate (Vector3.back * Random.Range (5f, 20) * Time.deltaTime, Space.World);
 		transform.Rotate (new Vector3 (15, 30, 45) * Time.deltaTime);
-		if (transform.position.y < -10)
+		if (transform.position.z < -10)
 			Destroy (gameObject);
 	}
 }
