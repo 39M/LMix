@@ -25,11 +25,16 @@ public class MenuController : MonoBehaviour
 		leap = new Controller ();
 
 		// read dir from resource music
-		string[] files = Directory.GetDirectories (@"Assets/Resources/Music/");
+		//string[] files = Directory.GetDirectories (@"Assets/Resources/Music/");
+		string[] files = (Resources.Load("Music/MusicList") as TextAsset).text.Replace("\r\n", "\n").Replace("\r","\n").Split("\n"[0]);
+		Debug.Log(files.Length.ToString() + " music in list");
 		//List<string> a = new List<string> ();
 	
 		foreach (var item in files) {
-			string folder = Path.GetFileName (item);
+			//string folder = Path.GetFileName (item);
+			string folder = item;
+			//Debug.Log(item.Length);
+			//Debug.Log(folder);
 			Debug.Log (" Read Music Dir " + folder + " and load beatmap.");
 
 			TextAsset f = Resources.Load ("Music/" + folder + "/beatmap") as TextAsset;
