@@ -4,16 +4,15 @@ using Leap;
 
 public class Spin : MonoBehaviour
 {
-
 	public GameObject judgement;
-	public float TotalTime = 3.0f;
+	public float TotalTime = 100000f;
 	Color c300, c100, c50, c0;
 	GamePlayer status;
 	float scorecount = 0;
 	float rotate = 0.0f;
 	float rotatespeed = 0.0f;
 	float maxrotatespeed = 1200f;
-	float remaintime = 3.0f;
+	float remaintime = 100000f;
 	//CircleGesture circlegesture;
 	Vector3 fingeroldposition ;
 	protected Controller leap;
@@ -33,6 +32,7 @@ public class Spin : MonoBehaviour
 
 		}
 		fingeroldposition = FingerPos;
+		remaintime = TotalTime;
 
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
 		c300 = new Color (58 / 255f, 183 / 255f, 239 / 255f, 0);

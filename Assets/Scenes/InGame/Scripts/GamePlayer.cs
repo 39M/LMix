@@ -259,7 +259,10 @@ public class GamePlayer : MonoBehaviour
 		if (HitObjects.Count <= i) {
 			if (!gameover) {
 				gameover = true;
-				gameoverTimer = 4f + 7 / now [3].AsFloat;
+				if (now [0].AsInt == 3)
+					gameoverTimer = 4f + now [3].AsFloat;
+				else
+					gameoverTimer = 4f + 7 / now [3].AsFloat;
 
 				CoverDone = false;
 			}
@@ -321,7 +324,7 @@ public class GamePlayer : MonoBehaviour
 		switch (now [0].AsInt) {
 		case 3:	// Generate Spinner
 			if (HitObjects.Count > i && music.time >= now [1].AsFloat) {
-				SG.Generate ();
+				SG.Generate (now [3].AsFloat);
 				i++;	// move to next note
 				if (HitObjects.Count > i)
 					now = HitObjects [i].AsArray;	// get current note

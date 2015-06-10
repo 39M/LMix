@@ -8,11 +8,11 @@ public class SpinnerGenerator : MonoBehaviour
 	void Start ()
 	{
 		//InvokeRepeating ("Generate", 0, 1);	// Generate() need be private
-		//Generate();
+		Generate (5);
 	}
 
-	public void Generate ()
+	public void Generate (float time)
 	{
-		Instantiate (spinner);
+		(((GameObject)Instantiate (spinner)).GetComponent ("Spin") as Spin).TotalTime = time;
 	}
 }
