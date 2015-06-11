@@ -284,6 +284,11 @@ public class GamePlayer : MonoBehaviour
 				PlayerPrefs.SetInt ("BadCount", BadCount);
 				PlayerPrefs.SetInt ("MissCount", MissCount);
 
+				if (PlayerPrefs.GetString (beatmapName + "MaxScore").Equals(""))
+					PlayerPrefs.SetString (beatmapName + "MaxScore", ScoreCounter.ToString ());
+				else if (long.Parse (PlayerPrefs.GetString (beatmapName + "MaxScore")) < ScoreCounter)
+					PlayerPrefs.SetString (beatmapName + "MaxScore", ScoreCounter.ToString ());
+
 				if (PerfectCount == HitObjects.Count)
 					PlayerPrefs.SetString ("Judgement", "X");
 				else if (PerfectCount >= HitObjects.Count * 0.9f && BadCount <= HitObjects.Count * 0.01f && MissCount == 0)

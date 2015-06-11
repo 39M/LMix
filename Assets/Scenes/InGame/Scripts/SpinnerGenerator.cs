@@ -8,7 +8,7 @@ public class SpinnerGenerator : MonoBehaviour
 	void Start ()
 	{
 		//InvokeRepeating ("Generate", 0, 1);	// Generate() need be private
-		Generate (5);
+		//Generate (3);
 	}
 
 	public void Generate (float time)
