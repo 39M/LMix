@@ -5,10 +5,16 @@ public class SpaceGenerator : MonoBehaviour
 {
 	public GameObject star;
 	GamePlayer status;
+	float StarTimer;
+	float timer;
+	int counter;
 
 	void Start ()
 	{
 		status = GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer;
+		StarTimer = 0.04f;
+		timer = 1f;
+		counter = 0;
 	}
 
 	void Update ()
@@ -16,8 +22,20 @@ public class SpaceGenerator : MonoBehaviour
 		if (status.pause)
 			return;
 
-		if (Random.Range (0, 100) > 50)
-			GenerateStar ();
+		timer -= Time.deltaTime;
+		counter++;
+		if (timer < 0) {
+			timer = 1f;
+			Debug.Log ("FPS: " + counter);
+			counter = 0;
+		}
+
+		StarTimer -= Time.deltaTime;
+		if (StarTimer < 0) {
+			StarTimer = 0.01f;
+			if (Random.Range (0, 100) > 50)
+				GenerateStar ();
+		}
 	}
 
 	void GenerateStar ()
