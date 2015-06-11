@@ -141,11 +141,11 @@ public class Drop : MonoBehaviour
 
 				Quaternion rt = Quaternion.identity;
 				if (transform.rotation.eulerAngles.x == 0)
-					rt.eulerAngles = new Vector3 (0, -90, 0);
+					rt.eulerAngles = new Vector3 (0, 90, 0);
 				else if (transform.rotation.eulerAngles.x == 90)
 					rt.eulerAngles = new Vector3 (0, 0, 0);
 				else// if (transform.rotation.eulerAngles.x == 180)
-					rt.eulerAngles = new Vector3 (0, 90, 0);
+					rt.eulerAngles = new Vector3 (0, -90, 0);
 				//Debug.Log(transform.rotation.eulerAngles.x / 2);
 				TextMesh tmp = ((GameObject)Instantiate (judgement, transform.position, rt)).GetComponent<TextMesh> ();
 				int ScoreGet;
@@ -198,11 +198,11 @@ public class Drop : MonoBehaviour
 			//Debug.Log (notePos.z);
 			Quaternion rt = Quaternion.identity;
 			if (transform.rotation.eulerAngles.x == 0)
-				rt.eulerAngles = new Vector3 (0, -90, 0);
+				rt.eulerAngles = new Vector3 (0, 90, 0);
 			else if (transform.rotation.eulerAngles.x == 90)
 				rt.eulerAngles = new Vector3 (0, 0, 0);
 			else// if (transform.rotation.eulerAngles.x == 180)
-				rt.eulerAngles = new Vector3 (0, 90, 0);
+				rt.eulerAngles = new Vector3 (0, -90, 0);
 
 			TextMesh tmp = ((GameObject)Instantiate (judgement, transform.position, rt)).GetComponent<TextMesh> ();
 			tmp.text = "Miss";
