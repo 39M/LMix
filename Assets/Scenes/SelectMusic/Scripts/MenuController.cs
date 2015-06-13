@@ -64,7 +64,7 @@ public class MenuController : MonoBehaviour
 					menuitem_tmp.GetComponent<GUITexture> ().texture = (Texture)Resources.Load ("Music/" + folder + "/" + Beatmap ["Album"] ["Name"]);
 					Debug.Log (menuitem_tmp.GetComponent<GUITexture> ().border.ToString ());
 					menuitem_tmp.GetComponent<GUIText> ().text = Beatmap ["Title"];// +'\n'+ difficulty;
-					Vector2 tpos = new Vector2 (0, - UnityEngine.Screen.height / 4.0f);
+					Vector2 tpos = new Vector2 (0, - UnityEngine.Screen.height / 3.5f);
 					menuitem_tmp.GetComponent<GUIText> ().pixelOffset = tpos;
 					menuitem_tmp.GetComponent<GUIText> ().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
 
