@@ -291,13 +291,13 @@ public class GamePlayer : MonoBehaviour
 
 				if (PerfectCount == HitObjects.Count)
 					PlayerPrefs.SetString ("Judgement", "X");
-				else if (PerfectCount >= HitObjects.Count * 0.9f && BadCount <= HitObjects.Count * 0.01f && MissCount == 0)
+				else if (PerfectCount >= HitObjects.Count * 0.8f)
 					PlayerPrefs.SetString ("Judgement", "S");
-				else if (PerfectCount >= HitObjects.Count * 0.8f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.9f)
+				else if (PerfectCount >= HitObjects.Count * 0.7f)
 					PlayerPrefs.SetString ("Judgement", "A");
-				else if (PerfectCount >= HitObjects.Count * 0.7f && MissCount == 0 || PerfectCount >= HitObjects.Count * 0.8f)
-					PlayerPrefs.SetString ("Judgement", "B");
 				else if (PerfectCount >= HitObjects.Count * 0.6f)
+					PlayerPrefs.SetString ("Judgement", "B");
+				else if (PerfectCount >= HitObjects.Count * 0.5f)
 					PlayerPrefs.SetString ("Judgement", "C");
 				else
 					PlayerPrefs.SetString ("Judgement", "D");
