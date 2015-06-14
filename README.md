@@ -41,5 +41,5 @@ If copyright infringement, please notify us. We will remove those file immediate
 
 ----
 
-osu!，Cytus，Deemo，Dynamix，感谢这些游戏给我们的指引和灵感。  
-Thanks for the guide and inspiration from osu!, Cytus, Deemo, Dynamix.  
+osu!，Cytus，Deemo，Dynamix，感谢这些游戏给我们的参考。  
+Thanks for the reference from osu!, Cytus, Deemo, Dynamix.  
