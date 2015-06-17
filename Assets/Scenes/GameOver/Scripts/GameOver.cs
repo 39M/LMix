@@ -157,6 +157,7 @@ public class GameOver : MonoBehaviour
 			if (CoverColor.a <= 0) {
 				ShowUI = true;
 				CoverColor.a = 1f;
+				CoverColor.r = CoverColor.g = CoverColor.b = 50 / 255f;
 				Destroy (BigCover);
 			}
 		}
