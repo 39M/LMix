@@ -8,7 +8,7 @@ public class backmovie : MonoBehaviour
 	
 	void Start ()
 	{
-		movTexture = Resources.Load ("lmix") as MovieTexture;
+		movTexture = Resources.Load ("LMixLogo2") as MovieTexture;
 		GetComponent<Renderer> ().material.mainTexture = movTexture;
 		
 		movTexture.loop = true;
