@@ -24,10 +24,13 @@ public class MenuController : MonoBehaviour
 	protected bool covermotion= true;
 	protected float alphadirection = -1.0f;
 	protected string playingsong ;
+	protected List<string> diffcollection;
+	protected Dictionary<string,List<string>> difflist;
+	protected double changedifftime =1.5;
 	// Use this for initialization
 	void Start ()
 	{
-
+		difflist= new Dictionary<string, List<string>>();
 		CoverTexture =  GameObject.Find ("Cover").GetComponent<GUITexture> ();
 		// init 
 		this.diff = new Dictionary<string, int> (){{"Easy",0},{"Normal",1},{"Hard",2}}; 
@@ -35,6 +38,7 @@ public class MenuController : MonoBehaviour
 		this.songname = new Dictionary<string, string>();
 		this.songstart = new Dictionary<string, float>();
 		leap = new Controller ();
+		diffcollection = new List<string> (){"Easy","Normal","Hard"};
 		diffcolormap = new Dictionary<string, Color> {	{"Hard",new Color(249.0f/255,90.0f/255,101.0f/255,1.0f)},
 														{"Easy",new Color(191.0f/255,255.0f/255,160.0f/255,1.0f)},
 														{"Normal",new Color(58.0f/255,183.0f/255,239.0f/255,1.0f)}};
@@ -59,38 +63,40 @@ public class MenuController : MonoBehaviour
 			Debug.Log ("Beatmap for " + folder + "load success");
 			JSONNode Beatmap = JSON.Parse (f.ToString ());
 
-			List<string> diffcollection = new List<string> (){"Easy","Normal","Hard"};
-
+			difflist[Beatmap ["Title"]]= new List<string>();
 			foreach (string difficulty in diffcollection) {
 				if (Beatmap ["Difficulty"] [difficulty] ["Enable"].AsBool) {
-					Vector3 pos = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
-					pos.x += (this.musicnum * 0.5f);
-					GameObject menuitem_tmp = (GameObject)Instantiate (menuitemobj, pos, transform.rotation);
-					Debug.Log ("loading " + "Music/" + folder + Beatmap ["Album"] ["Name"]);
-					menuitem_tmp.GetComponent<GUITexture> ().texture = (Texture)Resources.Load ("Music/" + folder + "/" + Beatmap ["Album"] ["Name"]);
-					//Debug.Log (menuitem_tmp.GetComponent<GUITexture> ().border.ToString ());
-					menuitem_tmp.GetComponent<GUIText> ().text = Beatmap ["Title"];// +'\n'+ difficulty;
-					Vector2 tpos = new Vector2 (0, - UnityEngine.Screen.height / 3.5f);
-					menuitem_tmp.GetComponent<GUIText> ().pixelOffset = tpos;
-					menuitem_tmp.GetComponent<GUIText> ().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
+					difflist[Beatmap ["Title"]].Add(difficulty);
 
-					// solve the child GUIText OBJ
-
-					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().text = difficulty;
-					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().pixelOffset = tpos;
-					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
-					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[difficulty];
-					// save the Songs identity
-					menulist.Add (menuitem_tmp);
-
-					song [Beatmap ["Title"]] = folder;
-					songname[Beatmap ["Title"]] = Beatmap ["Audio"] ["Name"];
-					songstart[Beatmap ["Title"]] = float.Parse( Beatmap["PreviewTime"] );
-					Debug.Log("music start point "+Beatmap ["Title"] + Beatmap["PreviewTime"]);
-					this.musicnum ++;
-					break;
 				}
 			}
+			Vector3 pos = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
+			pos.x += (this.musicnum * 0.5f);
+			GameObject menuitem_tmp = (GameObject)Instantiate (menuitemobj, pos, transform.rotation);
+			Debug.Log ("loading " + "Music/" + folder + Beatmap ["Album"] ["Name"]);
+			menuitem_tmp.GetComponent<GUITexture> ().texture = (Texture)Resources.Load ("Music/" + folder + "/" + Beatmap ["Album"] ["Name"]);
+			//Debug.Log (menuitem_tmp.GetComponent<GUITexture> ().border.ToString ());
+			menuitem_tmp.GetComponent<GUIText> ().text = Beatmap ["Title"];// +'\n'+ difficulty;
+			Vector2 tpos = new Vector2 (0, - UnityEngine.Screen.height / 3.5f);
+			menuitem_tmp.GetComponent<GUIText> ().pixelOffset = tpos;
+			menuitem_tmp.GetComponent<GUIText> ().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
+
+			// solve the child GUIText OBJ
+
+			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().text = difflist[Beatmap ["Title"]][0];
+			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[difflist[Beatmap ["Title"]][0]];
+			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().pixelOffset = tpos;
+			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
+
+			// save the Songs identity
+			menulist.Add (menuitem_tmp);
+
+			song [Beatmap ["Title"]] = folder;
+			this.songname[Beatmap ["Title"]] = Beatmap ["Audio"] ["Name"];
+			songstart[Beatmap ["Title"]] = float.Parse( Beatmap["PreviewTime"] );
+			Debug.Log("music start point "+Beatmap ["Title"] + Beatmap["PreviewTime"]);
+			this.musicnum ++;
+		
 			Debug.Log("location " + (this.musicnum * 0.5f+transform.position.x));
 			if (this.musicnum * 0.5f+transform.position.x < 1.1 && this.musicnum * 0.5f+transform.position.x > 0.9){
 				// play this item music
@@ -102,7 +108,13 @@ public class MenuController : MonoBehaviour
 				music.time = this.songstart[Beatmap ["Title"]];
 				music.loop = true;
 				music.Play();
+
 				playingsong = Beatmap ["Title"];
+				//
+				if(PlayerPrefs.HasKey("Difficulty")){
+					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().text = diffcollection[PlayerPrefs.GetInt("Difficulty")];
+					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[diffcollection[PlayerPrefs.GetInt("Difficulty")]];
+				}
 			}
 
 		}
@@ -132,7 +144,16 @@ public class MenuController : MonoBehaviour
 
 		// guesture judgement
 		if (motionlock) {
-			if (lastmotion != 0) {
+			if(lastmotion == 2 ){
+				// change diff
+				changedifftime-=Time.deltaTime;
+				if(changedifftime<0){
+					changedifftime=1.5;
+					motionlock = false;
+				}
+
+			}else if (lastmotion != 0) {
+
 				foreach (var item in menulist) {
 					// move items and test move finished
 					Vector3 position = item.transform.position;
@@ -144,10 +165,10 @@ public class MenuController : MonoBehaviour
 						if(playingsong != item.GetComponent<GUIText> ().text){
 							// play this item music
 							string folder = this.song [item.GetComponent<GUIText> ().text];
-							string songname = this.songname[item.GetComponent<GUIText> ().text];
+							string name = this.songname[item.GetComponent<GUIText> ().text];
 							var music = GetComponent<AudioSource> ();
-							music.clip = Resources.Load ("Music/" + folder + "/" + songname) as AudioClip;
-							Debug.Log("paly music demo "+"/Music/" + folder + "/" + songname);
+							music.clip = Resources.Load ("Music/" + folder + "/" + name) as AudioClip;
+							Debug.Log("paly music demo "+"/Music/" + folder + "/" + name);
 							music.time = this.songstart[item.GetComponent<GUIText> ().text];
 							music.loop = true;
 							music.Play();
@@ -182,6 +203,7 @@ public class MenuController : MonoBehaviour
 						PlayerPrefs.SetInt ("Difficulty", this.diff [item.transform.GetChild(0).GetComponent<GUIText>().text]);
 						Application.LoadLevel ("InGame");
 					}
+
 				}
 			}
 
@@ -198,10 +220,29 @@ public class MenuController : MonoBehaviour
 						lastmotion = -1;
 					} else if (x > 0.7f && menulist [0].transform.position.x < 0.4f) {
 						lastmotion = 1;
-					} else if (y > 0.6) {
+					}  else if (y < -0.7) { 
+						// change difficult
+						motionlock = true;
+						foreach (var item in menulist) {
+							Vector3 position = item.transform.position;
+							if (position.x > 0.4 && position.x < 0.6) {
+								var list = difflist[item.GetComponent<GUIText> ().text];
+								int index = list.IndexOf(item.transform.GetChild(0).GetComponent<GUIText>().text);
+								Debug.Log("diff content list "+ list.ToString()+ " index: "+index);
+								
+								index = (index+1)%list.Count;
+								item.transform.GetChild(0).GetComponent<GUIText>().text = list[index];
+								item.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[list[index]];
+
+							}
+						}
+						lastmotion = 2;
+
+					}else if (y > 0.6) {
+						Debug.Log("select music guesture");
 						lastmotion = 0;
 						covermotion = true;
-					} else {
+					}else {
 						return;
 					}
 					motionlock = true;
