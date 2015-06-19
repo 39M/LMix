@@ -27,6 +27,7 @@ public class MenuController : MonoBehaviour
 	protected List<string> diffcollection;
 	protected Dictionary<string,List<string>> difflist;
 	protected double changedifftime =1.5;
+	protected Dictionary<string,float> backward;//record the back needed
 	// Use this for initialization
 	void Start ()
 	{
@@ -37,6 +38,7 @@ public class MenuController : MonoBehaviour
 		this.song = new Dictionary<string,string> ();
 		this.songname = new Dictionary<string, string>();
 		this.songstart = new Dictionary<string, float>();
+		this.backward = new Dictionary<string, float>();
 		leap = new Controller ();
 		diffcollection = new List<string> (){"Easy","Normal","Hard"};
 		diffcolormap = new Dictionary<string, Color> {	{"Hard",new Color(249.0f/255,90.0f/255,101.0f/255,1.0f)},
@@ -71,6 +73,12 @@ public class MenuController : MonoBehaviour
 				}
 			}
 			Vector3 pos = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
+			this.backward[Beatmap ["Title"]] = (this.musicnum * 0.5f);
+			if(PlayerPrefs.HasKey("BACKWARD")){
+				Debug.Log ("has backword " +PlayerPrefs.GetFloat("BACKWARD"));
+				pos.x-=PlayerPrefs.GetFloat("BACKWARD");
+			}
+
 			pos.x += (this.musicnum * 0.5f);
 			GameObject menuitem_tmp = (GameObject)Instantiate (menuitemobj, pos, transform.rotation);
 			Debug.Log ("loading " + "Music/" + folder + Beatmap ["Album"] ["Name"]);
@@ -97,8 +105,8 @@ public class MenuController : MonoBehaviour
 			Debug.Log("music start point "+Beatmap ["Title"] + Beatmap["PreviewTime"]);
 			this.musicnum ++;
 		
-			Debug.Log("location " + (this.musicnum * 0.5f+transform.position.x));
-			if (this.musicnum * 0.5f+transform.position.x < 1.1 && this.musicnum * 0.5f+transform.position.x > 0.9){
+			Debug.Log("location " + pos.x);
+			if (pos.x < 0.6 && pos.x > 0.4){
 				// play this item music
 				string songpath = this.song [Beatmap ["Title"] ];
 				string songname = this.songname[Beatmap ["Title"]];
@@ -199,6 +207,7 @@ public class MenuController : MonoBehaviour
 						//enableBG = true;
 						PlayerPrefs.SetInt ("enableSE", 1);
 						PlayerPrefs.SetInt ("enableBG", 1);
+						PlayerPrefs.SetFloat("BACKWARD",this.backward[item.GetComponent<GUIText> ().text]);
 						Debug.Log ("set difficulty " + this.diff [ item.transform.GetChild(0).GetComponent<GUIText>().text]);
 						PlayerPrefs.SetInt ("Difficulty", this.diff [item.transform.GetChild(0).GetComponent<GUIText>().text]);
 						Application.LoadLevel ("InGame");
