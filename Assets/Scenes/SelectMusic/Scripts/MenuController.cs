@@ -16,18 +16,24 @@ public class MenuController : MonoBehaviour
 	protected int lastmotion;
 	protected Dictionary<string,int> diff ;
 	protected Dictionary<string,string> song ;
+	protected Dictionary<string,string> songname ;
+	protected Dictionary<string,float> songstart ;
+
 	protected Dictionary<string,Color> diffcolormap ;
 	protected GUITexture CoverTexture;
 	protected bool covermotion= true;
 	protected float alphadirection = -1.0f;
+	protected string playingsong ;
 	// Use this for initialization
 	void Start ()
 	{
 
 		CoverTexture =  GameObject.Find ("Cover").GetComponent<GUITexture> ();
 		// init 
-		this.diff = new Dictionary<string, int> ();
+		this.diff = new Dictionary<string, int> (){{"Easy",0},{"Normal",1},{"Hard",2}}; 
 		this.song = new Dictionary<string,string> ();
+		this.songname = new Dictionary<string, string>();
+		this.songstart = new Dictionary<string, float>();
 		leap = new Controller ();
 		diffcolormap = new Dictionary<string, Color> {	{"Hard",new Color(249.0f/255,90.0f/255,101.0f/255,1.0f)},
 														{"Easy",new Color(191.0f/255,255.0f/255,160.0f/255,1.0f)},
@@ -54,7 +60,7 @@ public class MenuController : MonoBehaviour
 			JSONNode Beatmap = JSON.Parse (f.ToString ());
 
 			List<string> diffcollection = new List<string> (){"Easy","Normal","Hard"};
-			Dictionary<string,int> diffmap = new Dictionary<string, int> (){{"Easy",0},{"Normal",1},{"Hard",2}}; 
+
 			foreach (string difficulty in diffcollection) {
 				if (Beatmap ["Difficulty"] [difficulty] ["Enable"].AsBool) {
 					Vector3 pos = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
@@ -62,7 +68,7 @@ public class MenuController : MonoBehaviour
 					GameObject menuitem_tmp = (GameObject)Instantiate (menuitemobj, pos, transform.rotation);
 					Debug.Log ("loading " + "Music/" + folder + Beatmap ["Album"] ["Name"]);
 					menuitem_tmp.GetComponent<GUITexture> ().texture = (Texture)Resources.Load ("Music/" + folder + "/" + Beatmap ["Album"] ["Name"]);
-					Debug.Log (menuitem_tmp.GetComponent<GUITexture> ().border.ToString ());
+					//Debug.Log (menuitem_tmp.GetComponent<GUITexture> ().border.ToString ());
 					menuitem_tmp.GetComponent<GUIText> ().text = Beatmap ["Title"];// +'\n'+ difficulty;
 					Vector2 tpos = new Vector2 (0, - UnityEngine.Screen.height / 3.5f);
 					menuitem_tmp.GetComponent<GUIText> ().pixelOffset = tpos;
@@ -76,11 +82,29 @@ public class MenuController : MonoBehaviour
 					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[difficulty];
 					// save the Songs identity
 					menulist.Add (menuitem_tmp);
-					diff [Beatmap ["Title"] + difficulty] = diffmap [difficulty];
-					song [Beatmap ["Title"] + difficulty] = folder;
+
+					song [Beatmap ["Title"]] = folder;
+					songname[Beatmap ["Title"]] = Beatmap ["Audio"] ["Name"];
+					songstart[Beatmap ["Title"]] = float.Parse( Beatmap["PreviewTime"] );
+					Debug.Log("music start point "+Beatmap ["Title"] + Beatmap["PreviewTime"]);
 					this.musicnum ++;
+					break;
 				}
 			}
+			Debug.Log("location " + (this.musicnum * 0.5f+transform.position.x));
+			if (this.musicnum * 0.5f+transform.position.x < 1.1 && this.musicnum * 0.5f+transform.position.x > 0.9){
+				// play this item music
+				string songpath = this.song [Beatmap ["Title"] ];
+				string songname = this.songname[Beatmap ["Title"]];
+				var music = GetComponent<AudioSource> ();
+				music.clip = Resources.Load ("Music/" + songpath + "/" + songname) as AudioClip;
+				Debug.Log("paly music demo "+"/Music/" + songpath + "/" + songname);
+				music.time = this.songstart[Beatmap ["Title"]];
+				music.loop = true;
+				music.Play();
+				playingsong = Beatmap ["Title"];
+			}
+
 		}
 		//open the guesture
 		leap.EnableGesture (Gesture.GestureType.TYPE_SWIPE);
@@ -110,31 +134,52 @@ public class MenuController : MonoBehaviour
 		if (motionlock) {
 			if (lastmotion != 0) {
 				foreach (var item in menulist) {
+					// move items and test move finished
 					Vector3 position = item.transform.position;
 					double lx = position.x;
 					position.x += 0.5f * lastmotion * Time.deltaTime;
 					item.transform.position = position;
 					// if any item cross the 0.5f , release the lock;
-					if ((position.x - 0.5) * (lx - 0.5) < 0)
-						motionlock = false;
+					if ((position.x - 0.5) * (lx - 0.5) < 0){
+						if(playingsong != item.GetComponent<GUIText> ().text){
+							// play this item music
+							string folder = this.song [item.GetComponent<GUIText> ().text];
+							string songname = this.songname[item.GetComponent<GUIText> ().text];
+							var music = GetComponent<AudioSource> ();
+							music.clip = Resources.Load ("Music/" + folder + "/" + songname) as AudioClip;
+							Debug.Log("paly music demo "+"/Music/" + folder + "/" + songname);
+							music.time = this.songstart[item.GetComponent<GUIText> ().text];
+							music.loop = true;
+							music.Play();
+							playingsong = item.GetComponent<GUIText> ().text;
+						}
+						// unlock 
+						this.motionlock = false;
+					}
 				}
 			} else {
 				foreach (var item in menulist) {
 					Vector3 position = item.transform.position;
 					if (position.x > 0.4 && position.x < 0.6) {
+
+						// select movement
+
 						position.y += 0.6f * Time.deltaTime;
 						item.transform.position = position;
 					}
-					if (item.transform.position.y > 0.8) {  // enter the InGame Scene
+					if (item.transform.position.y > 0.8) {  
+
+						// enter the InGame Scene
+
 						// select success
-						Debug.Log ("enter " + this.song [item.GetComponent<GUIText> ().text + item.transform.GetChild(0).GetComponent<GUIText>().text]);
-						PlayerPrefs.SetString ("song", this.song [item.GetComponent<GUIText> ().text + item.transform.GetChild(0).GetComponent<GUIText>().text]);
+						Debug.Log ("enter " + this.song [item.GetComponent<GUIText> ().text ]);
+						PlayerPrefs.SetString ("song", this.song [item.GetComponent<GUIText> ().text]);
 						//enableSE = true;
 						//enableBG = true;
 						PlayerPrefs.SetInt ("enableSE", 1);
 						PlayerPrefs.SetInt ("enableBG", 1);
-						Debug.Log ("set difficulty " + this.diff [item.GetComponent<GUIText> ().text+ item.transform.GetChild(0).GetComponent<GUIText>().text]);
-						PlayerPrefs.SetInt ("Difficulty", this.diff [item.GetComponent<GUIText> ().text+ item.transform.GetChild(0).GetComponent<GUIText>().text]);
+						Debug.Log ("set difficulty " + this.diff [ item.transform.GetChild(0).GetComponent<GUIText>().text]);
+						PlayerPrefs.SetInt ("Difficulty", this.diff [item.transform.GetChild(0).GetComponent<GUIText>().text]);
 						Application.LoadLevel ("InGame");
 					}
 				}
