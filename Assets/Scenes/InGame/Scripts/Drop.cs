@@ -97,14 +97,14 @@ public class Drop : MonoBehaviour
 		if (status.pause)
 			return;
 
-		if ((notePos.z <= -1.75 * speed / 1.4 && !missSE.isPlaying) || (hit && !hitSE.isPlaying)) {
+		if ((notePos.z <= -1.75 - speed / 10 && !missSE.isPlaying) || (hit && !hitSE.isPlaying)) {
 			Destroy (gameObject);
 		}
 
 		if (!hit)
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
-		if (!hit && notePos.z < 2 && notePos.z > -1.75 * speed / 1.4) {
+		if (!hit && notePos.z < 2 && notePos.z > -1.75 - speed / 10) {
 			if (status.trackbusy [track] && !busy)
 				return;
 
@@ -194,7 +194,7 @@ public class Drop : MonoBehaviour
 			hitable = true;
 		}
 
-		if (notePos.z <= -1.75 * speed / 1.4 && !hit && !missSE.isPlaying) {
+		if (notePos.z <= -1.75 - speed / 10 && !hit && !missSE.isPlaying) {
 			//Debug.Log (notePos.z);
 			Quaternion rt = Quaternion.identity;
 			if (transform.rotation.eulerAngles.x == 0)
