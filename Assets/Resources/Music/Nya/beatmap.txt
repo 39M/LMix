@@ -14,11 +14,11 @@
             "Speed": 1
         },
         "Normal": {
-            "Enable": false,
+            "Enable": true,
             "Speed": 1
         },
         "Hard": {
-            "Enable": false,
+            "Enable": true,
             "Speed": 1
         }
     },
