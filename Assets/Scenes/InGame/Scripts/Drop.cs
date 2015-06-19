@@ -217,6 +217,7 @@ public class Drop : MonoBehaviour
 			status.trackbusy [track] = false;
 			if (status.enableSE) {
 				missSE.enabled = true;
+				missSE.mute = true;
 				missSE.Play ();
 			}
 			GetComponent<Renderer> ().enabled = false;
