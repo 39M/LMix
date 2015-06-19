@@ -100,6 +100,7 @@ public class GamePlayer : MonoBehaviour
 }
 */
 		/*******/
+		PlayerPrefs.SetInt("GameStarted", 1);
 		enableSE = PlayerPrefs.GetInt ("enableSE") != 0;
 		enableBG = PlayerPrefs.GetInt ("enableBG") != 0;
 
