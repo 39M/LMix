@@ -191,6 +191,7 @@ public class MenuController : MonoBehaviour
 						this.motionlock = false;
 					}
 				}
+				GetComponent<AudioSource> ().volume-=Time.deltaTime;
 			} else {
 				foreach (var item in menulist) {
 					Vector3 position = item.transform.position;
@@ -222,6 +223,11 @@ public class MenuController : MonoBehaviour
 			}
 
 		} else {
+			// fix the low sound
+			if(GetComponent<AudioSource> ().volume<1.0){
+				GetComponent<AudioSource> ().volume+=Time.deltaTime;
+			}
+			//
 			Frame sfream = leap.Frame ();
 			foreach (var gesture in sfream.Gestures()) {
 				if (gesture.Type == Gesture.GestureType.TYPE_SWIPE) {
