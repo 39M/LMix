@@ -48,7 +48,13 @@ public class Spin : MonoBehaviour
 		rot ();
 		// recalculate the rotate speed 
 		Frame fream = leap.Frame ();
-		Hand hand = fream.Hands [0];
+		// last version 
+		// Hand hand = fream.Hands [0];
+		Hand hand = fream.Hands[1];
+		if(hand.ToString()=="Invalid Hand"){
+			hand = fream.Hands[0];
+		}
+		Debug.Log("hand: "+hand.ToString());
 		Vector3 FingerPos = new Vector3 (0, 0, 0);
 		foreach (var finger in hand.Fingers) {
 			FingerPos = FingerPos + new Vector3 (finger.TipPosition.x, finger.TipPosition.y, finger.TipPosition.z);
