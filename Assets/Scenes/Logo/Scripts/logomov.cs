@@ -18,6 +18,7 @@ public class logomov : MonoBehaviour {
 			movTexture.Play ();
 			GetComponent<AudioSource> ().Play();	
 		}
+		PlayerPrefs.DeleteKey("Difficulty");
 	}
 	
 	// Update is called once per frame

@@ -27,7 +27,12 @@ public class MenuController : MonoBehaviour
 	protected List<string> diffcollection;
 	protected Dictionary<string,List<string>> difflist;
 	protected double changedifftime =1.5;
-	protected Dictionary<string,float> backward;//record the back needed
+	protected Dictionary<string,float> backward;
+	protected string difftonext;
+
+	GUIText difftextobj;
+
+//record the back needed
 	// Use this for initialization
 	void Start ()
 	{
@@ -125,6 +130,7 @@ public class MenuController : MonoBehaviour
 				playingsong = Beatmap ["Title"];
 				//
 				if(PlayerPrefs.HasKey("Difficulty")){
+					Debug.Log("Has Selected Difficulty!");
 					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().text = diffcollection[PlayerPrefs.GetInt("Difficulty")];
 					menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[diffcollection[PlayerPrefs.GetInt("Difficulty")]];
 				}
@@ -159,6 +165,22 @@ public class MenuController : MonoBehaviour
 		if (motionlock) {
 			if(lastmotion == 2 ){
 				// change diff
+
+				var color = difftextobj.color;
+				if(changedifftime>0.75){
+					color.a -= (float)(Time.deltaTime/0.75);
+				}else{
+					color.a += (float)(Time.deltaTime/0.75);
+				}
+				difftextobj.color = color;
+				//change when half time
+				if((changedifftime-Time.deltaTime-0.75)*(changedifftime-0.75)<0){
+					difftextobj.text = difftonext;
+					var clr =  diffcolormap[difftonext];
+					clr.a = 0f;
+					difftextobj.color = clr;
+				}
+				//
 				changedifftime-=Time.deltaTime;
 				if(changedifftime<0){
 					changedifftime=1.5;
@@ -251,8 +273,10 @@ public class MenuController : MonoBehaviour
 								Debug.Log("diff content list "+ list.ToString()+ " index: "+index);
 								
 								index = (index+1)%list.Count;
-								item.transform.GetChild(0).GetComponent<GUIText>().text = list[index];
-								item.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[list[index]];
+								difftonext = list[index];
+								difftextobj =item.transform.GetChild(0).GetComponent<GUIText>();
+								//item.transform.GetChild(0).GetComponent<GUIText>().text = list[index];
+								//item.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[list[index]];
 
 							}
 						}
