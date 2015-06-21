@@ -247,7 +247,7 @@ public class MenuController : MonoBehaviour
 		} else {
 			// fix the low sound
 			if(GetComponent<AudioSource> ().volume<1.0){
-				GetComponent<AudioSource> ().volume+=Time.deltaTime;
+				GetComponent<AudioSource> ().volume+=Time.deltaTime*0.5f;
 			}
 			//
 			Frame sfream = leap.Frame ();
