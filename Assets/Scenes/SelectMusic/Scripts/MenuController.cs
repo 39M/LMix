@@ -167,10 +167,10 @@ public class MenuController : MonoBehaviour
 				// change diff
 
 				var color = difftextobj.color;
-				if(changedifftime>0.75){
-					color.a -= (float)(Time.deltaTime/0.75);
-				}else{
-					color.a += (float)(Time.deltaTime/0.75);
+				if(changedifftime>1.2f){
+					color.a -= (float)(Time.deltaTime/0.3);
+				}else if(changedifftime>0.9f){
+					color.a += (float)(Time.deltaTime/0.3);
 				}
 				difftextobj.color = color;
 				//change when half time
