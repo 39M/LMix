@@ -8,6 +8,9 @@ public class TapDetector : MonoBehaviour
 	public bool Left;
 	public bool DownLeft;
 	public bool DownRight;
+	public bool Pause;
+	public bool Exit;
+	public bool PauseTrigger;
 	public GameObject RightLine;
 	public GameObject LeftLine;
 	public GameObject DownRightLine;
@@ -18,17 +21,19 @@ public class TapDetector : MonoBehaviour
 	bool CL;
 	bool CDL;
 	bool CDR;
+	bool CPause;
 
 	// Use this for initialization
 	void Start ()
 	{
 		Right = Left = DownLeft = DownRight = false;
+		Pause = Exit = CPause = false;
 		CR = CL = CDL = CDR = false;
 		leap = new Controller ();
 		grey = new Color (0.5f, 0.5f, 0.5f);
 	}
 
-
+	// x 100  y 400
 
 	// Update is called once per frame
 	void Update ()
@@ -75,9 +80,10 @@ public class TapDetector : MonoBehaviour
 		CDL = DownLeft;
 		CDR = DownRight;
 		Right = Left = DownLeft = DownRight = false;
+		Pause = false;
 		Frame frame = leap.Frame ();
 		foreach (Hand hand in frame.Hands) {
-			// Debug.Log (hand.Fingers.Frontmost.TipPosition);
+			//Debug.Log (hand.Fingers.Frontmost.TipPosition);
 			foreach (Finger finger in hand.Fingers) {
 				Vector FingerPos = finger.TipPosition;
 				// Destroy note if tap success
@@ -93,8 +99,22 @@ public class TapDetector : MonoBehaviour
 				if (FingerPos.x > 170 && FingerPos.y > 50 && FingerPos.y < 250) {
 					Right = true;
 				} 
+				if (FingerPos.y > 400) {
+					if (FingerPos.x > 100)
+						Exit = true;
+					if (FingerPos.x < -100)
+						Pause = true;
+				}
 			}
 		}
+
+		if (CPause != Pause && Pause) {
+			PauseTrigger = true;
+			Debug.Log ("Trigger");
+			Debug.Log (Pause);
+		}
+
+		CPause = Pause;
 
 		if (DownRight != CDR)
 		if (DownRight) {

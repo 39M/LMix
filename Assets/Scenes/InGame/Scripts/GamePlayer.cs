@@ -48,6 +48,7 @@ public class GamePlayer : MonoBehaviour
 	//NoteGenerator NGLU;
 	NoteGenerator NGLD;
 	SpinnerGenerator SG;
+	TapDetector TD;
 	JSONNode Beatmap;
 	JSONArray HitObjects;	// HitObjects like note, spinner
 	JSONArray now;	// next Object
@@ -216,6 +217,7 @@ public class GamePlayer : MonoBehaviour
 		//NGLU = GameObject.Find ("NoteGeneratorLU").GetComponent ("NoteGenerator") as NoteGenerator;
 		NGLD = GameObject.Find ("NoteGeneratorLD").GetComponent ("NoteGenerator") as NoteGenerator;
 		SG = GameObject.Find ("SpinnerGenerator").GetComponent ("SpinnerGenerator") as SpinnerGenerator;
+		TD = GameObject.Find ("TapDetector").GetComponent ("TapDetector") as TapDetector;
 
 		// Init
 		i = 0;
@@ -247,6 +249,12 @@ public class GamePlayer : MonoBehaviour
 		if (loadFail)
 			return;
 
+		if (TD.PauseTrigger)
+			PauseResume();
+		
+		if (TD.Exit)
+			StopGame();
+
 		if (!pause) {
 			if (ScoreNow < ScoreCounter)
 			if (ScoreCounter - ScoreNow < 10)
@@ -254,8 +262,10 @@ public class GamePlayer : MonoBehaviour
 			else
 				ScoreNow += (ScoreCounter - ScoreNow) / 10;
 			ScoreText.text = "Score: " + ScoreNow.ToString ();
-		} else 
-			return;
+		} else {
+			if (!TD.Exit)
+				return;
+		}
 
 		if (HitObjects.Count <= i) {
 			if (!gameover) {
@@ -265,12 +275,18 @@ public class GamePlayer : MonoBehaviour
 				else
 					gameoverTimer = 4f + 7 / now [3].AsFloat;
 
+				if (TD.Exit)
+					gameoverTimer = 0.5f;
+
 				CoverDone = false;
 			}
 
 			gameoverTimer -= Time.deltaTime;
-			if (gameoverTimer < 4)
+			if (gameoverTimer < 4 && !TD.Exit)
 				music.volume -= Time.deltaTime / 4f;
+
+			if (gameoverTimer < 0.5 && !TD.Exit)
+				music.volume -= Time.deltaTime * 2;
 
 			if (gameoverTimer < 0.5) {
 				CoverColor.a += Time.deltaTime * 2;
@@ -278,6 +294,11 @@ public class GamePlayer : MonoBehaviour
 			}
 
 			if (gameoverTimer < 0) {
+				if (TD.Exit) {
+					Application.LoadLevel ("SelectMusic");
+					return;
+				}
+
 				PlayerPrefs.SetString ("ScoreCount", ScoreCounter.ToString ());
 				PlayerPrefs.SetInt ("ComboCount", MaxCombo);
 				PlayerPrefs.SetInt ("PerfectCount", PerfectCount);
@@ -382,6 +403,7 @@ public class GamePlayer : MonoBehaviour
 
 	void PauseResume ()
 	{
+		TD.PauseTrigger = false;
 		if (!music.isPlaying) {
 			pause = false;
 			music.Play ();
@@ -399,6 +421,8 @@ public class GamePlayer : MonoBehaviour
 
 	void StopGame ()
 	{
-		Application.LoadLevel ("SelectMusic");
+		//Application.LoadLevel ("SelectMusic");
+		i = HitObjects.Count;
+		TD.Exit = true;
 	}
 }
