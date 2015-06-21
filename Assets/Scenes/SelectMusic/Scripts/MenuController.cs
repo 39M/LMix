@@ -102,7 +102,7 @@ public class MenuController : MonoBehaviour
 			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
 
 			menuitem_tmp.transform.GetChild(1).GetComponent<GUIText>().text = Beatmap ["Artist"];
-			menuitem_tmp.transform.GetChild(1).GetComponent<GUIText>().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
+			menuitem_tmp.transform.GetChild(1).GetComponent<GUIText>().fontSize = (int)((tpos.y) / -83.5f * 10.0f);
 			tpos.y-= ((tpos.y) / -83.5f * 18.0f);
 			menuitem_tmp.transform.GetChild(1).GetComponent<GUIText>().pixelOffset = tpos;
 
@@ -174,7 +174,7 @@ public class MenuController : MonoBehaviour
 				}
 				difftextobj.color = color;
 				//change when half time
-				if((changedifftime-Time.deltaTime-0.75)*(changedifftime-0.75)<0){
+				if((changedifftime-Time.deltaTime-1.2)*(changedifftime-1.2)<0){
 					difftextobj.text = difftonext;
 					var clr =  diffcolormap[difftonext];
 					clr.a = 0f;
@@ -213,7 +213,7 @@ public class MenuController : MonoBehaviour
 						this.motionlock = false;
 					}
 				}
-				GetComponent<AudioSource> ().volume-=Time.deltaTime;
+				GetComponent<AudioSource> ().volume-=Time.deltaTime*1.2f;
 			} else {
 				foreach (var item in menulist) {
 					Vector3 position = item.transform.position;
