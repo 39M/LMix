@@ -44,6 +44,9 @@ public class Spin : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		if (status.pause)
+			return;
+
 		// to rotate the spin
 		rot ();
 		// recalculate the rotate speed 
