@@ -2,6 +2,9 @@
 
 ----
 
+## 简介
+## Introduction
+
 基于Leap Motion的3D下落式音乐游戏，使用Unity开发。  
 A 3D Drop-Music-Game based on Leap Motion developed with Unity.  
 挥舞双手击打左中右三个方向的note，转动手指旋转转盘，伴着节奏欣赏你喜欢的音乐。  
@@ -12,6 +15,21 @@ The big judgement area make you won't hit the wrong track.
 You can add your own beatmap.  
 
 ----
+
+## 玩法
+## How to play
+
+选曲界面：左右挥手切换歌曲，向下挥手切换难度，向上挥手选定歌曲。
+Select music scene: Swipe your hand right and left to switch. Swipe your hand down to change difficulty. Swipe your hand up to select. 
+游戏界面：尽可能在note达到判定线时击打note。白色note需要击打，灰色note只需接住。手移动到左上方游戏暂停/恢复，移动到右上方返回选曲界面。
+Game scene: Hit the note when it reach the line. You need to hit white note and catch the grey note. Move your hand to upleft area to pause/resume, upright to exit. 
+计分界面：向下挥手返回选曲界面，向上挥手重玩本曲。
+Scoring scene: Swipe your hand down toa back to select music scene. Swipe your hand up to retry.
+
+----
+
+## 项目说明
+## Project Guide
 
 `./Assets/Resources/Default`目录存放默认音效，名为`hit.wav`。  
 `./Assets/Resources/Default`Store default sound effect, named`hit.wav`.  
@@ -26,20 +44,45 @@ You can add your own beatmap.
 
 ----
 
+## 引用
+## Reference
+
 LMix使用了：  
 LMix uses:  
 - OpenSans开源字体  
 - OpenSans open source font  
-- 从osu!部分谱面中提取的节奏点时间  
-- Timing point from some osu! beatmaps  
-- 来源于网络的音乐  
+- 从osu!部分谱面中提取的内容  
+- Content from some osu! beatmaps  
+- 来源于网络的音乐
 - Music from web  
+- 来源于网络的音效
+- Sound effect from web
 - 来源于网络的图片  
 - Pictures from web  
+
+所有引用再此列出：
+Following is what we used:
+https://osu.ppy.sh/b/170608
+https://osu.ppy.sh/b/415060
+https://osu.ppy.sh/b/371225
+https://osu.ppy.sh/b/103282
+http://sc.chinaz.com/yinxiao/1403182524.htm
+
 如有侵权请告知我们，将立即删除并进行道歉和赔偿。  
 If copyright infringement, please notify us. We will remove those file immediately and make apology with compensation.  
 
 ----
+
+## 联系我们
+## Contact
+
+- Xwz7: Xwszc7@Gmail.com
+- liu946: liuyang570926881@Gmail.com
+
+----
+
+## 致谢
+## Thanks
 
 osu!，Cytus，Deemo，Dynamix，感谢这些游戏给我们的参考。  
 Thanks for the reference from osu!, Cytus, Deemo, Dynamix.  
