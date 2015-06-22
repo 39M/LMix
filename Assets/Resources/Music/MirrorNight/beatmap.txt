@@ -40,6 +40,6 @@
     },
     "SoundEffect": {
     	"Enable": false,
-    	"SE": []
+    	"Name": {}
     }
 }

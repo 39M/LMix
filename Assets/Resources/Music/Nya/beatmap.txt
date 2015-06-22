@@ -34,12 +34,12 @@
         "Name": "Album"
     },
     "Background": {
-        "Enable": true,
-        "Type": 1,
-        "Name": "background"
+        "Enable": false,
+        "Type": 0,
+        "Name": ""
     },
     "SoundEffect": {
     	"Enable": false,
-    	"SE": []
+    	"Name": {}
     }
 }
