@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class logomov : MonoBehaviour {
+public class LogoMovie : MonoBehaviour {
 
 	public MovieTexture movTexture;
 	public AudioClip audioclip;
