@@ -98,6 +98,7 @@ public class MenuController : MonoBehaviour
 
 			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().text = difflist[Beatmap ["Title"]][0];
 			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[difflist[Beatmap ["Title"]][0]];
+			tpos.y+= ((tpos.y) / -83.5f * 5.0f);
 			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().pixelOffset = tpos;
 			menuitem_tmp.transform.GetChild(0).GetComponent<GUIText>().fontSize = (int)((tpos.y) / -83.5f * 15.0f);
 
