@@ -241,6 +241,7 @@ public class SlideDrop : MonoBehaviour
 			//miss = true;
 
 			if (status.enableSE) {
+				missSE.mute = true;
 				missSE.enabled = true;
 				missSE.Play ();
 			}
