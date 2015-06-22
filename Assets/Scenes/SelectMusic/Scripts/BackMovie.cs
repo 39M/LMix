@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class backmovie : MonoBehaviour
+public class BackMovie : MonoBehaviour
 {
 
 	public MovieTexture movTexture;
