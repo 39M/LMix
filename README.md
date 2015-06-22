@@ -59,7 +59,7 @@ LMix使用了：
 - 来源于网络的音效
 - 来源于网络的图片  
 
-所有引用再此列出：
+所有引用再此列出：  
 https://osu.ppy.sh/b/170608 - 谱面  
 https://osu.ppy.sh/b/415060 - 谱面  
 https://osu.ppy.sh/b/371225 - 谱面  
