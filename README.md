@@ -59,6 +59,7 @@ If you put all audio file properly, you may build and run successfully.
 ## 引用
 
 LMix使用了：  
+
 - OpenSans开源字体
 - 从osu!部分谱面中提取的内容
 - 来源于网络的音乐
@@ -70,6 +71,9 @@ https://osu.ppy.sh/b/170608 - 谱面
 https://osu.ppy.sh/b/415060 - 谱面  
 https://osu.ppy.sh/b/371225 - 谱面  
 https://osu.ppy.sh/b/103282 - 谱面  
+https://osu.ppy.sh/b/123417 - 谱面  
+https://osu.ppy.sh/b/73817 - 谱面  
+https://osu.ppy.sh/b/86324 - 谱面  
 http://sc.chinaz.com/yinxiao/1403182524.htm - 音效  
 
 如有侵权请告知我们，将立即删除并进行道歉和赔偿。  
@@ -88,7 +92,10 @@ Following is what we used:
 https://osu.ppy.sh/b/170608 - beatmap  
 https://osu.ppy.sh/b/415060 - beatmap  
 https://osu.ppy.sh/b/371225 - beatmap  
-https://osu.ppy.sh/b/103282 - beatmap  
+https://osu.ppy.sh/b/103282 - beatmap 
+https://osu.ppy.sh/b/123417 - beatmap  
+https://osu.ppy.sh/b/73817 - beatmap  
+https://osu.ppy.sh/b/86324 - beatmap   
 http://sc.chinaz.com/yinxiao/1403182524.htm - 音效  
 
 If copyright infringement, please notify us. We will remove those file immediately and make apology with compensation.  
