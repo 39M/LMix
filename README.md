@@ -45,8 +45,8 @@ Scoring scene: Swipe your hand down toa back to select music scene. Swipe your h
 
 ## Project Guide
 
-Development environment: Windows 7 Ultimate 64-bit, Unity 5.0.1f1; OS X 10.10, Unity 5.0.1f1 
-The audio file of beatmap is not in repo. Please download by yourself or extract from the osu! beatmap.  
+Development environment: Windows 7 Ultimate 64-bit, Unity 5.0.1f1; OS X 10.10, Unity 5.0.1f1    
+The audio file of beatmap is not in repo. Please download by yourself or extract from the osu! beatmap.   
 If you put all audio file properly, you may build and run successfully.   
 `./Assets/Resources/Default`Store default sound effect, named`hit.wav`.   
 `./Assets/Resources/Music`Store beatmaps.  
