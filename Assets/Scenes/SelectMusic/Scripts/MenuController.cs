@@ -29,7 +29,7 @@ public class MenuController : MonoBehaviour
 	protected double changedifftime =1.5;
 	protected Dictionary<string,float> backward;
 	protected string difftonext;
-
+	protected bool changesong = true;
 	GUIText difftextobj;
 
 //record the back needed
@@ -74,7 +74,6 @@ public class MenuController : MonoBehaviour
 			foreach (string difficulty in diffcollection) {
 				if (Beatmap ["Difficulty"] [difficulty] ["Enable"].AsBool) {
 					difflist[Beatmap ["Title"]].Add(difficulty);
-
 				}
 			}
 			Vector3 pos = new Vector3 (transform.position.x, transform.position.y, transform.position.z);

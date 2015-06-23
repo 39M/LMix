@@ -129,7 +129,7 @@ public class Spin : MonoBehaviour
 		Debug.Log (rot.ToString ());
 		rot.x = rotate;
 		rot.y = 90f;
-		rot.z = 90f;
+		rot.z = -90f;
 		Debug.Log (rot.ToString ());
 		transform.localEulerAngles = rot;
 	}
