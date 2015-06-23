@@ -199,6 +199,12 @@ public class MenuController : MonoBehaviour
 					if ((position.x - 0.5) * (lx - 0.5) < 0){
 						if(playingsong != item.GetComponent<GUIText> ().text){
 							// play this item music
+							foreach (var in_item in menulist) {
+								Vector3 in_postion = in_item.transform.position;
+								in_postion.x -= 0.5f * lastmotion * Time.deltaTime;
+								in_item.transform.position = in_postion;
+							}
+
 							string folder = this.song [item.GetComponent<GUIText> ().text];
 							string name = this.songname[item.GetComponent<GUIText> ().text];
 							var music = GetComponent<AudioSource> ();
