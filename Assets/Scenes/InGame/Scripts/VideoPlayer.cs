@@ -9,7 +9,9 @@ public class VideoPlayer : MonoBehaviour
 	{
 		if ((GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer).enableBG) {
 			if (movTexture == null) {
-				movTexture = Resources.Load ("Default/background") as MovieTexture;
+				(GameObject.Find ("GamePlayer").GetComponent ("GamePlayer") as GamePlayer).enableBG = false;
+				Destroy(gameObject);
+				return;
 			}
 			GetComponent<Renderer> ().material.mainTexture = movTexture;
 			movTexture.loop = true;
