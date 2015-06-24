@@ -161,16 +161,21 @@ public class MenuController : MonoBehaviour
 				covermotion = false;
 				alphadirection = 1.0f;
 
+			}else{
+				tcolor.a = a;
+				CoverTexture.color = tcolor;
 			}
-			if(QuitGameFlag && a>0.9){
-				Application.Quit();
+
+
+			if(QuitGameFlag && a>0.8f ){
+				
+				QuitGameFlag = false;
 				Debug.Log("system exit!");
+				Application.Quit();
 			}
-			tcolor.a = a;
-			CoverTexture.color = tcolor;
 			//Debug.Log (CoverTexture.color.ToString ());
 		}
-			
+		Debug.Log (covermotion.ToString()+alphadirection.ToString()+QuitGameFlag.ToString());
 		// guesture judgement
 		if (motionlock) {
 			if (lastmotion == 2) {
@@ -266,9 +271,10 @@ public class MenuController : MonoBehaviour
 				GetComponent<AudioSource> ().volume += Time.deltaTime * 0.5f;
 			}
 			// keyboard
-			if (Input.GetKey(KeyCode.Escape)){
+			if (!QuitGameFlag && Input.GetKey(KeyCode.Escape)){
 				Debug.Log("get key escape");
-
+				//Application.Quit();
+				alphadirection = 1f;
 				covermotion = true;
 				QuitGameFlag = true;
 				lastmotion = 3;
