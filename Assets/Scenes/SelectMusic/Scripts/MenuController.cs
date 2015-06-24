@@ -175,7 +175,7 @@ public class MenuController : MonoBehaviour
 			}
 			//Debug.Log (CoverTexture.color.ToString ());
 		}
-		Debug.Log (covermotion.ToString()+alphadirection.ToString()+QuitGameFlag.ToString());
+		//Debug.Log (covermotion.ToString()+alphadirection.ToString()+QuitGameFlag.ToString());
 		// guesture judgement
 		if (motionlock) {
 			if (lastmotion == 2) {
