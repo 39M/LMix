@@ -305,7 +305,7 @@ public class MenuController : MonoBehaviour
 				}
 				lastmotion = 2;
 			}
-			if(Input.GetKey (KeyCode.W)||Input.GetKey (KeyCode.UpArrow)){
+			if(Input.GetKey (KeyCode.W)||Input.GetKey (KeyCode.UpArrow)||Input.GetKey (KeyCode.Return)){
 				covermotion = true;
 				lastmotion = 0;
 				motionlock = true;
