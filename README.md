@@ -24,7 +24,7 @@ You can add your own beatmap.
 游戏界面：尽可能在note达到判定线时击打note。白色note需要击打，灰色note只需接住。手移动到左上方游戏暂停/恢复，移动到右上方返回选曲界面。  
 计分界面：向下挥手返回选曲界面，向上挥手重玩本曲。  
 
-为了让更多人能够体验到，现已加入键盘操作支持！  
+**为了让更多人能够体验到，现已加入键盘操作支持！**  
 选曲界面：左右方向键切换歌曲，下方向键切换难度，上方向键选择(WASD也可以喔！)。    
 游戏界面：DFJK分别用于击打四条轨道，Space暂停，Esc返回选曲界面。    
 计分界面：下方向键或Esc返回选曲界面，上方向键或者R重玩本曲。  
@@ -35,7 +35,7 @@ Select music scene: Swipe your hand right and left to switch. Swipe your hand do
 Game scene: Hit the note when it reach the line. You need to hit white note and catch the grey note. Move your hand to upleft area to pause/resume, upright to exit.   
 Scoring scene: Swipe your hand down to back to select music scene. Swipe your hand up to retry.  
 
-Keyboard control supportted now!  
+**Keyboard control supportted now!**  
 Select music scene: ←|→ to switch. ↓ to change difficulty. ↑ to select.   
 Game scene: DFJK controls four tracks. Spcae to pause/resume, Esc to exit.   
 Scoring scene: ↓ to back to select music scene. ↑ to retry.  
@@ -105,7 +105,7 @@ Following is what we used:
 https://osu.ppy.sh/b/170608 - beatmap  
 https://osu.ppy.sh/b/415060 - beatmap  
 https://osu.ppy.sh/b/371225 - beatmap  
-https://osu.ppy.sh/b/103282 - beatmap 
+https://osu.ppy.sh/b/103282 - beatmap  
 https://osu.ppy.sh/b/123417 - beatmap  
 https://osu.ppy.sh/b/73817 - beatmap  
 https://osu.ppy.sh/b/86324 - beatmap   
