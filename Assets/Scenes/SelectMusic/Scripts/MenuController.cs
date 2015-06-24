@@ -29,6 +29,11 @@ public class MenuController : MonoBehaviour
 	protected Dictionary<string,float> backward;
 	protected string difftonext;
 	protected bool changesong = true;
+
+	protected float changedifftimeendtime =0;
+
+	protected bool QuitGameFlag =false;
+
 	GUIText difftextobj;
 
 //record the back needed
@@ -151,15 +156,21 @@ public class MenuController : MonoBehaviour
 			Color tcolor = CoverTexture.color;
 			float a = tcolor.a + Time.deltaTime * 2 * alphadirection;
 			if (a < 0.0f) {
+
 				tcolor.a = 0.0f;
 				covermotion = false;
 				alphadirection = 1.0f;
+
+			}
+			if(QuitGameFlag && a>0.9){
+				Application.Quit();
+				Debug.Log("system exit!");
 			}
 			tcolor.a = a;
 			CoverTexture.color = tcolor;
-			Debug.Log (CoverTexture.color.ToString ());
+			//Debug.Log (CoverTexture.color.ToString ());
 		}
-
+			
 		// guesture judgement
 		if (motionlock) {
 			if (lastmotion == 2) {
@@ -181,12 +192,12 @@ public class MenuController : MonoBehaviour
 				}
 				//
 				changedifftime -= Time.deltaTime;
-				if (changedifftime < 0) {
+				if (changedifftime < changedifftimeendtime) {
 					changedifftime = 1.5;
 					motionlock = false;
 				}
 
-			} else if (lastmotion != 0) {
+			} else if (lastmotion == -1||lastmotion == 1) {
 
 				foreach (var item in menulist) {
 					// move items and test move finished
@@ -219,7 +230,7 @@ public class MenuController : MonoBehaviour
 					}
 				}
 				GetComponent<AudioSource> ().volume -= Time.deltaTime * 1.2f;
-			} else {
+			} else if (lastmotion == 0){
 				foreach (var item in menulist) {
 					Vector3 position = item.transform.position;
 					if (position.x > 0.4 && position.x < 0.6) {
@@ -254,6 +265,51 @@ public class MenuController : MonoBehaviour
 			if (GetComponent<AudioSource> ().volume < 1.0) {
 				GetComponent<AudioSource> ().volume += Time.deltaTime * 0.5f;
 			}
+			// keyboard
+			if (Input.GetKey(KeyCode.Escape)){
+				Debug.Log("get key escape");
+
+				covermotion = true;
+				QuitGameFlag = true;
+				lastmotion = 3;
+				motionlock = true;
+			}
+			if (Input.GetKey (KeyCode.A)||Input.GetKey (KeyCode.LeftArrow)) {
+				if((menulist [0].transform.position.x + (menulist.Count - 1) * 0.5) > 0.6f){
+					lastmotion = -1;
+					motionlock = true;
+				}
+			}
+			if (Input.GetKey (KeyCode.D)||Input.GetKey (KeyCode.RightArrow)) {
+				if(menulist [0].transform.position.x < 0.4f){
+					lastmotion = 1;
+					motionlock = true;
+				}
+			}
+			if (Input.GetKey (KeyCode.S)||Input.GetKey (KeyCode.DownArrow)|| Input.GetKey (KeyCode.Space)) {
+				changedifftimeendtime = 0.8f;
+				motionlock = true;
+				foreach (var item in menulist) {
+					Vector3 position = item.transform.position;
+					if (position.x > 0.4 && position.x < 0.6) {
+						var list = difflist [item.GetComponent<GUIText> ().text];
+						int index = list.IndexOf (item.transform.GetChild (0).GetComponent<GUIText> ().text);
+						Debug.Log ("diff content list " + list.ToString () + " index: " + index);
+						
+						index = (index + 1) % list.Count;
+						difftonext = list [index];
+						difftextobj = item.transform.GetChild (0).GetComponent<GUIText> ();
+						//item.transform.GetChild(0).GetComponent<GUIText>().text = list[index];
+						//item.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[list[index]];
+					}
+				}
+				lastmotion = 2;
+			}
+			if(Input.GetKey (KeyCode.W)||Input.GetKey (KeyCode.UpArrow)){
+				covermotion = true;
+				lastmotion = 0;
+				motionlock = true;
+			}
 			//
 			Frame sfream = leap.Frame ();
 			foreach (var gesture in sfream.Gestures()) {
@@ -267,8 +323,9 @@ public class MenuController : MonoBehaviour
 						lastmotion = -1;
 					} else if (x > 0.7f && menulist [0].transform.position.x < 0.4f) {
 						lastmotion = 1;
-					} else if (y < -0.7) { 
+					} else if (y < -0.7f) { 
 						// change difficult
+						changedifftimeendtime = 0.0f;
 						motionlock = true;
 						foreach (var item in menulist) {
 							Vector3 position = item.transform.position;
@@ -282,7 +339,6 @@ public class MenuController : MonoBehaviour
 								difftextobj = item.transform.GetChild (0).GetComponent<GUIText> ();
 								//item.transform.GetChild(0).GetComponent<GUIText>().text = list[index];
 								//item.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[list[index]];
-
 							}
 						}
 						lastmotion = 2;
