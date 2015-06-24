@@ -108,6 +108,26 @@ public class TapDetector : MonoBehaviour
 			}
 		}
 
+		if (Input.GetKey(KeyCode.D)){
+			Left = true;
+		}
+		if (Input.GetKey(KeyCode.F)){
+			DownLeft = true;
+		}
+		if (Input.GetKey(KeyCode.J)){
+			DownRight = true;
+		}
+		if (Input.GetKey(KeyCode.K)){
+			Right = true;
+		}
+		if (Input.GetKey(KeyCode.Escape)){
+			Exit = true;
+		}
+		if (Input.GetKey(KeyCode.Space)){
+			Pause = true;
+		}
+
+
 		if (CPause != Pause && Pause) {
 			PauseTrigger = true;
 			Debug.Log ("Trigger");
