@@ -275,14 +275,14 @@ public class MenuController : MonoBehaviour
 				motionlock = true;
 			}
 			if (Input.GetKey (KeyCode.A)||Input.GetKey (KeyCode.LeftArrow)) {
-				if((menulist [0].transform.position.x + (menulist.Count - 1) * 0.5) > 0.6f){
-					lastmotion = -1;
+				if(menulist [0].transform.position.x < 0.4f){
+					lastmotion = 1;
 					motionlock = true;
 				}
 			}
 			if (Input.GetKey (KeyCode.D)||Input.GetKey (KeyCode.RightArrow)) {
-				if(menulist [0].transform.position.x < 0.4f){
-					lastmotion = 1;
+				if((menulist [0].transform.position.x + (menulist.Count - 1) * 0.5) > 0.6f){
+					lastmotion = -1;
 					motionlock = true;
 				}
 			}
