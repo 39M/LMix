@@ -101,7 +101,7 @@ public class GamePlayer : MonoBehaviour
 }
 */
 		/*******/
-		PlayerPrefs.SetInt("GameStarted", 1);
+		PlayerPrefs.SetInt ("GameStarted", 1);
 		enableSE = PlayerPrefs.GetInt ("enableSE") != 0;
 		enableBG = PlayerPrefs.GetInt ("enableBG") != 0;
 
@@ -250,10 +250,10 @@ public class GamePlayer : MonoBehaviour
 			return;
 
 		if (TD.PauseTrigger)
-			PauseResume();
+			PauseResume ();
 		
 		if (TD.Exit)
-			StopGame();
+			StopGame ();
 
 		if (!pause) {
 			if (ScoreNow < ScoreCounter)
@@ -306,7 +306,7 @@ public class GamePlayer : MonoBehaviour
 				PlayerPrefs.SetInt ("BadCount", BadCount);
 				PlayerPrefs.SetInt ("MissCount", MissCount);
 
-				if (PlayerPrefs.GetString (beatmapName + "MaxScore").Equals(""))
+				if (PlayerPrefs.GetString (beatmapName + "MaxScore").Equals (""))
 					PlayerPrefs.SetString (beatmapName + "MaxScore", ScoreCounter.ToString ());
 				else if (long.Parse (PlayerPrefs.GetString (beatmapName + "MaxScore")) < ScoreCounter)
 					PlayerPrefs.SetString (beatmapName + "MaxScore", ScoreCounter.ToString ());

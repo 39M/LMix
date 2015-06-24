@@ -200,11 +200,11 @@ public class GameOver : MonoBehaviour
 				}
 			}
 
-			if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.B)){
-				Back();
+			if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.Escape) || Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.B)) {
+				Back ();
 			}
-			if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.R)){
-				Retry();
+			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.R)) {
+				Retry ();
 			}
 		}
 

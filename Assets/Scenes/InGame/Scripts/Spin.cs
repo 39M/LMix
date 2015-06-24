@@ -53,11 +53,11 @@ public class Spin : MonoBehaviour
 		Frame fream = leap.Frame ();
 		// last version 
 		// Hand hand = fream.Hands [0];
-		Hand hand = fream.Hands[1];
-		if(hand.ToString()=="Invalid Hand"){
-			hand = fream.Hands[0];
+		Hand hand = fream.Hands [1];
+		if (hand.ToString () == "Invalid Hand") {
+			hand = fream.Hands [0];
 		}
-		Debug.Log("hand: "+hand.ToString());
+		Debug.Log ("hand: " + hand.ToString ());
 		Vector3 FingerPos = new Vector3 (0, 0, 0);
 		foreach (var finger in hand.Fingers) {
 			FingerPos = FingerPos + new Vector3 (finger.TipPosition.x, finger.TipPosition.y, finger.TipPosition.z);

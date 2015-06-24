@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LogoMovie : MonoBehaviour {
+public class LogoMovie : MonoBehaviour
+{
 
 	public MovieTexture movTexture;
 	public AudioClip audioclip;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		movTexture = Resources.Load ("logomov") as MovieTexture;
 		audioclip = Resources.Load ("logowav") as AudioClip;
 		GetComponent<Renderer> ().material.mainTexture = movTexture;
@@ -16,13 +18,14 @@ public class LogoMovie : MonoBehaviour {
 		movTexture.loop = false;
 		if (!movTexture.isPlaying) {
 			movTexture.Play ();
-			GetComponent<AudioSource> ().Play();	
+			GetComponent<AudioSource> ().Play ();	
 		}
-		PlayerPrefs.DeleteAll();
+		PlayerPrefs.DeleteAll ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (!movTexture.isPlaying) {
 			Application.LoadLevel ("SelectMusic");
 		}
