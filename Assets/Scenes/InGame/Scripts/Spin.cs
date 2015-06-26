@@ -16,6 +16,7 @@ public class Spin : MonoBehaviour
 	//CircleGesture circlegesture;
 	Vector3 fingeroldposition ;
 	protected Controller leap;
+	char lastkey = 'K';
 	// Use this for initialization
 	void Start ()
 	{
@@ -49,6 +50,26 @@ public class Spin : MonoBehaviour
 
 		// to rotate the spin
 		rot ();
+
+		// get keyboard infomation
+
+		float keyboard_a = 0.0f;
+		float keyboard_a_a = 150000f;
+		if(Input.GetKey (KeyCode.D) && lastkey == 'K'){
+			lastkey ='D';
+			keyboard_a+=keyboard_a_a;
+		}else if(Input.GetKey (KeyCode.F) && lastkey == 'D'){
+			lastkey ='F';
+			keyboard_a+=keyboard_a_a;
+		}else if(Input.GetKey (KeyCode.J) && lastkey == 'F'){
+			lastkey ='J';
+			keyboard_a+=keyboard_a_a;
+		}else if(Input.GetKey (KeyCode.K) && lastkey == 'J'){
+			lastkey ='K';
+			keyboard_a+=keyboard_a_a;
+		}
+
+
 		// recalculate the rotate speed 
 		Frame fream = leap.Frame ();
 		// last version 
@@ -63,7 +84,7 @@ public class Spin : MonoBehaviour
 			FingerPos = FingerPos + new Vector3 (finger.TipPosition.x, finger.TipPosition.y, finger.TipPosition.z);
 		}
 		if (rotatespeed < maxrotatespeed)
-			rotatespeed += 0.04f * Time.deltaTime * ((FingerPos - fingeroldposition).sqrMagnitude - 1500.0f);
+			rotatespeed += 0.04f * Time.deltaTime * ((FingerPos - fingeroldposition).sqrMagnitude + keyboard_a - 1000.0f);
 		if (rotatespeed < 0.0f)
 			rotatespeed = 0.0f;
 		fingeroldposition = FingerPos;
