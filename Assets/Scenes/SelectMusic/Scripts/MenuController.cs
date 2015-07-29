@@ -33,6 +33,7 @@ public class MenuController : MonoBehaviour
 	protected float changedifftimeendtime =0;
 
 	protected bool QuitGameFlag =false;
+	protected GestureListener gestureListener;
 
 	GUIText difftextobj;
 
@@ -40,6 +41,9 @@ public class MenuController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		gestureListener = GameObject.Find("CameraWithKinect").GetComponent<GestureListener>();
+		//gestureListener = Camera.main.GetComponent<GestureListener>();
+
 		difflist = new Dictionary<string, List<string>> ();
 		CoverTexture = GameObject.Find ("Cover").GetComponent<GUITexture> ();
 		// init 
@@ -260,6 +264,7 @@ public class MenuController : MonoBehaviour
 						Debug.Log ("set difficulty " + this.diff [item.transform.GetChild (0).GetComponent<GUIText> ().text]);
 						PlayerPrefs.SetInt ("Difficulty", this.diff [item.transform.GetChild (0).GetComponent<GUIText> ().text]);
 						Application.LoadLevel ("InGame");
+						Camera.main.GetComponent<AudioListener>().enabled = false;
 					}
 
 				}
@@ -317,7 +322,7 @@ public class MenuController : MonoBehaviour
 				motionlock = true;
 			}
 			//
-			Frame sfream = leap.Frame ();
+			/*Frame sfream = leap.Frame ();
 			foreach (var gesture in sfream.Gestures()) {
 				if (gesture.Type == Gesture.GestureType.TYPE_SWIPE) {
 					SwipeGesture swipeGesture = new SwipeGesture (gesture);
@@ -358,6 +363,42 @@ public class MenuController : MonoBehaviour
 					}
 					motionlock = true;
 				}
+			}*/
+
+			if (gestureListener)
+			{
+				if(gestureListener.IsSwipeLeft())
+					lastmotion = -1;
+				else if(gestureListener.IsSwipeRight())
+					lastmotion = 1;
+				else if(gestureListener.IsSwipeDown()){
+					changedifftimeendtime = 0.0f;
+					motionlock = true;
+					foreach (var item in menulist) {
+						Vector3 position = item.transform.position;
+						if (position.x > 0.4 && position.x < 0.6) {
+							var list = difflist [item.GetComponent<GUIText> ().text];
+							int index = list.IndexOf (item.transform.GetChild (0).GetComponent<GUIText> ().text);
+							Debug.Log ("diff content list " + list.ToString () + " index: " + index);
+							
+							index = (index + 1) % list.Count;
+							difftonext = list [index];
+							difftextobj = item.transform.GetChild (0).GetComponent<GUIText> ();
+							//item.transform.GetChild(0).GetComponent<GUIText>().text = list[index];
+							//item.transform.GetChild(0).GetComponent<GUIText>().color = diffcolormap[list[index]];
+						}
+					}
+					lastmotion = 2;
+				}
+				else if(gestureListener.IsSwipeUp()){
+					lastmotion = 0;
+					covermotion = true;
+				}
+				else{
+					return;
+				}
+
+				motionlock = true;
 			}
 		}
 	}

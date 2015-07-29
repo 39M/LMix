@@ -26,7 +26,7 @@ public class SpaceGenerator : MonoBehaviour
 		counter++;
 		if (timer < 0) {
 			timer = 1f;
-			Debug.Log ("FPS: " + counter);
+			//Debug.Log ("FPS: " + counter);
 			counter = 0;
 		}
 

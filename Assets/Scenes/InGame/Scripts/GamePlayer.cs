@@ -296,6 +296,7 @@ public class GamePlayer : MonoBehaviour
 			if (gameoverTimer < 0) {
 				if (TD.Exit) {
 					Application.LoadLevel ("SelectMusic");
+					Camera.main.GetComponent<AudioListener>().enabled = false;
 					return;
 				}
 
@@ -325,6 +326,7 @@ public class GamePlayer : MonoBehaviour
 					PlayerPrefs.SetString ("Judgement", "D");
 
 				Application.LoadLevel ("GameOver");
+				Camera.main.GetComponent<AudioListener>().enabled = false;
 			}
 			return;
 		}
@@ -351,7 +353,7 @@ public class GamePlayer : MonoBehaviour
 		switch (now [0].AsInt) {
 		case 3:	// Generate Spinner
 			if (HitObjects.Count > i && music.time >= now [1].AsFloat) {
-				SG.Generate (now [3].AsFloat);
+				//SG.Generate (now [3].AsFloat);
 				i++;	// move to next note
 				if (HitObjects.Count > i)
 					now = HitObjects [i].AsArray;	// get current note
@@ -362,26 +364,26 @@ public class GamePlayer : MonoBehaviour
 			while (HitObjects.Count > i && music.time - Timer >= (now [1].AsFloat - 7 / now [3].AsFloat)) {	// time > generate time
 				switch (now [2].AsInt) {	// select generator
 				case 1:
-					NGDL.GenerateNote (now [0].AsInt, now [3].AsFloat);
-					//NGDL.GenerateNote (1, now [3].AsFloat);
+					//NGDL.GenerateNote (now [0].AsInt, now [3].AsFloat);
+					NGDL.GenerateNote (1, now [3].AsFloat);
 					break;
 				case 2:
-					NGDR.GenerateNote (now [0].AsInt, now [3].AsFloat);
-					//NGDR.GenerateNote (1, now [3].AsFloat);
+					//NGDR.GenerateNote (now [0].AsInt, now [3].AsFloat);
+					NGDR.GenerateNote (1, now [3].AsFloat);
 					break;
 				case 3:
 					//NGLU.GenerateNote (now[3].AsFloat);
 					break;
 				case 4:
-					NGLD.GenerateNote (now [0].AsInt, now [3].AsFloat);
-					//NGLD.GenerateNote (1, now [3].AsFloat);
+					//NGLD.GenerateNote (now [0].AsInt, now [3].AsFloat);
+					NGLD.GenerateNote (1, now [3].AsFloat);
 					break;
 				case 5:
 					//NGRU.GenerateNote (now[3].AsFloat);	
 					break;
 				case 6:
-					NGRD.GenerateNote (now [0].AsInt, now [3].AsFloat);	
-					//NGRD.GenerateNote (1, now [3].AsFloat);	
+					//NGRD.GenerateNote (now [0].AsInt, now [3].AsFloat);	
+					NGRD.GenerateNote (1, now [3].AsFloat);	
 					break;
 				default:
 					break;

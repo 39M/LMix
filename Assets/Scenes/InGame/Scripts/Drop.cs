@@ -138,6 +138,21 @@ public class Drop : MonoBehaviour
 			if (tap_success) {
 				if (!hitable)
 					return;
+				/*
+				switch (track) {
+				case 0:	// DR
+					TD.DownRight = false;
+					break;
+				case 1:	// DL	
+					TD.DownLeft = false;
+					break;
+				case 2:	// R
+					TD.Right = false;
+					break;
+				case 3:	// L
+					TD.Left = false;
+					break;
+				}*/
 
 				Quaternion rt = Quaternion.identity;
 				if (transform.rotation.eulerAngles.x == 0)

@@ -25,6 +25,7 @@ public class GameOver : MonoBehaviour
 	public Image BigCover;
 	public Image SmallCover;
 	public Image EndCover;
+	GestureListener gestureListener;
 	Leap.Controller leap;
 	long TotalScore;
 	long ScoreNow;
@@ -45,10 +46,14 @@ public class GameOver : MonoBehaviour
 	bool Retrying = false;
 	bool Backing = false;
 	bool RBDone = false;
+	bool ShowRankDone = false;
 
 	// Use this for initialization
 	void Start ()
 	{
+		gestureListener = GameObject.Find("CameraWithKinect").GetComponent<GestureListener>();
+
+		//Debug.Log(PlayerPrefs.GetString ("ScoreCount"));
 		TotalScore = long.Parse (PlayerPrefs.GetString ("ScoreCount")); 
 		MaxCombo = PlayerPrefs.GetInt ("ComboCount");
 		PerfectCount = PlayerPrefs.GetInt ("PerfectCount");
@@ -185,7 +190,7 @@ public class GameOver : MonoBehaviour
 			else if (Timer >= 0)
 				Timer -= Time.deltaTime;
 
-			Leap.Frame frame = leap.Frame ();
+			/*Leap.Frame frame = leap.Frame ();
 			foreach (Leap.Gesture gesture in frame.Gestures()) {
 				if (gesture.Type == Leap.Gesture.GestureType.TYPE_SWIPE) {
 					Leap.SwipeGesture swipeGesture = new Leap.SwipeGesture (gesture);
@@ -198,21 +203,29 @@ public class GameOver : MonoBehaviour
 					if (y < -0.7)
 						Back ();
 				}
-			}
+			}*/
+			if (ShowRankDone) {
+				if (gestureListener.IsSwipeDown())
+					Back();
+				if (gestureListener.IsSwipeUp())
+					Retry();
 
-			if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.Escape) || Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.B)) {
-				Back ();
-			}
-			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.R)) {
-				Retry ();
+				if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.Escape) || Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.B)) {
+					Back ();
+				}
+				if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.R)) {
+					Retry ();
+				}
 			}
 		}
 
 		if (DisplayDone && Timer < 0 && CoverColor.a > 0) {
 			CoverColor.a -= Time.deltaTime * 2;
 			SmallCover.color = CoverColor;
-			if (CoverColor.a <= 0)
+			if (CoverColor.a <= 0) {
 				Destroy (SmallCover);
+				ShowRankDone = true;
+			}
 		}
 	}
 

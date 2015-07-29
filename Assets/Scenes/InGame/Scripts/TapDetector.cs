@@ -15,13 +15,14 @@ public class TapDetector : MonoBehaviour
 	public GameObject LeftLine;
 	public GameObject DownRightLine;
 	public GameObject DownLeftLine;
-	Controller leap;
 	Color grey;
 	bool CR;
 	bool CL;
 	bool CDL;
 	bool CDR;
 	bool CPause;
+	KinectManager manager;
+	float counter = 1f;
 
 	// Use this for initialization
 	void Start ()
@@ -29,8 +30,8 @@ public class TapDetector : MonoBehaviour
 		Right = Left = DownLeft = DownRight = false;
 		Pause = Exit = CPause = false;
 		CR = CL = CDL = CDR = false;
-		leap = new Controller ();
 		grey = new Color (0.5f, 0.5f, 0.5f);
+		manager = GameObject.Find("KinectObject").GetComponent("KinectManager") as KinectManager;
 	}
 
 	// x 100  y 400
@@ -81,7 +82,48 @@ public class TapDetector : MonoBehaviour
 		CDR = DownRight;
 		Right = Left = DownLeft = DownRight = false;
 		Pause = false;
-		Frame frame = leap.Frame ();
+
+		//---------kincet--------------//
+		if (manager.IsUserDetected()) {
+			uint UserID = manager.GetPlayer1ID();
+			Vector3 leftHandPos = manager.GetJointPosition(UserID, 7);
+			Vector3 rightHandPos = manager.GetJointPosition(UserID, 11);
+
+			if (counter < 0) {
+				Debug.Log("-------------------");
+				Debug.Log(leftHandPos);
+				Debug.Log(rightHandPos);
+				counter = 1f;
+			} else {
+				counter -= Time.deltaTime;
+			}
+
+			if (rightHandPos.x > 0f && rightHandPos.x < 0.3f && rightHandPos.y < 1f) {
+				DownRight = true;
+			}
+			if (leftHandPos.x < 0f && leftHandPos.x > -0.3f && leftHandPos.y < 1f) {
+				DownLeft = true;
+			}
+			if (leftHandPos.x < -0.2 && leftHandPos.y > 0.8f && leftHandPos.y < 2f) {
+				Left = true;
+			}
+			if (rightHandPos.x > 0.2 && rightHandPos.y > 0.8f && rightHandPos.y < 2f) {
+				Right = true;
+			} 
+			if (leftHandPos.y > 2f) 
+				if (leftHandPos.x > 0.3f)
+					Exit = true;
+			if (rightHandPos.y > 2f)
+				if (rightHandPos.x < -0.3f)
+					Pause = true;
+		}
+
+
+		//---------kincet--------------//
+
+
+		/*Frame frame = leap.Frame ();
+
 		foreach (Hand hand in frame.Hands) {
 			//Debug.Log (hand.Fingers.Frontmost.TipPosition);
 			foreach (Finger finger in hand.Fingers) {
@@ -106,7 +148,7 @@ public class TapDetector : MonoBehaviour
 						Pause = true;
 				}
 			}
-		}
+		}*/
 
 		if (Input.GetKey (KeyCode.D)) {
 			Left = true;
