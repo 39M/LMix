@@ -4,6 +4,8 @@
 
 ## 简介
 
+**警告**  
+**此README仅适用于master分支！**  
 基于Leap Motion的3D下落式音乐游戏，使用Unity开发。  
 挥舞双手击打左中右三个方向的note，转动手指旋转转盘，伴着节奏欣赏你喜欢的音乐。  
 较宽的宽判定区避免了误触。  
@@ -13,6 +15,8 @@ aLIEz试玩演示：http://www.bilibili.com/video/av2477424/
 
 ## Introduction
 
+**WARNING**  
+**The README is only for master branch!**  
 A 3D Drop-Music-Game based on Leap Motion developed with Unity.  
 Use your hands hit the note from left, middle and right. Circle your finger to spin spinner. Enjoy music with the rhythm.  
 The big judgement area make you won't hit the wrong track.  
