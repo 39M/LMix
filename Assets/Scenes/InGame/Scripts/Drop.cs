@@ -101,6 +101,9 @@ public class Drop : MonoBehaviour
 			Destroy (gameObject);
 		}
 
+        if (hit && hitSE.isPlaying)
+            GetComponent<LensFlare>().brightness -= Time.deltaTime;
+
 		if (!hit)
 			transform.Translate (new Vector3 (10, 0, 0) * Time.deltaTime * speed);
 		notePos = transform.position;
@@ -186,8 +189,10 @@ public class Drop : MonoBehaviour
 					hitSE.Play ();
 				}
 				GetComponent<Renderer> ().enabled = false;
-				//Destroy (gameObject);
-				return;
+                //GetComponent<LensFlare>().enabled = false;
+                GetComponent<LensFlare>().brightness *= 2;
+                //Destroy (gameObject);
+                return;
 			}
 			//}
 			//}
