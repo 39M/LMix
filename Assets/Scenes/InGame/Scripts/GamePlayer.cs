@@ -242,7 +242,19 @@ public class GamePlayer : MonoBehaviour
 			StartGame ();
 		}
 	}
-	
+
+	void FixedUpdate()
+	{
+		if (!pause)
+		{
+			if (ScoreNow < ScoreCounter)
+				if (ScoreCounter - ScoreNow < 10)
+					ScoreNow++;
+			else
+				ScoreNow += (ScoreCounter - ScoreNow) / 10;
+		}
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{
@@ -255,17 +267,11 @@ public class GamePlayer : MonoBehaviour
 		if (TD.Exit)
 			StopGame ();
 
-		if (!pause) {
-			if (ScoreNow < ScoreCounter)
-			if (ScoreCounter - ScoreNow < 10)
-				ScoreNow++;
-			else
-				ScoreNow += (ScoreCounter - ScoreNow) / 10;
+		if (!pause)
 			ScoreText.text = "Score: " + ScoreNow.ToString ();
-		} else {
-			if (!TD.Exit)
-				return;
-		}
+
+		if (pause && !TD.Exit)
+			return;
 
 		if (HitObjects.Count <= i) {
 			if (!gameover) {
