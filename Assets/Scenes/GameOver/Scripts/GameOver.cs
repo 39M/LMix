@@ -162,14 +162,6 @@ public class GameOver : MonoBehaviour
 			}
 		}
 
-		DisplayDone = true;
-		CounterPlus (ref ScoreNow, TotalScore, 10);
-		CounterPlus (ref ComboNow, MaxCombo, 20);
-		CounterPlus (ref PerfectNow, PerfectCount, 20);
-		CounterPlus (ref GoodNow, GoodCount, 20);
-		CounterPlus (ref BadNow, BadCount, 20);
-		CounterPlus (ref MissNow, MissCount, 20);
-
 		if (!DisplayDone) {
 			ScoreText.text = ScoreNow.ToString ();
 			ComboText.text = ComboNow.ToString ();
@@ -214,6 +206,17 @@ public class GameOver : MonoBehaviour
 			if (CoverColor.a <= 0)
 				Destroy (SmallCover);
 		}
+	}
+
+	void FixedUpdate()
+	{
+		DisplayDone = true;
+		CounterPlus (ref ScoreNow, TotalScore, 10);
+		CounterPlus (ref ComboNow, MaxCombo, 20);
+		CounterPlus (ref PerfectNow, PerfectCount, 20);
+		CounterPlus (ref GoodNow, GoodCount, 20);
+		CounterPlus (ref BadNow, BadCount, 20);
+		CounterPlus (ref MissNow, MissCount, 20);
 	}
 
 	void CounterPlus (ref int Counter, int max, int step)
