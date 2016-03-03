@@ -13,7 +13,6 @@ public class GamePlayer : MonoBehaviour
 	public bool defaultSE;
 	public bool enableBG;
 	bool useMovBG;
-	bool usePicBG;
 	bool defaultBG;
 	public JSONNode SEname;
 	public Text ScoreText;
@@ -149,15 +148,14 @@ public class GamePlayer : MonoBehaviour
 
 		//defaultBG = true;
 		useMovBG = false;
-		usePicBG = false;
 		if (enableBG) {
 			if (Beatmap ["Background"] ["Enable"].AsBool) {
 				Destroy (GameObject.Find ("SpaceGenetator"));
 				//defaultBG = false;
 				switch (Beatmap ["Background"] ["Type"].AsInt) {
 				case 0:
-				// use Picture as background
-					usePicBG = true;
+					// use Picture as background
+					// TODO: Load picture background
 					Debug.Log ("use custom pic BG");
 					break;
 				case 1:
