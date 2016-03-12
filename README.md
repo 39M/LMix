@@ -8,6 +8,7 @@
 挥舞双手击打左中右三个方向的note，转动手指旋转转盘，伴着节奏欣赏你喜欢的音乐。  
 较宽的宽判定区避免了误触。  
 支持自定义谱面。  
+官方页面：http://liu946.github.io/LMixMainPage/  
 aLIEz试玩演示：http://www.bilibili.com/video/av2477424/  
 游戏宣传及更多演示：http://www.bilibili.com/video/av2476095/  
 
@@ -17,6 +18,7 @@ A 3D Drop-Music-Game based on Leap Motion developed with Unity.
 Use your hands hit the note from left, middle and right. Circle your finger to spin spinner. Enjoy music with the rhythm.  
 The big judgement area make you won't hit the wrong track.  
 You can add your own beatmap.  
+Official Page: http://liu946.github.io/LMixMainPage/  
 Demo1：http://www.bilibili.com/video/av2477424/  
 Demo2: http://www.bilibili.com/video/av2476095/  
 
