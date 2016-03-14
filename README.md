@@ -51,7 +51,7 @@ Scoring scene: ↓ to back to select music scene. ↑ to retry.
 ## 项目说明
 
 开发环境：Windows 7 Ultimate 64-bit, Unity 5.0.1f1; OS X 10.10, Unity 5.0.1f1  
-谱面中音乐文件没有添加到项目中，请自行下载或去osu! beatmap中提取。  
+**谱面中音乐文件没有添加到项目中，请自行下载或去osu! beatmap中提取。**  
 正确放置所有音乐后即可正常编译运行。  
 `./Assets/Resources/Default`目录存放默认音效，名为`hit.wav`。  
 `./Assets/Resources/Music`目录存放谱面。    
@@ -62,7 +62,7 @@ Scoring scene: ↓ to back to select music scene. ↑ to retry.
 ## Project Guide
 
 Development environment: Windows 7 Ultimate 64-bit, Unity 5.0.1f1; OS X 10.10, Unity 5.0.1f1    
-The audio file of beatmap is not in repo. Please download by yourself or extract from the osu! beatmap.   
+**The audio file of beatmap is not in repo. Please download by yourself or extract from the osu! beatmap.**   
 If you put all audio file properly, you may build and run successfully.   
 `./Assets/Resources/Default`Store default sound effect, named`hit.wav`.   
 `./Assets/Resources/Music`Store beatmaps.  
@@ -126,7 +126,7 @@ If copyright infringement, please notify us. We will remove those file immediate
 
 ## 联系我们 | Contact
 
-- Xwz7: Xwszc7@Gmail.com  
+- 39M: 39M@outlook.com  
 - liu946: liuyang570926881@Gmail.com  
 
 ----
