@@ -45,7 +45,6 @@ public class MenuController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-        //PlayerPrefs.DeleteAll();
 		difflist = new Dictionary<string, List<string>> ();
 		CoverTexture = GameObject.Find ("Cover").GetComponent<GUITexture> ();
 		// init 
@@ -361,7 +360,7 @@ public class MenuController : MonoBehaviour
 					Vector gestureVector = swipeGesture.Direction;
 					float x = gestureVector.x;
 					float y = gestureVector.y;
-					if (x < - 0.7f && (menulist [0].transform.position.x + (menulist.Count - 1) * 0.5) > spaceHorizontal * 0.5f) {
+					if (x < - 0.7f && (menulist [0].transform.position.x + (menulist.Count - 1) * spaceHorizontal) > spaceHorizontal * 0.5f) {
 						lastmotion = -1;
 					} else if (x > 0.7f && menulist [0].transform.position.x < -spaceHorizontal * 0.5f) {
 						lastmotion = 1;

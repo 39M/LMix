@@ -20,7 +20,7 @@ public class LogoMovie : MonoBehaviour
 			movTexture.Play ();
 			GetComponent<AudioSource> ().Play ();	
 		}
-		PlayerPrefs.DeleteAll ();
+		//PlayerPrefs.DeleteAll ();
 	}
 	
 	// Update is called once per frame
